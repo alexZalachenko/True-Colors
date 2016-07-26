@@ -1,0 +1,181 @@
+                              1 ;--------------------------------------------------------
+                              2 ; File Created by SDCC : free open source ANSI-C Compiler
+                              3 ; Version 3.5.0 #9253 (Sep 23 2015) (CYGWIN)
+                              4 ; This file was generated Fri Oct 23 22:09:26 2015
+                              5 ;--------------------------------------------------------
+                              6 	.module HUD
+                              7 	.optsdcc -mz80
+                              8 	
+                              9 ;--------------------------------------------------------
+                             10 ; Public variables in this module
+                             11 ;--------------------------------------------------------
+                             12 	.globl _menuGameOver
+                             13 	.globl _cpct_getScreenPtr
+                             14 	.globl _cpct_drawSprite
+                             15 	.globl _actualizado
+                             16 	.globl _vida
+                             17 	.globl _vidaMax
+                             18 	.globl _iniciaHud
+                             19 	.globl _quitaVida
+                             20 	.globl _aumentaVida
+                             21 	.globl _pintaVida
+                             22 	.globl _desactualizar
+                             23 ;--------------------------------------------------------
+                             24 ; special function registers
+                             25 ;--------------------------------------------------------
+                             26 ;--------------------------------------------------------
+                             27 ; ram data
+                             28 ;--------------------------------------------------------
+                             29 	.area _DATA
+   0000                      30 _vida::
+   0000                      31 	.ds 1
+   0001                      32 _actualizado::
+   0001                      33 	.ds 1
+                             34 ;--------------------------------------------------------
+                             35 ; ram data
+                             36 ;--------------------------------------------------------
+                             37 	.area _INITIALIZED
+                             38 ;--------------------------------------------------------
+                             39 ; absolute external ram data
+                             40 ;--------------------------------------------------------
+                             41 	.area _DABS (ABS)
+                             42 ;--------------------------------------------------------
+                             43 ; global & static initialisations
+                             44 ;--------------------------------------------------------
+                             45 	.area _HOME
+                             46 	.area _GSINIT
+                             47 	.area _GSFINAL
+                             48 	.area _GSINIT
+                             49 ;--------------------------------------------------------
+                             50 ; Home
+                             51 ;--------------------------------------------------------
+                             52 	.area _HOME
+                             53 	.area _HOME
+                             54 ;--------------------------------------------------------
+                             55 ; code
+                             56 ;--------------------------------------------------------
+                             57 	.area _CODE
+                             58 ;src/HUD.c:7: void iniciaHud(){
+                             59 ;	---------------------------------
+                             60 ; Function iniciaHud
+                             61 ; ---------------------------------
+   0000                      62 _iniciaHud::
+                             63 ;src/HUD.c:8: vida=vidaMax;
+   0000 3Ar0Cr00      [13]   64 	ld	a,(#_vidaMax + 0)
+   0003 32r00r00      [13]   65 	ld	(#_vida + 0),a
+                             66 ;src/HUD.c:9: actualizado=0;
+   0006 21r01r00      [10]   67 	ld	hl,#_actualizado + 0
+   0009 36 00         [10]   68 	ld	(hl), #0x00
+   000B C9            [10]   69 	ret
+   000C                      70 _vidaMax:
+   000C 05                   71 	.db #0x05	; 5
+                             72 ;src/HUD.c:11: void quitaVida(){
+                             73 ;	---------------------------------
+                             74 ; Function quitaVida
+                             75 ; ---------------------------------
+   000D                      76 _quitaVida::
+                             77 ;src/HUD.c:12: vida--;
+   000D 21r00r00      [10]   78 	ld	hl, #_vida+0
+   0010 35            [11]   79 	dec	(hl)
+                             80 ;src/HUD.c:13: if(vida==0)
+   0011 3Ar00r00      [13]   81 	ld	a,(#_vida + 0)
+   0014 B7            [ 4]   82 	or	a, a
+   0015 20 03         [12]   83 	jr	NZ,00102$
+                             84 ;src/HUD.c:14: menuGameOver();
+   0017 CDr00r00      [17]   85 	call	_menuGameOver
+   001A                      86 00102$:
+                             87 ;src/HUD.c:15: actualizado=0;
+   001A 21r01r00      [10]   88 	ld	hl,#_actualizado + 0
+   001D 36 00         [10]   89 	ld	(hl), #0x00
+   001F C9            [10]   90 	ret
+                             91 ;src/HUD.c:17: void aumentaVida(){
+                             92 ;	---------------------------------
+                             93 ; Function aumentaVida
+                             94 ; ---------------------------------
+   0020                      95 _aumentaVida::
+                             96 ;src/HUD.c:18: vida++;
+   0020 21r00r00      [10]   97 	ld	hl, #_vida+0
+   0023 34            [11]   98 	inc	(hl)
+                             99 ;src/HUD.c:19: actualizado=0;
+   0024 21r01r00      [10]  100 	ld	hl,#_actualizado + 0
+   0027 36 00         [10]  101 	ld	(hl), #0x00
+   0029 C9            [10]  102 	ret
+                            103 ;src/HUD.c:21: void pintaVida(){
+                            104 ;	---------------------------------
+                            105 ; Function pintaVida
+                            106 ; ---------------------------------
+   002A                     107 _pintaVida::
+                            108 ;src/HUD.c:24: if(!actualizado){
+   002A 3Ar01r00      [13]  109 	ld	a,(#_actualizado + 0)
+   002D B7            [ 4]  110 	or	a, a
+   002E C0            [11]  111 	ret	NZ
+                            112 ;src/HUD.c:25: for(cont;cont<vidaMax;cont++){
+   002F 01 00 00      [10]  113 	ld	bc,#0x0000
+   0032                     114 00108$:
+   0032 21r0Cr00      [10]  115 	ld	hl,#_vidaMax + 0
+   0035 66            [ 7]  116 	ld	h, (hl)
+   0036 79            [ 4]  117 	ld	a,c
+   0037 94            [ 4]  118 	sub	a, h
+   0038 30 3C         [12]  119 	jr	NC,00104$
+                            120 ;src/HUD.c:26: memPtr=cpct_getScreenPtr(video_memory_start,cont*3,191);
+   003A ED 5Br00r00   [20]  121 	ld	de,(_video_memory_start)
+   003E C5            [11]  122 	push	bc
+   003F 3E BF         [ 7]  123 	ld	a,#0xBF
+   0041 F5            [11]  124 	push	af
+   0042 33            [ 6]  125 	inc	sp
+   0043 C5            [11]  126 	push	bc
+   0044 33            [ 6]  127 	inc	sp
+   0045 D5            [11]  128 	push	de
+   0046 CDr00r00      [17]  129 	call	_cpct_getScreenPtr
+   0049 C1            [10]  130 	pop	bc
+                            131 ;src/HUD.c:28: cpct_drawSprite(CorazonLleno,memPtr,2,8);
+   004A EB            [ 4]  132 	ex	de,hl
+                            133 ;src/HUD.c:27: if(cont<vida)
+   004B 21r00r00      [10]  134 	ld	hl,#_vida
+   004E 79            [ 4]  135 	ld	a,c
+   004F 96            [ 7]  136 	sub	a, (hl)
+   0050 30 10         [12]  137 	jr	NC,00102$
+                            138 ;src/HUD.c:28: cpct_drawSprite(CorazonLleno,memPtr,2,8);
+   0052 C5            [11]  139 	push	bc
+   0053 21 02 08      [10]  140 	ld	hl,#0x0802
+   0056 E5            [11]  141 	push	hl
+   0057 D5            [11]  142 	push	de
+   0058 21r00r00      [10]  143 	ld	hl,#_CorazonLleno
+   005B E5            [11]  144 	push	hl
+   005C CDr00r00      [17]  145 	call	_cpct_drawSprite
+   005F C1            [10]  146 	pop	bc
+   0060 18 0E         [12]  147 	jr	00109$
+   0062                     148 00102$:
+                            149 ;src/HUD.c:30: cpct_drawSprite(CorazonVacio,memPtr,2,8);
+   0062 C5            [11]  150 	push	bc
+   0063 21 02 08      [10]  151 	ld	hl,#0x0802
+   0066 E5            [11]  152 	push	hl
+   0067 D5            [11]  153 	push	de
+   0068 21r00r00      [10]  154 	ld	hl,#_CorazonVacio
+   006B E5            [11]  155 	push	hl
+   006C CDr00r00      [17]  156 	call	_cpct_drawSprite
+   006F C1            [10]  157 	pop	bc
+   0070                     158 00109$:
+                            159 ;src/HUD.c:25: for(cont;cont<vidaMax;cont++){
+   0070 04            [ 4]  160 	inc	b
+   0071 04            [ 4]  161 	inc	b
+   0072 04            [ 4]  162 	inc	b
+   0073 0C            [ 4]  163 	inc	c
+   0074 18 BC         [12]  164 	jr	00108$
+   0076                     165 00104$:
+                            166 ;src/HUD.c:32: actualizado=1;
+   0076 21r01r00      [10]  167 	ld	hl,#_actualizado + 0
+   0079 36 01         [10]  168 	ld	(hl), #0x01
+   007B C9            [10]  169 	ret
+                            170 ;src/HUD.c:36: void desactualizar(){
+                            171 ;	---------------------------------
+                            172 ; Function desactualizar
+                            173 ; ---------------------------------
+   007C                     174 _desactualizar::
+                            175 ;src/HUD.c:37: actualizado=0;
+   007C 21r01r00      [10]  176 	ld	hl,#_actualizado + 0
+   007F 36 00         [10]  177 	ld	(hl), #0x00
+   0081 C9            [10]  178 	ret
+                            179 	.area _CODE
+                            180 	.area _INITIALIZER
+                            181 	.area _CABS (ABS)

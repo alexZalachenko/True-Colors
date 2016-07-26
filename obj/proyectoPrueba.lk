@@ -1,0 +1,24 @@
+-mjwx
+-i obj/proyectoPrueba.ihx
+-b _CODE = 0x4000
+-b _DATA = 0x0000
+-u
+-k /home/Manuel/cpctelera-master/cpctelera/tools/sdcc-3.5.0/bin/../share/sdcc/lib/z80
+-k /home/Manuel/cpctelera-master/cpctelera/tools/sdcc-3.5.0/share/sdcc/lib/z80
+-l /home/Manuel/cpctelera-master/cpctelera/cpctelera.lib
+-l z80
+obj/musica/TrueColoursMainTheme.rel
+obj/Variables.rel
+obj/Enemigo.rel
+obj/Mapa.rel
+obj/HUD.rel
+obj/Musica.rel
+obj/Personaje.rel
+obj/main.rel
+obj/Menus.rel
+obj/sprites/tilesetMapa.rel
+obj/sprites/SpritePersonajeYelmo.rel
+obj/sprites/SpriteEnemigoCAC.rel
+obj/sprites/CorazonesVida.rel
+
+-e

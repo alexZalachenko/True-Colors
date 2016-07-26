@@ -1,0 +1,2371 @@
+                              1 ;--------------------------------------------------------
+                              2 ; File Created by SDCC : free open source ANSI-C Compiler
+                              3 ; Version 3.5.0 #9253 (Sep 23 2015) (CYGWIN)
+                              4 ; This file was generated Fri Oct 23 22:07:49 2015
+                              5 ;--------------------------------------------------------
+                              6 	.module Personaje
+                              7 	.optsdcc -mz80
+                              8 	
+                              9 ;--------------------------------------------------------
+                             10 ; Public variables in this module
+                             11 ;--------------------------------------------------------
+                             12 	.globl _quitaVida
+                             13 	.globl _pintarEscenario
+                             14 	.globl _cpct_getScreenPtr
+                             15 	.globl _cpct_drawSolidBox
+                             16 	.globl _cpct_drawSprite
+                             17 	.globl _cpct_px2byteM1
+                             18 	.globl _cpct_isKeyPressed
+                             19 	.globl _cpct_scanKeyboard_f
+                             20 	.globl _desplazamientoHorizontal
+                             21 	.globl _desplazamientoVertical
+                             22 	.globl _muevePersonaje
+                             23 	.globl _pintaPersonaje
+                             24 	.globl _comprobarColision
+                             25 	.globl _comprobarColisionDiagonal
+                             26 	.globl _cambiarSala
+                             27 	.globl _ataca
+                             28 	.globl _noAtaca
+                             29 	.globl _danyo
+                             30 ;--------------------------------------------------------
+                             31 ; special function registers
+                             32 ;--------------------------------------------------------
+                             33 ;--------------------------------------------------------
+                             34 ; ram data
+                             35 ;--------------------------------------------------------
+                             36 	.area _DATA
+                             37 ;--------------------------------------------------------
+                             38 ; ram data
+                             39 ;--------------------------------------------------------
+                             40 	.area _INITIALIZED
+                             41 ;--------------------------------------------------------
+                             42 ; absolute external ram data
+                             43 ;--------------------------------------------------------
+                             44 	.area _DABS (ABS)
+                             45 ;--------------------------------------------------------
+                             46 ; global & static initialisations
+                             47 ;--------------------------------------------------------
+                             48 	.area _HOME
+                             49 	.area _GSINIT
+                             50 	.area _GSFINAL
+                             51 	.area _GSINIT
+                             52 ;--------------------------------------------------------
+                             53 ; Home
+                             54 ;--------------------------------------------------------
+                             55 	.area _HOME
+                             56 	.area _HOME
+                             57 ;--------------------------------------------------------
+                             58 ; code
+                             59 ;--------------------------------------------------------
+                             60 	.area _CODE
+                             61 ;src/Personaje.c:6: void muevePersonaje(personaje *p, estadoTeclado *t) {
+                             62 ;	---------------------------------
+                             63 ; Function muevePersonaje
+                             64 ; ---------------------------------
+   0000                      65 _muevePersonaje::
+   0000 DD E5         [15]   66 	push	ix
+   0002 DD 21 00 00   [14]   67 	ld	ix,#0
+   0006 DD 39         [15]   68 	add	ix,sp
+   0008 21 ED FF      [10]   69 	ld	hl,#-19
+   000B 39            [11]   70 	add	hl,sp
+   000C F9            [ 6]   71 	ld	sp,hl
+                             72 ;src/Personaje.c:7: u8 s=7;
+   000D DD 36 ED 07   [19]   73 	ld	-19 (ix),#0x07
+                             74 ;src/Personaje.c:9: cpct_scanKeyboard_f();
+   0011 CDr00r00      [17]   75 	call	_cpct_scanKeyboard_f
+                             76 ;src/Personaje.c:10: t->W=cpct_isKeyPressed(Key_W);
+   0014 DD 4E 06      [19]   77 	ld	c,6 (ix)
+   0017 DD 46 07      [19]   78 	ld	b,7 (ix)
+   001A C5            [11]   79 	push	bc
+   001B 21 07 08      [10]   80 	ld	hl,#0x0807
+   001E CDr00r00      [17]   81 	call	_cpct_isKeyPressed
+   0021 7D            [ 4]   82 	ld	a,l
+   0022 C1            [10]   83 	pop	bc
+   0023 02            [ 7]   84 	ld	(bc),a
+                             85 ;src/Personaje.c:11: t->A=cpct_isKeyPressed(Key_A);
+   0024 21 01 00      [10]   86 	ld	hl,#0x0001
+   0027 09            [11]   87 	add	hl,bc
+   0028 DD 75 EE      [19]   88 	ld	-18 (ix),l
+   002B DD 74 EF      [19]   89 	ld	-17 (ix),h
+   002E C5            [11]   90 	push	bc
+   002F 21 08 20      [10]   91 	ld	hl,#0x2008
+   0032 CDr00r00      [17]   92 	call	_cpct_isKeyPressed
+   0035 7D            [ 4]   93 	ld	a,l
+   0036 C1            [10]   94 	pop	bc
+   0037 DD 6E EE      [19]   95 	ld	l,-18 (ix)
+   003A DD 66 EF      [19]   96 	ld	h,-17 (ix)
+   003D 77            [ 7]   97 	ld	(hl),a
+                             98 ;src/Personaje.c:12: t->S=cpct_isKeyPressed(Key_S);
+   003E 21 02 00      [10]   99 	ld	hl,#0x0002
+   0041 09            [11]  100 	add	hl,bc
+   0042 DD 75 FE      [19]  101 	ld	-2 (ix),l
+   0045 DD 74 FF      [19]  102 	ld	-1 (ix),h
+   0048 C5            [11]  103 	push	bc
+   0049 21 07 10      [10]  104 	ld	hl,#0x1007
+   004C CDr00r00      [17]  105 	call	_cpct_isKeyPressed
+   004F 7D            [ 4]  106 	ld	a,l
+   0050 C1            [10]  107 	pop	bc
+   0051 DD 6E FE      [19]  108 	ld	l,-2 (ix)
+   0054 DD 66 FF      [19]  109 	ld	h,-1 (ix)
+   0057 77            [ 7]  110 	ld	(hl),a
+                            111 ;src/Personaje.c:13: t->D=cpct_isKeyPressed(Key_D);
+   0058 21 03 00      [10]  112 	ld	hl,#0x0003
+   005B 09            [11]  113 	add	hl,bc
+   005C DD 75 F0      [19]  114 	ld	-16 (ix),l
+   005F DD 74 F1      [19]  115 	ld	-15 (ix),h
+   0062 C5            [11]  116 	push	bc
+   0063 21 07 20      [10]  117 	ld	hl,#0x2007
+   0066 CDr00r00      [17]  118 	call	_cpct_isKeyPressed
+   0069 7D            [ 4]  119 	ld	a,l
+   006A C1            [10]  120 	pop	bc
+   006B DD 6E F0      [19]  121 	ld	l,-16 (ix)
+   006E DD 66 F1      [19]  122 	ld	h,-15 (ix)
+   0071 77            [ 7]  123 	ld	(hl),a
+                            124 ;src/Personaje.c:14: t->K=cpct_isKeyPressed(Key_K);
+   0072 21 04 00      [10]  125 	ld	hl,#0x0004
+   0075 09            [11]  126 	add	hl,bc
+   0076 E5            [11]  127 	push	hl
+   0077 C5            [11]  128 	push	bc
+   0078 21 04 20      [10]  129 	ld	hl,#0x2004
+   007B CDr00r00      [17]  130 	call	_cpct_isKeyPressed
+   007E 7D            [ 4]  131 	ld	a,l
+   007F C1            [10]  132 	pop	bc
+   0080 E1            [10]  133 	pop	hl
+   0081 77            [ 7]  134 	ld	(hl),a
+                            135 ;src/Personaje.c:17: if(t->K)
+   0082 B7            [ 4]  136 	or	a, a
+   0083 28 0F         [12]  137 	jr	Z,00102$
+                            138 ;src/Personaje.c:18: ataca(p);
+   0085 C5            [11]  139 	push	bc
+   0086 DD 6E 04      [19]  140 	ld	l,4 (ix)
+   0089 DD 66 05      [19]  141 	ld	h,5 (ix)
+   008C E5            [11]  142 	push	hl
+   008D CDrCEr0E      [17]  143 	call	_ataca
+   0090 F1            [10]  144 	pop	af
+   0091 C1            [10]  145 	pop	bc
+   0092 18 0D         [12]  146 	jr	00103$
+   0094                     147 00102$:
+                            148 ;src/Personaje.c:20: noAtaca(p);
+   0094 C5            [11]  149 	push	bc
+   0095 DD 6E 04      [19]  150 	ld	l,4 (ix)
+   0098 DD 66 05      [19]  151 	ld	h,5 (ix)
+   009B E5            [11]  152 	push	hl
+   009C CDr09r0F      [17]  153 	call	_noAtaca
+   009F F1            [10]  154 	pop	af
+   00A0 C1            [10]  155 	pop	bc
+   00A1                     156 00103$:
+                            157 ;src/Personaje.c:23: if(t->W==0 && t->A==0 && t->S==0 && t->D==0)
+   00A1 0A            [ 7]  158 	ld	a,(bc)
+   00A2 B7            [ 4]  159 	or	a, a
+   00A3 20 1F         [12]  160 	jr	NZ,00105$
+   00A5 DD 6E EE      [19]  161 	ld	l,-18 (ix)
+   00A8 DD 66 EF      [19]  162 	ld	h,-17 (ix)
+   00AB 7E            [ 7]  163 	ld	a,(hl)
+   00AC B7            [ 4]  164 	or	a, a
+   00AD 20 15         [12]  165 	jr	NZ,00105$
+   00AF DD 6E FE      [19]  166 	ld	l,-2 (ix)
+   00B2 DD 66 FF      [19]  167 	ld	h,-1 (ix)
+   00B5 7E            [ 7]  168 	ld	a,(hl)
+   00B6 B7            [ 4]  169 	or	a, a
+   00B7 20 0B         [12]  170 	jr	NZ,00105$
+   00B9 DD 6E F0      [19]  171 	ld	l,-16 (ix)
+   00BC DD 66 F1      [19]  172 	ld	h,-15 (ix)
+   00BF 7E            [ 7]  173 	ld	a,(hl)
+   00C0 B7            [ 4]  174 	or	a, a
+                            175 ;src/Personaje.c:24: return;
+   00C1 CArEAr03      [10]  176 	jp	Z,00154$
+   00C4                     177 00105$:
+                            178 ;src/Personaje.c:26: col=comprobarColisionDiagonal(p, t);
+   00C4 C5            [11]  179 	push	bc
+   00C5 C5            [11]  180 	push	bc
+   00C6 DD 6E 04      [19]  181 	ld	l,4 (ix)
+   00C9 DD 66 05      [19]  182 	ld	h,5 (ix)
+   00CC E5            [11]  183 	push	hl
+   00CD CDr27r0B      [17]  184 	call	_comprobarColisionDiagonal
+   00D0 F1            [10]  185 	pop	af
+   00D1 F1            [10]  186 	pop	af
+   00D2 C1            [10]  187 	pop	bc
+                            188 ;src/Personaje.c:27: if(col==1)//HAY COLISION
+   00D3 7D            [ 4]  189 	ld	a,l
+   00D4 3D            [ 4]  190 	dec	a
+   00D5 CArEAr03      [10]  191 	jp	Z,00154$
+   00D8 18 03         [12]  192 	jr	00114$
+                            193 ;src/Personaje.c:28: return;
+   00DA C3rEAr03      [10]  194 	jp	00154$
+   00DD                     195 00114$:
+                            196 ;src/Personaje.c:29: else if(col==7){//EL MOVIMIENTO NO ES EN DIAGONAL 
+   00DD 7D            [ 4]  197 	ld	a,l
+   00DE D6 07         [ 7]  198 	sub	a, #0x07
+   00E0 20 14         [12]  199 	jr	NZ,00115$
+                            200 ;src/Personaje.c:30: if(comprobarColision(p,t)!=0)//COMPRUEBO LAS COLISIONES EN VERTICAL/HORIZONTAL
+   00E2 C5            [11]  201 	push	bc
+   00E3 C5            [11]  202 	push	bc
+   00E4 DD 6E 04      [19]  203 	ld	l,4 (ix)
+   00E7 DD 66 05      [19]  204 	ld	h,5 (ix)
+   00EA E5            [11]  205 	push	hl
+   00EB CDr6Cr05      [17]  206 	call	_comprobarColision
+   00EE F1            [10]  207 	pop	af
+   00EF F1            [10]  208 	pop	af
+   00F0 7D            [ 4]  209 	ld	a,l
+   00F1 C1            [10]  210 	pop	bc
+   00F2 B7            [ 4]  211 	or	a, a
+                            212 ;src/Personaje.c:31: return;
+   00F3 C2rEAr03      [10]  213 	jp	NZ,00154$
+   00F6                     214 00115$:
+                            215 ;src/Personaje.c:34: if(t->W)
+   00F6 0A            [ 7]  216 	ld	a,(bc)
+   00F7 DD 77 F2      [19]  217 	ld	-14 (ix),a
+                            218 ;src/Personaje.c:23: if(t->W==0 && t->A==0 && t->S==0 && t->D==0)
+   00FA DD 6E EE      [19]  219 	ld	l,-18 (ix)
+   00FD DD 66 EF      [19]  220 	ld	h,-17 (ix)
+   0100 7E            [ 7]  221 	ld	a,(hl)
+   0101 DD 77 EE      [19]  222 	ld	-18 (ix),a
+                            223 ;src/Personaje.c:36: if     (t->A) { p->x -= desplazamientoHorizontal; s=1; }
+   0104 DD 7E 04      [19]  224 	ld	a,4 (ix)
+   0107 DD 77 F5      [19]  225 	ld	-11 (ix),a
+   010A DD 7E 05      [19]  226 	ld	a,5 (ix)
+   010D DD 77 F6      [19]  227 	ld	-10 (ix),a
+   0110 21rF0r03      [10]  228 	ld	hl,#_desplazamientoHorizontal + 0
+   0113 5E            [ 7]  229 	ld	e, (hl)
+   0114 DD 73 F3      [19]  230 	ld	-13 (ix),e
+   0117 DD 36 F4 00   [19]  231 	ld	-12 (ix),#0x00
+                            232 ;src/Personaje.c:39: p->y -= desplazamientoVertical;
+   011B DD 7E F5      [19]  233 	ld	a,-11 (ix)
+   011E C6 02         [ 7]  234 	add	a, #0x02
+   0120 DD 77 FC      [19]  235 	ld	-4 (ix),a
+   0123 DD 7E F6      [19]  236 	ld	a,-10 (ix)
+   0126 CE 00         [ 7]  237 	adc	a, #0x00
+   0128 DD 77 FD      [19]  238 	ld	-3 (ix),a
+                            239 ;src/Personaje.c:34: if(t->W)
+   012B DD 7E F2      [19]  240 	ld	a,-14 (ix)
+   012E B7            [ 4]  241 	or	a, a
+   012F CArD5r01      [10]  242 	jp	Z,00147$
+                            243 ;src/Personaje.c:36: if     (t->A) { p->x -= desplazamientoHorizontal; s=1; }
+   0132 DD 7E EE      [19]  244 	ld	a,-18 (ix)
+   0135 B7            [ 4]  245 	or	a, a
+   0136 28 36         [12]  246 	jr	Z,00120$
+   0138 DD 6E F5      [19]  247 	ld	l,-11 (ix)
+   013B DD 66 F6      [19]  248 	ld	h,-10 (ix)
+   013E 7E            [ 7]  249 	ld	a,(hl)
+   013F DD 77 FA      [19]  250 	ld	-6 (ix),a
+   0142 23            [ 6]  251 	inc	hl
+   0143 7E            [ 7]  252 	ld	a,(hl)
+   0144 DD 77 FB      [19]  253 	ld	-5 (ix),a
+   0147 DD 7E FA      [19]  254 	ld	a,-6 (ix)
+   014A DD 96 F3      [19]  255 	sub	a, -13 (ix)
+   014D DD 77 FA      [19]  256 	ld	-6 (ix),a
+   0150 DD 7E FB      [19]  257 	ld	a,-5 (ix)
+   0153 DD 9E F4      [19]  258 	sbc	a, -12 (ix)
+   0156 DD 77 FB      [19]  259 	ld	-5 (ix),a
+   0159 DD 6E F5      [19]  260 	ld	l,-11 (ix)
+   015C DD 66 F6      [19]  261 	ld	h,-10 (ix)
+   015F DD 7E FA      [19]  262 	ld	a,-6 (ix)
+   0162 77            [ 7]  263 	ld	(hl),a
+   0163 23            [ 6]  264 	inc	hl
+   0164 DD 7E FB      [19]  265 	ld	a,-5 (ix)
+   0167 77            [ 7]  266 	ld	(hl),a
+   0168 DD 36 ED 01   [19]  267 	ld	-19 (ix),#0x01
+   016C 18 47         [12]  268 	jr	00121$
+   016E                     269 00120$:
+                            270 ;src/Personaje.c:37: else if(t->D) { p->x += desplazamientoHorizontal; s=0; }
+   016E DD 6E F0      [19]  271 	ld	l,-16 (ix)
+   0171 DD 66 F1      [19]  272 	ld	h,-15 (ix)
+   0174 7E            [ 7]  273 	ld	a,(hl)
+   0175 DD 77 FA      [19]  274 	ld	-6 (ix), a
+   0178 B7            [ 4]  275 	or	a, a
+   0179 28 36         [12]  276 	jr	Z,00117$
+   017B DD 6E F5      [19]  277 	ld	l,-11 (ix)
+   017E DD 66 F6      [19]  278 	ld	h,-10 (ix)
+   0181 7E            [ 7]  279 	ld	a,(hl)
+   0182 DD 77 FA      [19]  280 	ld	-6 (ix),a
+   0185 23            [ 6]  281 	inc	hl
+   0186 7E            [ 7]  282 	ld	a,(hl)
+   0187 DD 77 FB      [19]  283 	ld	-5 (ix),a
+   018A DD 7E F3      [19]  284 	ld	a,-13 (ix)
+   018D DD 86 FA      [19]  285 	add	a, -6 (ix)
+   0190 DD 77 FA      [19]  286 	ld	-6 (ix),a
+   0193 DD 7E F4      [19]  287 	ld	a,-12 (ix)
+   0196 DD 8E FB      [19]  288 	adc	a, -5 (ix)
+   0199 DD 77 FB      [19]  289 	ld	-5 (ix),a
+   019C DD 6E F5      [19]  290 	ld	l,-11 (ix)
+   019F DD 66 F6      [19]  291 	ld	h,-10 (ix)
+   01A2 DD 7E FA      [19]  292 	ld	a,-6 (ix)
+   01A5 77            [ 7]  293 	ld	(hl),a
+   01A6 23            [ 6]  294 	inc	hl
+   01A7 DD 7E FB      [19]  295 	ld	a,-5 (ix)
+   01AA 77            [ 7]  296 	ld	(hl),a
+   01AB DD 36 ED 00   [19]  297 	ld	-19 (ix),#0x00
+   01AF 18 04         [12]  298 	jr	00121$
+   01B1                     299 00117$:
+                            300 ;src/Personaje.c:38: else          {                                   s=3; }
+   01B1 DD 36 ED 03   [19]  301 	ld	-19 (ix),#0x03
+   01B5                     302 00121$:
+                            303 ;src/Personaje.c:39: p->y -= desplazamientoVertical;
+   01B5 DD 6E FC      [19]  304 	ld	l,-4 (ix)
+   01B8 DD 66 FD      [19]  305 	ld	h,-3 (ix)
+   01BB 7E            [ 7]  306 	ld	a,(hl)
+   01BC DD 77 FA      [19]  307 	ld	-6 (ix),a
+   01BF 3ArEFr03      [13]  308 	ld	a,(#_desplazamientoVertical + 0)
+   01C2 DD 77 F9      [19]  309 	ld	-7 (ix),a
+   01C5 DD 7E FA      [19]  310 	ld	a,-6 (ix)
+   01C8 DD 96 F9      [19]  311 	sub	a, -7 (ix)
+   01CB DD 6E FC      [19]  312 	ld	l,-4 (ix)
+   01CE DD 66 FD      [19]  313 	ld	h,-3 (ix)
+   01D1 77            [ 7]  314 	ld	(hl),a
+   01D2 C3r8Fr03      [10]  315 	jp	00148$
+   01D5                     316 00147$:
+   01D5 3ArEFr03      [13]  317 	ld	a,(#_desplazamientoVertical + 0)
+   01D8 DD 77 F9      [19]  318 	ld	-7 (ix),a
+                            319 ;src/Personaje.c:41: else if(t->A)
+   01DB DD 7E EE      [19]  320 	ld	a,-18 (ix)
+   01DE B7            [ 4]  321 	or	a, a
+   01DF CAr63r02      [10]  322 	jp	Z,00144$
+                            323 ;src/Personaje.c:43: if     (t->W) {  p->y -= desplazamientoVertical; }
+   01E2 DD 7E F2      [19]  324 	ld	a,-14 (ix)
+   01E5 B7            [ 4]  325 	or	a, a
+   01E6 28 1C         [12]  326 	jr	Z,00125$
+   01E8 DD 6E FC      [19]  327 	ld	l,-4 (ix)
+   01EB DD 66 FD      [19]  328 	ld	h,-3 (ix)
+   01EE 7E            [ 7]  329 	ld	a,(hl)
+   01EF DD 77 FA      [19]  330 	ld	-6 (ix), a
+   01F2 DD 96 F9      [19]  331 	sub	a, -7 (ix)
+   01F5 DD 77 FA      [19]  332 	ld	-6 (ix),a
+   01F8 DD 6E FC      [19]  333 	ld	l,-4 (ix)
+   01FB DD 66 FD      [19]  334 	ld	h,-3 (ix)
+   01FE DD 7E FA      [19]  335 	ld	a,-6 (ix)
+   0201 77            [ 7]  336 	ld	(hl),a
+   0202 18 1E         [12]  337 	jr	00126$
+   0204                     338 00125$:
+                            339 ;src/Personaje.c:44: else if(t->S) {  p->y += desplazamientoVertical; }
+   0204 DD 6E FE      [19]  340 	ld	l,-2 (ix)
+   0207 DD 66 FF      [19]  341 	ld	h,-1 (ix)
+   020A 7E            [ 7]  342 	ld	a,(hl)
+   020B DD 77 FA      [19]  343 	ld	-6 (ix), a
+   020E B7            [ 4]  344 	or	a, a
+   020F 28 11         [12]  345 	jr	Z,00126$
+   0211 DD 6E FC      [19]  346 	ld	l,-4 (ix)
+   0214 DD 66 FD      [19]  347 	ld	h,-3 (ix)
+   0217 7E            [ 7]  348 	ld	a, (hl)
+   0218 DD 86 F9      [19]  349 	add	a, -7 (ix)
+   021B DD 6E FC      [19]  350 	ld	l,-4 (ix)
+   021E DD 66 FD      [19]  351 	ld	h,-3 (ix)
+   0221 77            [ 7]  352 	ld	(hl),a
+   0222                     353 00126$:
+                            354 ;src/Personaje.c:45: p->x -= desplazamientoHorizontal;
+   0222 DD 6E F5      [19]  355 	ld	l,-11 (ix)
+   0225 DD 66 F6      [19]  356 	ld	h,-10 (ix)
+   0228 7E            [ 7]  357 	ld	a,(hl)
+   0229 DD 77 FA      [19]  358 	ld	-6 (ix),a
+   022C 23            [ 6]  359 	inc	hl
+   022D 7E            [ 7]  360 	ld	a,(hl)
+   022E DD 77 FB      [19]  361 	ld	-5 (ix),a
+   0231 3ArF0r03      [13]  362 	ld	a,(#_desplazamientoHorizontal + 0)
+   0234 DD 77 F7      [19]  363 	ld	-9 (ix),a
+   0237 DD 36 F8 00   [19]  364 	ld	-8 (ix),#0x00
+   023B DD 7E FA      [19]  365 	ld	a,-6 (ix)
+   023E DD 96 F7      [19]  366 	sub	a, -9 (ix)
+   0241 DD 77 F7      [19]  367 	ld	-9 (ix),a
+   0244 DD 7E FB      [19]  368 	ld	a,-5 (ix)
+   0247 DD 9E F8      [19]  369 	sbc	a, -8 (ix)
+   024A DD 77 F8      [19]  370 	ld	-8 (ix),a
+   024D DD 6E F5      [19]  371 	ld	l,-11 (ix)
+   0250 DD 66 F6      [19]  372 	ld	h,-10 (ix)
+   0253 DD 7E F7      [19]  373 	ld	a,-9 (ix)
+   0256 77            [ 7]  374 	ld	(hl),a
+   0257 23            [ 6]  375 	inc	hl
+   0258 DD 7E F8      [19]  376 	ld	a,-8 (ix)
+   025B 77            [ 7]  377 	ld	(hl),a
+                            378 ;src/Personaje.c:46: s=1;
+   025C DD 36 ED 01   [19]  379 	ld	-19 (ix),#0x01
+   0260 C3r8Fr03      [10]  380 	jp	00148$
+   0263                     381 00144$:
+                            382 ;src/Personaje.c:23: if(t->W==0 && t->A==0 && t->S==0 && t->D==0)
+   0263 DD 6E FE      [19]  383 	ld	l,-2 (ix)
+   0266 DD 66 FF      [19]  384 	ld	h,-1 (ix)
+   0269 7E            [ 7]  385 	ld	a,(hl)
+                            386 ;src/Personaje.c:48: else if (t->S)
+   026A DD 77 F7      [19]  387 	ld	-9 (ix), a
+   026D B7            [ 4]  388 	or	a, a
+   026E CAr0Er03      [10]  389 	jp	Z,00141$
+                            390 ;src/Personaje.c:50: if     (t->A) { p->x -= desplazamientoHorizontal; s=1; }
+   0271 DD 7E EE      [19]  391 	ld	a,-18 (ix)
+   0274 B7            [ 4]  392 	or	a, a
+   0275 28 36         [12]  393 	jr	Z,00131$
+   0277 DD 6E F5      [19]  394 	ld	l,-11 (ix)
+   027A DD 66 F6      [19]  395 	ld	h,-10 (ix)
+   027D 7E            [ 7]  396 	ld	a,(hl)
+   027E DD 77 FA      [19]  397 	ld	-6 (ix),a
+   0281 23            [ 6]  398 	inc	hl
+   0282 7E            [ 7]  399 	ld	a,(hl)
+   0283 DD 77 FB      [19]  400 	ld	-5 (ix),a
+   0286 DD 7E FA      [19]  401 	ld	a,-6 (ix)
+   0289 DD 96 F3      [19]  402 	sub	a, -13 (ix)
+   028C DD 77 FA      [19]  403 	ld	-6 (ix),a
+   028F DD 7E FB      [19]  404 	ld	a,-5 (ix)
+   0292 DD 9E F4      [19]  405 	sbc	a, -12 (ix)
+   0295 DD 77 FB      [19]  406 	ld	-5 (ix),a
+   0298 DD 6E F5      [19]  407 	ld	l,-11 (ix)
+   029B DD 66 F6      [19]  408 	ld	h,-10 (ix)
+   029E DD 7E FA      [19]  409 	ld	a,-6 (ix)
+   02A1 77            [ 7]  410 	ld	(hl),a
+   02A2 23            [ 6]  411 	inc	hl
+   02A3 DD 7E FB      [19]  412 	ld	a,-5 (ix)
+   02A6 77            [ 7]  413 	ld	(hl),a
+   02A7 DD 36 ED 01   [19]  414 	ld	-19 (ix),#0x01
+   02AB 18 47         [12]  415 	jr	00132$
+   02AD                     416 00131$:
+                            417 ;src/Personaje.c:51: else if(t->D) { p->x += desplazamientoHorizontal; s=0; }
+   02AD DD 6E F0      [19]  418 	ld	l,-16 (ix)
+   02B0 DD 66 F1      [19]  419 	ld	h,-15 (ix)
+   02B3 7E            [ 7]  420 	ld	a,(hl)
+   02B4 DD 77 FA      [19]  421 	ld	-6 (ix), a
+   02B7 B7            [ 4]  422 	or	a, a
+   02B8 28 36         [12]  423 	jr	Z,00128$
+   02BA DD 6E F5      [19]  424 	ld	l,-11 (ix)
+   02BD DD 66 F6      [19]  425 	ld	h,-10 (ix)
+   02C0 7E            [ 7]  426 	ld	a,(hl)
+   02C1 DD 77 FA      [19]  427 	ld	-6 (ix),a
+   02C4 23            [ 6]  428 	inc	hl
+   02C5 7E            [ 7]  429 	ld	a,(hl)
+   02C6 DD 77 FB      [19]  430 	ld	-5 (ix),a
+   02C9 DD 7E F3      [19]  431 	ld	a,-13 (ix)
+   02CC DD 86 FA      [19]  432 	add	a, -6 (ix)
+   02CF DD 77 FA      [19]  433 	ld	-6 (ix),a
+   02D2 DD 7E F4      [19]  434 	ld	a,-12 (ix)
+   02D5 DD 8E FB      [19]  435 	adc	a, -5 (ix)
+   02D8 DD 77 FB      [19]  436 	ld	-5 (ix),a
+   02DB DD 6E F5      [19]  437 	ld	l,-11 (ix)
+   02DE DD 66 F6      [19]  438 	ld	h,-10 (ix)
+   02E1 DD 7E FA      [19]  439 	ld	a,-6 (ix)
+   02E4 77            [ 7]  440 	ld	(hl),a
+   02E5 23            [ 6]  441 	inc	hl
+   02E6 DD 7E FB      [19]  442 	ld	a,-5 (ix)
+   02E9 77            [ 7]  443 	ld	(hl),a
+   02EA DD 36 ED 00   [19]  444 	ld	-19 (ix),#0x00
+   02EE 18 04         [12]  445 	jr	00132$
+   02F0                     446 00128$:
+                            447 ;src/Personaje.c:52: else          {                                   s=2; }
+   02F0 DD 36 ED 02   [19]  448 	ld	-19 (ix),#0x02
+   02F4                     449 00132$:
+                            450 ;src/Personaje.c:53: p->y += desplazamientoVertical;
+   02F4 DD 6E FC      [19]  451 	ld	l,-4 (ix)
+   02F7 DD 66 FD      [19]  452 	ld	h,-3 (ix)
+   02FA 66            [ 7]  453 	ld	h,(hl)
+   02FB FD 21rEFr03   [14]  454 	ld	iy,#_desplazamientoVertical
+   02FF FD 6E 00      [19]  455 	ld	l,0 (iy)
+   0302 7C            [ 4]  456 	ld	a,h
+   0303 85            [ 4]  457 	add	a, l
+   0304 DD 6E FC      [19]  458 	ld	l,-4 (ix)
+   0307 DD 66 FD      [19]  459 	ld	h,-3 (ix)
+   030A 77            [ 7]  460 	ld	(hl),a
+   030B C3r8Fr03      [10]  461 	jp	00148$
+   030E                     462 00141$:
+                            463 ;src/Personaje.c:55: else if (t->D)
+   030E DD 6E F0      [19]  464 	ld	l,-16 (ix)
+   0311 DD 66 F1      [19]  465 	ld	h,-15 (ix)
+   0314 7E            [ 7]  466 	ld	a,(hl)
+   0315 B7            [ 4]  467 	or	a, a
+   0316 28 77         [12]  468 	jr	Z,00148$
+                            469 ;src/Personaje.c:57: if     (t->W) { p->y -= desplazamientoVertical; }
+   0318 DD 7E F2      [19]  470 	ld	a,-14 (ix)
+   031B B7            [ 4]  471 	or	a, a
+   031C 28 1C         [12]  472 	jr	Z,00136$
+   031E DD 6E FC      [19]  473 	ld	l,-4 (ix)
+   0321 DD 66 FD      [19]  474 	ld	h,-3 (ix)
+   0324 7E            [ 7]  475 	ld	a,(hl)
+   0325 DD 77 FA      [19]  476 	ld	-6 (ix), a
+   0328 DD 96 F9      [19]  477 	sub	a, -7 (ix)
+   032B DD 77 FA      [19]  478 	ld	-6 (ix),a
+   032E DD 6E FC      [19]  479 	ld	l,-4 (ix)
+   0331 DD 66 FD      [19]  480 	ld	h,-3 (ix)
+   0334 DD 7E FA      [19]  481 	ld	a,-6 (ix)
+   0337 77            [ 7]  482 	ld	(hl),a
+   0338 18 17         [12]  483 	jr	00137$
+   033A                     484 00136$:
+                            485 ;src/Personaje.c:58: else if(t->S) { p->y += desplazamientoVertical; }
+   033A DD 7E F7      [19]  486 	ld	a,-9 (ix)
+   033D B7            [ 4]  487 	or	a, a
+   033E 28 11         [12]  488 	jr	Z,00137$
+   0340 DD 6E FC      [19]  489 	ld	l,-4 (ix)
+   0343 DD 66 FD      [19]  490 	ld	h,-3 (ix)
+   0346 7E            [ 7]  491 	ld	a, (hl)
+   0347 DD 86 F9      [19]  492 	add	a, -7 (ix)
+   034A DD 6E FC      [19]  493 	ld	l,-4 (ix)
+   034D DD 66 FD      [19]  494 	ld	h,-3 (ix)
+   0350 77            [ 7]  495 	ld	(hl),a
+   0351                     496 00137$:
+                            497 ;src/Personaje.c:59: p->x += desplazamientoHorizontal;  
+   0351 DD 6E F5      [19]  498 	ld	l,-11 (ix)
+   0354 DD 66 F6      [19]  499 	ld	h,-10 (ix)
+   0357 7E            [ 7]  500 	ld	a,(hl)
+   0358 DD 77 F7      [19]  501 	ld	-9 (ix),a
+   035B 23            [ 6]  502 	inc	hl
+   035C 7E            [ 7]  503 	ld	a,(hl)
+   035D DD 77 F8      [19]  504 	ld	-8 (ix),a
+   0360 3ArF0r03      [13]  505 	ld	a,(#_desplazamientoHorizontal + 0)
+   0363 DD 77 FA      [19]  506 	ld	-6 (ix),a
+   0366 DD 36 FB 00   [19]  507 	ld	-5 (ix),#0x00
+   036A DD 7E F7      [19]  508 	ld	a,-9 (ix)
+   036D DD 86 FA      [19]  509 	add	a, -6 (ix)
+   0370 DD 77 F7      [19]  510 	ld	-9 (ix),a
+   0373 DD 7E F8      [19]  511 	ld	a,-8 (ix)
+   0376 DD 8E FB      [19]  512 	adc	a, -5 (ix)
+   0379 DD 77 F8      [19]  513 	ld	-8 (ix),a
+   037C DD 6E F5      [19]  514 	ld	l,-11 (ix)
+   037F DD 66 F6      [19]  515 	ld	h,-10 (ix)
+   0382 DD 7E F7      [19]  516 	ld	a,-9 (ix)
+   0385 77            [ 7]  517 	ld	(hl),a
+   0386 23            [ 6]  518 	inc	hl
+   0387 DD 7E F8      [19]  519 	ld	a,-8 (ix)
+   038A 77            [ 7]  520 	ld	(hl),a
+                            521 ;src/Personaje.c:60: s=0;
+   038B DD 36 ED 00   [19]  522 	ld	-19 (ix),#0x00
+   038F                     523 00148$:
+                            524 ;src/Personaje.c:63: if(s!=7 && !(s==p->tipoSprite || s+4==p->tipoSprite || s+8==p->tipoSprite)){
+   038F DD 7E ED      [19]  525 	ld	a,-19 (ix)
+   0392 D6 07         [ 7]  526 	sub	a, #0x07
+   0394 28 54         [12]  527 	jr	Z,00154$
+   0396 FD 21 04 00   [14]  528 	ld	iy,#0x0004
+   039A DD 5E F5      [19]  529 	ld	e,-11 (ix)
+   039D DD 56 F6      [19]  530 	ld	d,-10 (ix)
+   03A0 FD 19         [15]  531 	add	iy, de
+   03A2 FD 5E 00      [19]  532 	ld	e, 0 (iy)
+   03A5 DD 7E ED      [19]  533 	ld	a,-19 (ix)
+   03A8 93            [ 4]  534 	sub	a, e
+   03A9 28 3F         [12]  535 	jr	Z,00154$
+   03AB DD 4E ED      [19]  536 	ld	c,-19 (ix)
+   03AE 06 00         [ 7]  537 	ld	b,#0x00
+   03B0 21 04 00      [10]  538 	ld	hl,#0x0004
+   03B3 09            [11]  539 	add	hl,bc
+   03B4 DD 75 F7      [19]  540 	ld	-9 (ix),l
+   03B7 DD 74 F8      [19]  541 	ld	-8 (ix),h
+   03BA 16 00         [ 7]  542 	ld	d,#0x00
+   03BC 7B            [ 4]  543 	ld	a,e
+   03BD DD 96 F7      [19]  544 	sub	a, -9 (ix)
+   03C0 20 06         [12]  545 	jr	NZ,00258$
+   03C2 7A            [ 4]  546 	ld	a,d
+   03C3 DD 96 F8      [19]  547 	sub	a, -8 (ix)
+   03C6 28 22         [12]  548 	jr	Z,00154$
+   03C8                     549 00258$:
+   03C8 21 08 00      [10]  550 	ld	hl,#0x0008
+   03CB 09            [11]  551 	add	hl,bc
+   03CC 4D            [ 4]  552 	ld	c,l
+   03CD 44            [ 4]  553 	ld	b,h
+   03CE 7B            [ 4]  554 	ld	a,e
+   03CF 91            [ 4]  555 	sub	a, c
+   03D0 20 04         [12]  556 	jr	NZ,00259$
+   03D2 7A            [ 4]  557 	ld	a,d
+   03D3 90            [ 4]  558 	sub	a, b
+   03D4 28 14         [12]  559 	jr	Z,00154$
+   03D6                     560 00259$:
+                            561 ;src/Personaje.c:64: p->tipoSprite=s;
+   03D6 DD 7E ED      [19]  562 	ld	a,-19 (ix)
+   03D9 FD 77 00      [19]  563 	ld	0 (iy), a
+                            564 ;src/Personaje.c:65: p->cambiarPaso=0;
+   03DC DD 7E F5      [19]  565 	ld	a,-11 (ix)
+   03DF C6 05         [ 7]  566 	add	a, #0x05
+   03E1 6F            [ 4]  567 	ld	l,a
+   03E2 DD 7E F6      [19]  568 	ld	a,-10 (ix)
+   03E5 CE 00         [ 7]  569 	adc	a, #0x00
+   03E7 67            [ 4]  570 	ld	h,a
+   03E8 36 00         [10]  571 	ld	(hl),#0x00
+   03EA                     572 00154$:
+   03EA DD F9         [10]  573 	ld	sp, ix
+   03EC DD E1         [14]  574 	pop	ix
+   03EE C9            [10]  575 	ret
+   03EF                     576 _desplazamientoVertical:
+   03EF 02                  577 	.db #0x02	; 2
+   03F0                     578 _desplazamientoHorizontal:
+   03F0 02                  579 	.db #0x02	; 2
+                            580 ;src/Personaje.c:68: void pintaPersonaje(personaje *p, estadoTeclado *t){
+                            581 ;	---------------------------------
+                            582 ; Function pintaPersonaje
+                            583 ; ---------------------------------
+   03F1                     584 _pintaPersonaje::
+   03F1 DD E5         [15]  585 	push	ix
+   03F3 DD 21 00 00   [14]  586 	ld	ix,#0
+   03F7 DD 39         [15]  587 	add	ix,sp
+   03F9 F5            [11]  588 	push	af
+   03FA F5            [11]  589 	push	af
+   03FB 3B            [ 6]  590 	dec	sp
+                            591 ;src/Personaje.c:71: cpct_drawSolidBox(p->memPtr, cpct_px2byteM1(2,2,2,2), 4, 16);
+   03FC 21 02 02      [10]  592 	ld	hl,#0x0202
+   03FF E5            [11]  593 	push	hl
+   0400 2E 02         [ 7]  594 	ld	l, #0x02
+   0402 E5            [11]  595 	push	hl
+   0403 CDr00r00      [17]  596 	call	_cpct_px2byteM1
+   0406 F1            [10]  597 	pop	af
+   0407 F1            [10]  598 	pop	af
+   0408 55            [ 4]  599 	ld	d,l
+   0409 DD 7E 04      [19]  600 	ld	a,4 (ix)
+   040C DD 77 FB      [19]  601 	ld	-5 (ix),a
+   040F DD 7E 05      [19]  602 	ld	a,5 (ix)
+   0412 DD 77 FC      [19]  603 	ld	-4 (ix),a
+   0415 DD 7E FB      [19]  604 	ld	a,-5 (ix)
+   0418 C6 0B         [ 7]  605 	add	a, #0x0B
+   041A 4F            [ 4]  606 	ld	c,a
+   041B DD 7E FC      [19]  607 	ld	a,-4 (ix)
+   041E CE 00         [ 7]  608 	adc	a, #0x00
+   0420 47            [ 4]  609 	ld	b,a
+   0421 69            [ 4]  610 	ld	l, c
+   0422 60            [ 4]  611 	ld	h, b
+   0423 7E            [ 7]  612 	ld	a, (hl)
+   0424 23            [ 6]  613 	inc	hl
+   0425 66            [ 7]  614 	ld	h,(hl)
+   0426 6F            [ 4]  615 	ld	l,a
+   0427 E5            [11]  616 	push	hl
+   0428 FD E1         [14]  617 	pop	iy
+   042A C5            [11]  618 	push	bc
+   042B 21 04 10      [10]  619 	ld	hl,#0x1004
+   042E E5            [11]  620 	push	hl
+   042F D5            [11]  621 	push	de
+   0430 33            [ 6]  622 	inc	sp
+   0431 FD E5         [15]  623 	push	iy
+   0433 CDr00r00      [17]  624 	call	_cpct_drawSolidBox
+   0436 F1            [10]  625 	pop	af
+   0437 F1            [10]  626 	pop	af
+   0438 33            [ 6]  627 	inc	sp
+   0439 C1            [10]  628 	pop	bc
+                            629 ;src/Personaje.c:72: p->memPtr=cpct_getScreenPtr(video_memory_start,p->x/4,p->y);
+   043A E1            [10]  630 	pop	hl
+   043B E5            [11]  631 	push	hl
+   043C 23            [ 6]  632 	inc	hl
+   043D 23            [ 6]  633 	inc	hl
+   043E 7E            [ 7]  634 	ld	a,(hl)
+   043F DD 77 FD      [19]  635 	ld	-3 (ix),a
+   0442 E1            [10]  636 	pop	hl
+   0443 E5            [11]  637 	push	hl
+   0444 5E            [ 7]  638 	ld	e,(hl)
+   0445 23            [ 6]  639 	inc	hl
+   0446 56            [ 7]  640 	ld	d,(hl)
+   0447 63            [ 4]  641 	ld	h,e
+   0448 6A            [ 4]  642 	ld	l,d
+   0449 CB 7A         [ 8]  643 	bit	7, d
+   044B 28 05         [12]  644 	jr	Z,00122$
+   044D 13            [ 6]  645 	inc	de
+   044E 13            [ 6]  646 	inc	de
+   044F 13            [ 6]  647 	inc	de
+   0450 63            [ 4]  648 	ld	h,e
+   0451 6A            [ 4]  649 	ld	l,d
+   0452                     650 00122$:
+   0452 7D            [ 4]  651 	ld	a, l
+   0453 6C            [ 4]  652 	ld	l,h
+   0454 67            [ 4]  653 	ld	h,a
+   0455 CB 2C         [ 8]  654 	sra	h
+   0457 CB 1D         [ 8]  655 	rr	l
+   0459 CB 2C         [ 8]  656 	sra	h
+   045B CB 1D         [ 8]  657 	rr	l
+   045D 55            [ 4]  658 	ld	d,l
+   045E FD 2Ar00r00   [20]  659 	ld	iy,(_video_memory_start)
+   0462 C5            [11]  660 	push	bc
+   0463 DD 7E FD      [19]  661 	ld	a,-3 (ix)
+   0466 F5            [11]  662 	push	af
+   0467 33            [ 6]  663 	inc	sp
+   0468 D5            [11]  664 	push	de
+   0469 33            [ 6]  665 	inc	sp
+   046A FD E5         [15]  666 	push	iy
+   046C CDr00r00      [17]  667 	call	_cpct_getScreenPtr
+   046F 55            [ 4]  668 	ld	d,l
+   0470 5C            [ 4]  669 	ld	e,h
+   0471 C1            [10]  670 	pop	bc
+   0472 69            [ 4]  671 	ld	l, c
+   0473 60            [ 4]  672 	ld	h, b
+   0474 72            [ 7]  673 	ld	(hl),d
+   0475 23            [ 6]  674 	inc	hl
+   0476 73            [ 7]  675 	ld	(hl),e
+                            676 ;src/Personaje.c:74: if(t->A==t->W && t->W==t->S && t->S==t->D){//PINTO EL SPRITE DE TIPO PARADO
+   0477 DD 5E 06      [19]  677 	ld	e,6 (ix)
+   047A DD 56 07      [19]  678 	ld	d,7 (ix)
+   047D D5            [11]  679 	push	de
+   047E FD E1         [14]  680 	pop	iy
+   0480 FD E5         [15]  681 	push	iy
+   0482 E1            [10]  682 	pop	hl
+   0483 23            [ 6]  683 	inc	hl
+   0484 56            [ 7]  684 	ld	d,(hl)
+   0485 FD 5E 00      [19]  685 	ld	e, 0 (iy)
+                            686 ;src/Personaje.c:75: while(p->tipoSprite>3)
+   0488 DD 7E FB      [19]  687 	ld	a,-5 (ix)
+   048B C6 04         [ 7]  688 	add	a, #0x04
+   048D DD 77 FE      [19]  689 	ld	-2 (ix),a
+   0490 DD 7E FC      [19]  690 	ld	a,-4 (ix)
+   0493 CE 00         [ 7]  691 	adc	a, #0x00
+   0495 DD 77 FF      [19]  692 	ld	-1 (ix),a
+                            693 ;src/Personaje.c:74: if(t->A==t->W && t->W==t->S && t->S==t->D){//PINTO EL SPRITE DE TIPO PARADO
+   0498 7A            [ 4]  694 	ld	a,d
+   0499 93            [ 4]  695 	sub	a, e
+   049A 20 29         [12]  696 	jr	NZ,00110$
+   049C FD E5         [15]  697 	push	iy
+   049E E1            [10]  698 	pop	hl
+   049F 23            [ 6]  699 	inc	hl
+   04A0 23            [ 6]  700 	inc	hl
+   04A1 56            [ 7]  701 	ld	d,(hl)
+   04A2 7B            [ 4]  702 	ld	a,e
+   04A3 92            [ 4]  703 	sub	a, d
+   04A4 20 1F         [12]  704 	jr	NZ,00110$
+   04A6 FD 5E 03      [19]  705 	ld	e,3 (iy)
+   04A9 7A            [ 4]  706 	ld	a,d
+   04AA 93            [ 4]  707 	sub	a, e
+   04AB 20 18         [12]  708 	jr	NZ,00110$
+                            709 ;src/Personaje.c:75: while(p->tipoSprite>3)
+   04AD                     710 00101$:
+   04AD DD 6E FE      [19]  711 	ld	l,-2 (ix)
+   04B0 DD 66 FF      [19]  712 	ld	h,-1 (ix)
+   04B3 66            [ 7]  713 	ld	h,(hl)
+   04B4 3E 03         [ 7]  714 	ld	a,#0x03
+   04B6 94            [ 4]  715 	sub	a, h
+   04B7 30 5A         [12]  716 	jr	NC,00111$
+                            717 ;src/Personaje.c:76: p->tipoSprite-=4;
+   04B9 7C            [ 4]  718 	ld	a,h
+   04BA C6 FC         [ 7]  719 	add	a,#0xFC
+   04BC DD 6E FE      [19]  720 	ld	l,-2 (ix)
+   04BF DD 66 FF      [19]  721 	ld	h,-1 (ix)
+   04C2 77            [ 7]  722 	ld	(hl),a
+   04C3 18 E8         [12]  723 	jr	00101$
+   04C5                     724 00110$:
+                            725 ;src/Personaje.c:79: if(p->cambiarPaso==10){
+   04C5 DD 7E FB      [19]  726 	ld	a,-5 (ix)
+   04C8 C6 05         [ 7]  727 	add	a, #0x05
+   04CA 6F            [ 4]  728 	ld	l,a
+   04CB DD 7E FC      [19]  729 	ld	a,-4 (ix)
+   04CE CE 00         [ 7]  730 	adc	a, #0x00
+   04D0 67            [ 4]  731 	ld	h,a
+   04D1 5E            [ 7]  732 	ld	e,(hl)
+   04D2 7B            [ 4]  733 	ld	a,e
+                            734 ;src/Personaje.c:80: p->cambiarPaso=0;
+   04D3 D6 0A         [ 7]  735 	sub	a,#0x0A
+   04D5 20 3A         [12]  736 	jr	NZ,00107$
+   04D7 77            [ 7]  737 	ld	(hl),a
+                            738 ;src/Personaje.c:81: p->tipoSprite=(p->tipoSprite+4)%12;
+   04D8 DD 6E FE      [19]  739 	ld	l,-2 (ix)
+   04DB DD 66 FF      [19]  740 	ld	h,-1 (ix)
+   04DE 6E            [ 7]  741 	ld	l,(hl)
+   04DF 26 00         [ 7]  742 	ld	h,#0x00
+   04E1 11 04 00      [10]  743 	ld	de,#0x0004
+   04E4 19            [11]  744 	add	hl,de
+   04E5 C5            [11]  745 	push	bc
+   04E6 11 0C 00      [10]  746 	ld	de,#0x000C
+   04E9 D5            [11]  747 	push	de
+   04EA E5            [11]  748 	push	hl
+   04EB CDr00r00      [17]  749 	call	__modsint
+   04EE F1            [10]  750 	pop	af
+   04EF F1            [10]  751 	pop	af
+   04F0 C1            [10]  752 	pop	bc
+   04F1 55            [ 4]  753 	ld	d,l
+   04F2 DD 6E FE      [19]  754 	ld	l,-2 (ix)
+   04F5 DD 66 FF      [19]  755 	ld	h,-1 (ix)
+   04F8 72            [ 7]  756 	ld	(hl),d
+                            757 ;src/Personaje.c:82: if(p->tipoSprite<4)
+   04F9 DD 6E FE      [19]  758 	ld	l,-2 (ix)
+   04FC DD 66 FF      [19]  759 	ld	h,-1 (ix)
+   04FF 66            [ 7]  760 	ld	h,(hl)
+   0500 7A            [ 4]  761 	ld	a,d
+   0501 D6 04         [ 7]  762 	sub	a, #0x04
+   0503 30 0E         [12]  763 	jr	NC,00111$
+                            764 ;src/Personaje.c:83: p->tipoSprite+=4;
+   0505 7C            [ 4]  765 	ld	a,h
+   0506 C6 04         [ 7]  766 	add	a, #0x04
+   0508 DD 6E FE      [19]  767 	ld	l,-2 (ix)
+   050B DD 66 FF      [19]  768 	ld	h,-1 (ix)
+   050E 77            [ 7]  769 	ld	(hl),a
+   050F 18 02         [12]  770 	jr	00111$
+   0511                     771 00107$:
+                            772 ;src/Personaje.c:86: p->cambiarPaso++;
+   0511 1C            [ 4]  773 	inc	e
+   0512 73            [ 7]  774 	ld	(hl),e
+   0513                     775 00111$:
+                            776 ;src/Personaje.c:89: if(p->atacando){
+   0513 E1            [10]  777 	pop	hl
+   0514 E5            [11]  778 	push	hl
+   0515 11 07 00      [10]  779 	ld	de, #0x0007
+   0518 19            [11]  780 	add	hl, de
+   0519 7E            [ 7]  781 	ld	a,(hl)
+                            782 ;src/Personaje.c:81: p->tipoSprite=(p->tipoSprite+4)%12;
+   051A DD 6E FE      [19]  783 	ld	l,-2 (ix)
+   051D DD 66 FF      [19]  784 	ld	h,-1 (ix)
+   0520 5E            [ 7]  785 	ld	e,(hl)
+                            786 ;src/Personaje.c:89: if(p->atacando){
+   0521 B7            [ 4]  787 	or	a, a
+   0522 28 2A         [12]  788 	jr	Z,00118$
+                            789 ;src/Personaje.c:90: aux=p->tipoSprite;
+                            790 ;src/Personaje.c:91: while(aux>3)
+   0524                     791 00114$:
+   0524 3E 03         [ 7]  792 	ld	a,#0x03
+   0526 93            [ 4]  793 	sub	a, e
+   0527 30 06         [12]  794 	jr	NC,00116$
+                            795 ;src/Personaje.c:92: aux-=4;
+   0529 7B            [ 4]  796 	ld	a,e
+   052A C6 FC         [ 7]  797 	add	a,#0xFC
+   052C 5F            [ 4]  798 	ld	e,a
+   052D 18 F5         [12]  799 	jr	00114$
+   052F                     800 00116$:
+                            801 ;src/Personaje.c:93: aux+=12;
+   052F 7B            [ 4]  802 	ld	a,e
+   0530 C6 0C         [ 7]  803 	add	a, #0x0C
+   0532 57            [ 4]  804 	ld	d,a
+                            805 ;src/Personaje.c:94: cpct_drawSprite(personaje_tileset[aux],p->memPtr,4,16);
+   0533 69            [ 4]  806 	ld	l, c
+   0534 60            [ 4]  807 	ld	h, b
+   0535 4E            [ 7]  808 	ld	c,(hl)
+   0536 23            [ 6]  809 	inc	hl
+   0537 46            [ 7]  810 	ld	b,(hl)
+   0538 6A            [ 4]  811 	ld	l,d
+   0539 26 00         [ 7]  812 	ld	h,#0x00
+   053B 29            [11]  813 	add	hl, hl
+   053C 11r00r00      [10]  814 	ld	de,#_personaje_tileset
+   053F 19            [11]  815 	add	hl,de
+   0540 5E            [ 7]  816 	ld	e,(hl)
+   0541 23            [ 6]  817 	inc	hl
+   0542 56            [ 7]  818 	ld	d,(hl)
+   0543 21 04 10      [10]  819 	ld	hl,#0x1004
+   0546 E5            [11]  820 	push	hl
+   0547 C5            [11]  821 	push	bc
+   0548 D5            [11]  822 	push	de
+   0549 CDr00r00      [17]  823 	call	_cpct_drawSprite
+   054C 18 19         [12]  824 	jr	00120$
+   054E                     825 00118$:
+                            826 ;src/Personaje.c:97: cpct_drawSprite(personaje_tileset[p->tipoSprite],p->memPtr,4,16);
+   054E 69            [ 4]  827 	ld	l, c
+   054F 60            [ 4]  828 	ld	h, b
+   0550 4E            [ 7]  829 	ld	c,(hl)
+   0551 23            [ 6]  830 	inc	hl
+   0552 46            [ 7]  831 	ld	b,(hl)
+   0553 6B            [ 4]  832 	ld	l,e
+   0554 26 00         [ 7]  833 	ld	h,#0x00
+   0556 29            [11]  834 	add	hl, hl
+   0557 11r00r00      [10]  835 	ld	de,#_personaje_tileset
+   055A 19            [11]  836 	add	hl,de
+   055B 5E            [ 7]  837 	ld	e,(hl)
+   055C 23            [ 6]  838 	inc	hl
+   055D 56            [ 7]  839 	ld	d,(hl)
+   055E 21 04 10      [10]  840 	ld	hl,#0x1004
+   0561 E5            [11]  841 	push	hl
+   0562 C5            [11]  842 	push	bc
+   0563 D5            [11]  843 	push	de
+   0564 CDr00r00      [17]  844 	call	_cpct_drawSprite
+   0567                     845 00120$:
+   0567 DD F9         [10]  846 	ld	sp, ix
+   0569 DD E1         [14]  847 	pop	ix
+   056B C9            [10]  848 	ret
+                            849 ;src/Personaje.c:99: u8 comprobarColision(personaje *p, estadoTeclado *t){
+                            850 ;	---------------------------------
+                            851 ; Function comprobarColision
+                            852 ; ---------------------------------
+   056C                     853 _comprobarColision::
+   056C DD E5         [15]  854 	push	ix
+   056E DD 21 00 00   [14]  855 	ld	ix,#0
+   0572 DD 39         [15]  856 	add	ix,sp
+   0574 21 DC FF      [10]  857 	ld	hl,#-36
+   0577 39            [11]  858 	add	hl,sp
+   0578 F9            [ 6]  859 	ld	sp,hl
+                            860 ;src/Personaje.c:100: int posx=p->x; 
+   0579 DD 7E 04      [19]  861 	ld	a,4 (ix)
+   057C DD 77 EA      [19]  862 	ld	-22 (ix),a
+   057F DD 7E 05      [19]  863 	ld	a,5 (ix)
+   0582 DD 77 EB      [19]  864 	ld	-21 (ix),a
+   0585 DD 6E EA      [19]  865 	ld	l,-22 (ix)
+   0588 DD 66 EB      [19]  866 	ld	h,-21 (ix)
+   058B 7E            [ 7]  867 	ld	a,(hl)
+   058C DD 77 DD      [19]  868 	ld	-35 (ix),a
+   058F 23            [ 6]  869 	inc	hl
+   0590 7E            [ 7]  870 	ld	a,(hl)
+   0591 DD 77 DE      [19]  871 	ld	-34 (ix),a
+                            872 ;src/Personaje.c:101: u8  posy=p->y;
+   0594 DD 6E EA      [19]  873 	ld	l,-22 (ix)
+   0597 DD 66 EB      [19]  874 	ld	h,-21 (ix)
+   059A 23            [ 6]  875 	inc	hl
+   059B 23            [ 6]  876 	inc	hl
+   059C 7E            [ 7]  877 	ld	a,(hl)
+                            878 ;src/Personaje.c:102: u8 casX=posy/16, casY=posx/16;
+   059D DD 77 E0      [19]  879 	ld	-32 (ix), a
+   05A0 07            [ 4]  880 	rlca
+   05A1 07            [ 4]  881 	rlca
+   05A2 07            [ 4]  882 	rlca
+   05A3 07            [ 4]  883 	rlca
+   05A4 E6 0F         [ 7]  884 	and	a,#0x0F
+   05A6 DD 77 DF      [19]  885 	ld	-33 (ix),a
+   05A9 DD 7E DD      [19]  886 	ld	a,-35 (ix)
+   05AC DD 77 F3      [19]  887 	ld	-13 (ix),a
+   05AF DD 7E DE      [19]  888 	ld	a,-34 (ix)
+   05B2 DD 77 F4      [19]  889 	ld	-12 (ix),a
+   05B5 DD CB DE 7E   [20]  890 	bit	7, -34 (ix)
+   05B9 28 10         [12]  891 	jr	Z,00178$
+   05BB DD 7E DD      [19]  892 	ld	a,-35 (ix)
+   05BE C6 0F         [ 7]  893 	add	a, #0x0F
+   05C0 DD 77 F3      [19]  894 	ld	-13 (ix),a
+   05C3 DD 7E DE      [19]  895 	ld	a,-34 (ix)
+   05C6 CE 00         [ 7]  896 	adc	a, #0x00
+   05C8 DD 77 F4      [19]  897 	ld	-12 (ix),a
+   05CB                     898 00178$:
+   05CB DD CB F4 2E   [23]  899 	sra	-12 (ix)
+   05CF DD CB F3 1E   [23]  900 	rr	-13 (ix)
+   05D3 DD CB F4 2E   [23]  901 	sra	-12 (ix)
+   05D7 DD CB F3 1E   [23]  902 	rr	-13 (ix)
+   05DB DD CB F4 2E   [23]  903 	sra	-12 (ix)
+   05DF DD CB F3 1E   [23]  904 	rr	-13 (ix)
+   05E3 DD CB F4 2E   [23]  905 	sra	-12 (ix)
+   05E7 DD CB F3 1E   [23]  906 	rr	-13 (ix)
+   05EB DD 7E F3      [19]  907 	ld	a,-13 (ix)
+   05EE DD 77 E1      [19]  908 	ld	-31 (ix),a
+                            909 ;src/Personaje.c:104: if     (t->W){
+   05F1 DD 7E 06      [19]  910 	ld	a,6 (ix)
+   05F4 DD 77 F3      [19]  911 	ld	-13 (ix),a
+   05F7 DD 7E 07      [19]  912 	ld	a,7 (ix)
+   05FA DD 77 F4      [19]  913 	ld	-12 (ix),a
+   05FD DD 6E F3      [19]  914 	ld	l,-13 (ix)
+   0600 DD 66 F4      [19]  915 	ld	h,-12 (ix)
+   0603 7E            [ 7]  916 	ld	a,(hl)
+   0604 DD 77 E6      [19]  917 	ld	-26 (ix),a
+                            918 ;src/Personaje.c:105: if(posy%16==0){
+   0607 DD 7E E0      [19]  919 	ld	a,-32 (ix)
+   060A E6 0F         [ 7]  920 	and	a, #0x0F
+   060C DD 77 E9      [19]  921 	ld	-23 (ix),a
+                            922 ;src/Personaje.c:106: if(posx%16==0){
+   060F 21 10 00      [10]  923 	ld	hl,#0x0010
+   0612 E5            [11]  924 	push	hl
+   0613 DD 6E DD      [19]  925 	ld	l,-35 (ix)
+   0616 DD 66 DE      [19]  926 	ld	h,-34 (ix)
+   0619 E5            [11]  927 	push	hl
+                            928 ;src/Personaje.c:107: if(mapas[p->salaActual].posiciones[casX-1][casY]==2){
+   061A CDr00r00      [17]  929 	call	__modsint
+   061D F1            [10]  930 	pop	af
+   061E F1            [10]  931 	pop	af
+   061F DD 74 ED      [19]  932 	ld	-19 (ix),h
+   0622 DD 75 EC      [19]  933 	ld	-20 (ix),l
+   0625 DD 7E EA      [19]  934 	ld	a,-22 (ix)
+   0628 C6 06         [ 7]  935 	add	a, #0x06
+   062A DD 77 FC      [19]  936 	ld	-4 (ix),a
+   062D DD 7E EB      [19]  937 	ld	a,-21 (ix)
+   0630 CE 00         [ 7]  938 	adc	a, #0x00
+   0632 DD 77 FD      [19]  939 	ld	-3 (ix),a
+                            940 ;src/Personaje.c:112: if (casX-1==mapas[p->salaActual].puertas[i].x && casY==mapas[p->salaActual].puertas[i].y){
+   0635 DD 7E DF      [19]  941 	ld	a,-33 (ix)
+   0638 DD 77 F7      [19]  942 	ld	-9 (ix),a
+   063B DD 36 F8 00   [19]  943 	ld	-8 (ix),#0x00
+                            944 ;src/Personaje.c:120: else if(mapas[p->salaActual].posiciones[casX-1][casY]!=0 || mapas[p->salaActual].posiciones[casX-1][casY+1]!=0)
+   063F DD 7E E1      [19]  945 	ld	a,-31 (ix)
+   0642 3C            [ 4]  946 	inc	a
+   0643 DD 77 EE      [19]  947 	ld	-18 (ix),a
+                            948 ;src/Personaje.c:104: if     (t->W){
+   0646 DD 7E E6      [19]  949 	ld	a,-26 (ix)
+   0649 B7            [ 4]  950 	or	a, a
+   064A CArE9r07      [10]  951 	jp	Z,00166$
+                            952 ;src/Personaje.c:105: if(posy%16==0){
+   064D DD 7E E9      [19]  953 	ld	a,-23 (ix)
+   0650 B7            [ 4]  954 	or	a, a
+   0651 C2rE4r07      [10]  955 	jp	NZ,00114$
+                            956 ;src/Personaje.c:107: if(mapas[p->salaActual].posiciones[casX-1][casY]==2){
+   0654 DD 7E DF      [19]  957 	ld	a,-33 (ix)
+   0657 C6 FF         [ 7]  958 	add	a,#0xFF
+   0659 DD 77 E6      [19]  959 	ld	-26 (ix),a
+   065C DD 6E FC      [19]  960 	ld	l,-4 (ix)
+   065F DD 66 FD      [19]  961 	ld	h,-3 (ix)
+   0662 7E            [ 7]  962 	ld	a,(hl)
+   0663 DD 77 FB      [19]  963 	ld	-5 (ix),a
+   0666 DD 7E E6      [19]  964 	ld	a,-26 (ix)
+   0669 4F            [ 4]  965 	ld	c,a
+   066A 87            [ 4]  966 	add	a, a
+   066B 87            [ 4]  967 	add	a, a
+   066C 81            [ 4]  968 	add	a, c
+   066D 87            [ 4]  969 	add	a, a
+   066E 87            [ 4]  970 	add	a, a
+   066F DD 77 E6      [19]  971 	ld	-26 (ix),a
+   0672 DD 7E FB      [19]  972 	ld	a,-5 (ix)
+   0675 DD 77 F9      [19]  973 	ld	-7 (ix),a
+   0678 DD 36 FA 00   [19]  974 	ld	-6 (ix),#0x00
+   067C DD 7E F9      [19]  975 	ld	a,-7 (ix)
+   067F DD 77 FA      [19]  976 	ld	-6 (ix),a
+   0682 DD 36 F9 00   [19]  977 	ld	-7 (ix),#0x00
+                            978 ;src/Personaje.c:106: if(posx%16==0){
+   0686 DD 7E ED      [19]  979 	ld	a,-19 (ix)
+   0689 DD B6 EC      [19]  980 	or	a,-20 (ix)
+   068C C2r85r07      [10]  981 	jp	NZ,00111$
+                            982 ;src/Personaje.c:107: if(mapas[p->salaActual].posiciones[casX-1][casY]==2){
+   068F DD 7E F9      [19]  983 	ld	a,-7 (ix)
+   0692 C6r00         [ 7]  984 	add	a, #<(_mapas)
+   0694 DD 77 F5      [19]  985 	ld	-11 (ix),a
+   0697 DD 7E FA      [19]  986 	ld	a,-6 (ix)
+   069A CEs00         [ 7]  987 	adc	a, #>(_mapas)
+   069C DD 77 F6      [19]  988 	ld	-10 (ix),a
+   069F DD 7E E6      [19]  989 	ld	a,-26 (ix)
+   06A2 DD 86 F5      [19]  990 	add	a, -11 (ix)
+   06A5 DD 77 F5      [19]  991 	ld	-11 (ix),a
+   06A8 3E 00         [ 7]  992 	ld	a,#0x00
+   06AA DD 8E F6      [19]  993 	adc	a, -10 (ix)
+   06AD DD 77 F6      [19]  994 	ld	-10 (ix),a
+   06B0 DD 7E E1      [19]  995 	ld	a,-31 (ix)
+   06B3 DD 86 F5      [19]  996 	add	a, -11 (ix)
+   06B6 DD 77 F5      [19]  997 	ld	-11 (ix),a
+   06B9 3E 00         [ 7]  998 	ld	a,#0x00
+   06BB DD 8E F6      [19]  999 	adc	a, -10 (ix)
+   06BE DD 77 F6      [19] 1000 	ld	-10 (ix),a
+   06C1 DD 6E F5      [19] 1001 	ld	l,-11 (ix)
+   06C4 DD 66 F6      [19] 1002 	ld	h,-10 (ix)
+   06C7 7E            [ 7] 1003 	ld	a,(hl)
+   06C8 DD 77 F5      [19] 1004 	ld	-11 (ix), a
+   06CB D6 02         [ 7] 1005 	sub	a, #0x02
+   06CD C2r7Fr07      [10] 1006 	jp	NZ,00106$
+                           1007 ;src/Personaje.c:110: for (i = 0; i < 4; ++i)
+   06D0 3Er00         [ 7] 1008 	ld	a,#<(_mapas)
+   06D2 DD 86 F9      [19] 1009 	add	a, -7 (ix)
+   06D5 DD 77 E2      [19] 1010 	ld	-30 (ix),a
+   06D8 3Es00         [ 7] 1011 	ld	a,#>(_mapas)
+   06DA DD 8E FA      [19] 1012 	adc	a, -6 (ix)
+   06DD DD 77 E3      [19] 1013 	ld	-29 (ix),a
+   06E0 DD 7E E2      [19] 1014 	ld	a,-30 (ix)
+   06E3 C6 F0         [ 7] 1015 	add	a, #0xF0
+   06E5 DD 77 E2      [19] 1016 	ld	-30 (ix),a
+   06E8 DD 7E E3      [19] 1017 	ld	a,-29 (ix)
+   06EB CE 00         [ 7] 1018 	adc	a, #0x00
+   06ED DD 77 E3      [19] 1019 	ld	-29 (ix),a
+   06F0 DD 36 DC 00   [19] 1020 	ld	-36 (ix),#0x00
+   06F4                    1021 00168$:
+                           1022 ;src/Personaje.c:112: if (casX-1==mapas[p->salaActual].puertas[i].x && casY==mapas[p->salaActual].puertas[i].y){
+   06F4 DD 7E F7      [19] 1023 	ld	a,-9 (ix)
+   06F7 C6 FF         [ 7] 1024 	add	a,#0xFF
+   06F9 DD 77 E4      [19] 1025 	ld	-28 (ix),a
+   06FC DD 7E F8      [19] 1026 	ld	a,-8 (ix)
+   06FF CE FF         [ 7] 1027 	adc	a,#0xFF
+   0701 DD 77 E5      [19] 1028 	ld	-27 (ix),a
+   0704 DD 7E DC      [19] 1029 	ld	a,-36 (ix)
+   0707 87            [ 4] 1030 	add	a, a
+   0708 87            [ 4] 1031 	add	a, a
+   0709 DD 77 FB      [19] 1032 	ld	-5 (ix),a
+   070C DD 7E E2      [19] 1033 	ld	a,-30 (ix)
+   070F DD 86 FB      [19] 1034 	add	a, -5 (ix)
+   0712 DD 77 FE      [19] 1035 	ld	-2 (ix),a
+   0715 DD 7E E3      [19] 1036 	ld	a,-29 (ix)
+   0718 CE 00         [ 7] 1037 	adc	a, #0x00
+   071A DD 77 FF      [19] 1038 	ld	-1 (ix),a
+   071D DD 6E FE      [19] 1039 	ld	l,-2 (ix)
+   0720 DD 66 FF      [19] 1040 	ld	h,-1 (ix)
+   0723 7E            [ 7] 1041 	ld	a,(hl)
+   0724 DD 77 F1      [19] 1042 	ld	-15 (ix),a
+   0727 23            [ 6] 1043 	inc	hl
+   0728 7E            [ 7] 1044 	ld	a,(hl)
+   0729 DD 77 F2      [19] 1045 	ld	-14 (ix),a
+   072C DD 7E F1      [19] 1046 	ld	a,-15 (ix)
+   072F DD 96 E4      [19] 1047 	sub	a, -28 (ix)
+   0732 20 40         [12] 1048 	jr	NZ,00169$
+   0734 DD 7E F2      [19] 1049 	ld	a,-14 (ix)
+   0737 DD 96 E5      [19] 1050 	sub	a, -27 (ix)
+   073A 20 38         [12] 1051 	jr	NZ,00169$
+   073C DD 6E FE      [19] 1052 	ld	l,-2 (ix)
+   073F DD 66 FF      [19] 1053 	ld	h,-1 (ix)
+   0742 23            [ 6] 1054 	inc	hl
+   0743 23            [ 6] 1055 	inc	hl
+   0744 DD 7E E1      [19] 1056 	ld	a,-31 (ix)
+   0747 96            [ 7] 1057 	sub	a,(hl)
+   0748 20 2A         [12] 1058 	jr	NZ,00169$
+                           1059 ;src/Personaje.c:113: cambiarSala(mapas[p->salaActual].puertas[i].salaDestino, p, posx, posy);
+   074A DD 6E FE      [19] 1060 	ld	l,-2 (ix)
+   074D DD 66 FF      [19] 1061 	ld	h,-1 (ix)
+   0750 23            [ 6] 1062 	inc	hl
+   0751 23            [ 6] 1063 	inc	hl
+   0752 23            [ 6] 1064 	inc	hl
+   0753 56            [ 7] 1065 	ld	d,(hl)
+   0754 DD 7E E0      [19] 1066 	ld	a,-32 (ix)
+   0757 F5            [11] 1067 	push	af
+   0758 33            [ 6] 1068 	inc	sp
+   0759 C1            [10] 1069 	pop	bc
+   075A E1            [10] 1070 	pop	hl
+   075B E5            [11] 1071 	push	hl
+   075C C5            [11] 1072 	push	bc
+   075D E5            [11] 1073 	push	hl
+   075E DD 6E EA      [19] 1074 	ld	l,-22 (ix)
+   0761 DD 66 EB      [19] 1075 	ld	h,-21 (ix)
+   0764 E5            [11] 1076 	push	hl
+   0765 D5            [11] 1077 	push	de
+   0766 33            [ 6] 1078 	inc	sp
+   0767 CDr6Ar0E      [17] 1079 	call	_cambiarSala
+   076A 21 06 00      [10] 1080 	ld	hl,#6
+   076D 39            [11] 1081 	add	hl,sp
+   076E F9            [ 6] 1082 	ld	sp,hl
+                           1083 ;src/Personaje.c:114: return 2;
+   076F 2E 02         [ 7] 1084 	ld	l,#0x02
+   0771 C3r22r0B      [10] 1085 	jp	00176$
+   0774                    1086 00169$:
+                           1087 ;src/Personaje.c:110: for (i = 0; i < 4; ++i)
+   0774 DD 34 DC      [23] 1088 	inc	-36 (ix)
+   0777 DD 7E DC      [19] 1089 	ld	a,-36 (ix)
+   077A D6 04         [ 7] 1090 	sub	a, #0x04
+   077C DArF4r06      [10] 1091 	jp	C,00168$
+   077F                    1092 00106$:
+                           1093 ;src/Personaje.c:118: return mapas[p->salaActual].posiciones[casX-1][casY];
+   077F DD 6E F5      [19] 1094 	ld	l,-11 (ix)
+   0782 C3r22r0B      [10] 1095 	jp	00176$
+   0785                    1096 00111$:
+                           1097 ;src/Personaje.c:120: else if(mapas[p->salaActual].posiciones[casX-1][casY]!=0 || mapas[p->salaActual].posiciones[casX-1][casY+1]!=0)
+   0785 DD 7E F9      [19] 1098 	ld	a,-7 (ix)
+   0788 C6r00         [ 7] 1099 	add	a, #<(_mapas)
+   078A DD 77 F1      [19] 1100 	ld	-15 (ix),a
+   078D DD 7E FA      [19] 1101 	ld	a,-6 (ix)
+   0790 CEs00         [ 7] 1102 	adc	a, #>(_mapas)
+   0792 DD 77 F2      [19] 1103 	ld	-14 (ix),a
+   0795 DD 7E E6      [19] 1104 	ld	a,-26 (ix)
+   0798 DD 86 F1      [19] 1105 	add	a, -15 (ix)
+   079B DD 77 F1      [19] 1106 	ld	-15 (ix),a
+   079E 3E 00         [ 7] 1107 	ld	a,#0x00
+   07A0 DD 8E F2      [19] 1108 	adc	a, -14 (ix)
+   07A3 DD 77 F2      [19] 1109 	ld	-14 (ix),a
+   07A6 DD 7E E1      [19] 1110 	ld	a,-31 (ix)
+   07A9 DD 86 F1      [19] 1111 	add	a, -15 (ix)
+   07AC DD 77 FE      [19] 1112 	ld	-2 (ix),a
+   07AF 3E 00         [ 7] 1113 	ld	a,#0x00
+   07B1 DD 8E F2      [19] 1114 	adc	a, -14 (ix)
+   07B4 DD 77 FF      [19] 1115 	ld	-1 (ix),a
+   07B7 DD 6E FE      [19] 1116 	ld	l,-2 (ix)
+   07BA DD 66 FF      [19] 1117 	ld	h,-1 (ix)
+   07BD 7E            [ 7] 1118 	ld	a,(hl)
+   07BE DD 77 FE      [19] 1119 	ld	-2 (ix), a
+   07C1 B7            [ 4] 1120 	or	a, a
+   07C2 20 1B         [12] 1121 	jr	NZ,00107$
+   07C4 DD 7E EE      [19] 1122 	ld	a,-18 (ix)
+   07C7 DD 86 F1      [19] 1123 	add	a, -15 (ix)
+   07CA DD 77 F1      [19] 1124 	ld	-15 (ix),a
+   07CD 3E 00         [ 7] 1125 	ld	a,#0x00
+   07CF DD 8E F2      [19] 1126 	adc	a, -14 (ix)
+   07D2 DD 77 F2      [19] 1127 	ld	-14 (ix),a
+   07D5 DD 6E F1      [19] 1128 	ld	l,-15 (ix)
+   07D8 DD 66 F2      [19] 1129 	ld	h,-14 (ix)
+   07DB 7E            [ 7] 1130 	ld	a,(hl)
+   07DC B7            [ 4] 1131 	or	a, a
+   07DD 28 05         [12] 1132 	jr	Z,00114$
+   07DF                    1133 00107$:
+                           1134 ;src/Personaje.c:121: return 1;
+   07DF 2E 01         [ 7] 1135 	ld	l,#0x01
+   07E1 C3r22r0B      [10] 1136 	jp	00176$
+   07E4                    1137 00114$:
+                           1138 ;src/Personaje.c:123: return 0;
+   07E4 2E 00         [ 7] 1139 	ld	l,#0x00
+   07E6 C3r22r0B      [10] 1140 	jp	00176$
+   07E9                    1141 00166$:
+                           1142 ;src/Personaje.c:125: else if(t->A){
+   07E9 DD 6E F3      [19] 1143 	ld	l,-13 (ix)
+   07EC DD 66 F4      [19] 1144 	ld	h,-12 (ix)
+   07EF 23            [ 6] 1145 	inc	hl
+   07F0 56            [ 7] 1146 	ld	d,(hl)
+                           1147 ;src/Personaje.c:128: if(mapas[p->salaActual].posiciones[casX][casY-1]==2){
+   07F1 DD 7E DF      [19] 1148 	ld	a,-33 (ix)
+   07F4 4F            [ 4] 1149 	ld	c,a
+   07F5 87            [ 4] 1150 	add	a, a
+   07F6 87            [ 4] 1151 	add	a, a
+   07F7 81            [ 4] 1152 	add	a, c
+   07F8 87            [ 4] 1153 	add	a, a
+   07F9 87            [ 4] 1154 	add	a, a
+   07FA DD 77 F1      [19] 1155 	ld	-15 (ix),a
+                           1156 ;src/Personaje.c:133: if (casX==mapas[p->salaActual].puertas[i].x && casY-1==mapas[p->salaActual].puertas[i].y){
+   07FD DD 7E E1      [19] 1157 	ld	a,-31 (ix)
+   0800 DD 77 FE      [19] 1158 	ld	-2 (ix),a
+   0803 DD 36 FF 00   [19] 1159 	ld	-1 (ix),#0x00
+                           1160 ;src/Personaje.c:141: else if(mapas[p->salaActual].posiciones[casX][casY-1]!=0 || mapas[p->salaActual].posiciones[casX+1][casY-1]!=0)
+   0807 DD 7E DF      [19] 1161 	ld	a,-33 (ix)
+   080A 3C            [ 4] 1162 	inc	a
+   080B 4F            [ 4] 1163 	ld	c,a
+   080C 87            [ 4] 1164 	add	a, a
+   080D 87            [ 4] 1165 	add	a, a
+   080E 81            [ 4] 1166 	add	a, c
+   080F 87            [ 4] 1167 	add	a, a
+   0810 87            [ 4] 1168 	add	a, a
+   0811 DD 77 E4      [19] 1169 	ld	-28 (ix),a
+                           1170 ;src/Personaje.c:125: else if(t->A){
+   0814 7A            [ 4] 1171 	ld	a,d
+   0815 B7            [ 4] 1172 	or	a, a
+   0816 CAr22r09      [10] 1173 	jp	Z,00163$
+                           1174 ;src/Personaje.c:126: if(posx%16==0){
+   0819 DD 7E ED      [19] 1175 	ld	a,-19 (ix)
+   081C DD B6 EC      [19] 1176 	or	a,-20 (ix)
+   081F C2r1Dr09      [10] 1177 	jp	NZ,00128$
+                           1178 ;src/Personaje.c:128: if(mapas[p->salaActual].posiciones[casX][casY-1]==2){
+   0822 DD 7E E1      [19] 1179 	ld	a,-31 (ix)
+   0825 C6 FF         [ 7] 1180 	add	a,#0xFF
+   0827 DD 77 E2      [19] 1181 	ld	-30 (ix),a
+                           1182 ;src/Personaje.c:107: if(mapas[p->salaActual].posiciones[casX-1][casY]==2){
+   082A DD 6E FC      [19] 1183 	ld	l,-4 (ix)
+   082D DD 66 FD      [19] 1184 	ld	h,-3 (ix)
+   0830 66            [ 7] 1185 	ld	h,(hl)
+   0831 DD 74 F6      [19] 1186 	ld	-10 (ix),h
+   0834 DD 36 F5 00   [19] 1187 	ld	-11 (ix),#0x00
+                           1188 ;src/Personaje.c:127: if(posy%16==0){
+   0838 DD 7E E9      [19] 1189 	ld	a,-23 (ix)
+   083B B7            [ 4] 1190 	or	a, a
+   083C C2rECr08      [10] 1191 	jp	NZ,00125$
+                           1192 ;src/Personaje.c:128: if(mapas[p->salaActual].posiciones[casX][casY-1]==2){
+   083F 11r00r00      [10] 1193 	ld	de,#_mapas+0
+   0842 DD 6E F5      [19] 1194 	ld	l,-11 (ix)
+   0845 DD 66 F6      [19] 1195 	ld	h,-10 (ix)
+   0848 19            [11] 1196 	add	hl,de
+   0849 DD 4E F1      [19] 1197 	ld	c,-15 (ix)
+   084C 06 00         [ 7] 1198 	ld	b,#0x00
+   084E 09            [11] 1199 	add	hl,bc
+   084F DD 4E E2      [19] 1200 	ld	c,-30 (ix)
+   0852 06 00         [ 7] 1201 	ld	b,#0x00
+   0854 09            [11] 1202 	add	hl,bc
+   0855 7E            [ 7] 1203 	ld	a,(hl)
+   0856 DD 77 F9      [19] 1204 	ld	-7 (ix), a
+   0859 D6 02         [ 7] 1205 	sub	a, #0x02
+   085B C2rE6r08      [10] 1206 	jp	NZ,00120$
+                           1207 ;src/Personaje.c:131: for (i = 0; i < 4; ++i)
+   085E DD 6E F5      [19] 1208 	ld	l,-11 (ix)
+   0861 DD 66 F6      [19] 1209 	ld	h,-10 (ix)
+   0864 19            [11] 1210 	add	hl,de
+   0865 7D            [ 4] 1211 	ld	a,l
+   0866 C6 F0         [ 7] 1212 	add	a, #0xF0
+   0868 DD 77 E7      [19] 1213 	ld	-25 (ix),a
+   086B 7C            [ 4] 1214 	ld	a,h
+   086C CE 00         [ 7] 1215 	adc	a, #0x00
+   086E DD 77 E8      [19] 1216 	ld	-24 (ix),a
+   0871 DD 36 DC 00   [19] 1217 	ld	-36 (ix),#0x00
+   0875                    1218 00170$:
+                           1219 ;src/Personaje.c:133: if (casX==mapas[p->salaActual].puertas[i].x && casY-1==mapas[p->salaActual].puertas[i].y){
+   0875 DD 7E DC      [19] 1220 	ld	a,-36 (ix)
+   0878 87            [ 4] 1221 	add	a, a
+   0879 87            [ 4] 1222 	add	a, a
+   087A 67            [ 4] 1223 	ld	h,a
+   087B DD 7E E7      [19] 1224 	ld	a,-25 (ix)
+   087E 84            [ 4] 1225 	add	a, h
+   087F 5F            [ 4] 1226 	ld	e,a
+   0880 DD 7E E8      [19] 1227 	ld	a,-24 (ix)
+   0883 CE 00         [ 7] 1228 	adc	a, #0x00
+   0885 57            [ 4] 1229 	ld	d,a
+   0886 6B            [ 4] 1230 	ld	l, e
+   0887 62            [ 4] 1231 	ld	h, d
+   0888 46            [ 7] 1232 	ld	b,(hl)
+   0889 23            [ 6] 1233 	inc	hl
+   088A 4E            [ 7] 1234 	ld	c,(hl)
+   088B DD 7E F7      [19] 1235 	ld	a,-9 (ix)
+   088E 90            [ 4] 1236 	sub	a, b
+   088F 20 4B         [12] 1237 	jr	NZ,00171$
+   0891 DD 7E F8      [19] 1238 	ld	a,-8 (ix)
+   0894 91            [ 4] 1239 	sub	a, c
+   0895 20 45         [12] 1240 	jr	NZ,00171$
+   0897 DD 4E FE      [19] 1241 	ld	c,-2 (ix)
+   089A DD 46 FF      [19] 1242 	ld	b,-1 (ix)
+   089D 0B            [ 6] 1243 	dec	bc
+   089E 6B            [ 4] 1244 	ld	l, e
+   089F 62            [ 4] 1245 	ld	h, d
+   08A0 23            [ 6] 1246 	inc	hl
+   08A1 23            [ 6] 1247 	inc	hl
+   08A2 7E            [ 7] 1248 	ld	a,(hl)
+   08A3 DD 77 EF      [19] 1249 	ld	-17 (ix),a
+   08A6 DD 36 F0 00   [19] 1250 	ld	-16 (ix),#0x00
+   08AA 79            [ 4] 1251 	ld	a,c
+   08AB DD 96 EF      [19] 1252 	sub	a, -17 (ix)
+   08AE 20 2C         [12] 1253 	jr	NZ,00171$
+   08B0 78            [ 4] 1254 	ld	a,b
+   08B1 DD 96 F0      [19] 1255 	sub	a, -16 (ix)
+   08B4 20 26         [12] 1256 	jr	NZ,00171$
+                           1257 ;src/Personaje.c:134: cambiarSala(mapas[p->salaActual].puertas[i].salaDestino, p, posx, posy);
+   08B6 6B            [ 4] 1258 	ld	l, e
+   08B7 62            [ 4] 1259 	ld	h, d
+   08B8 23            [ 6] 1260 	inc	hl
+   08B9 23            [ 6] 1261 	inc	hl
+   08BA 23            [ 6] 1262 	inc	hl
+   08BB 56            [ 7] 1263 	ld	d,(hl)
+   08BC DD 7E E0      [19] 1264 	ld	a,-32 (ix)
+   08BF F5            [11] 1265 	push	af
+   08C0 33            [ 6] 1266 	inc	sp
+   08C1 C1            [10] 1267 	pop	bc
+   08C2 E1            [10] 1268 	pop	hl
+   08C3 E5            [11] 1269 	push	hl
+   08C4 C5            [11] 1270 	push	bc
+   08C5 E5            [11] 1271 	push	hl
+   08C6 DD 6E EA      [19] 1272 	ld	l,-22 (ix)
+   08C9 DD 66 EB      [19] 1273 	ld	h,-21 (ix)
+   08CC E5            [11] 1274 	push	hl
+   08CD D5            [11] 1275 	push	de
+   08CE 33            [ 6] 1276 	inc	sp
+   08CF CDr6Ar0E      [17] 1277 	call	_cambiarSala
+   08D2 21 06 00      [10] 1278 	ld	hl,#6
+   08D5 39            [11] 1279 	add	hl,sp
+   08D6 F9            [ 6] 1280 	ld	sp,hl
+                           1281 ;src/Personaje.c:135: return 2;
+   08D7 2E 02         [ 7] 1282 	ld	l,#0x02
+   08D9 C3r22r0B      [10] 1283 	jp	00176$
+   08DC                    1284 00171$:
+                           1285 ;src/Personaje.c:131: for (i = 0; i < 4; ++i)
+   08DC DD 34 DC      [23] 1286 	inc	-36 (ix)
+   08DF DD 7E DC      [19] 1287 	ld	a,-36 (ix)
+   08E2 D6 04         [ 7] 1288 	sub	a, #0x04
+   08E4 38 8F         [12] 1289 	jr	C,00170$
+   08E6                    1290 00120$:
+                           1291 ;src/Personaje.c:139: return mapas[p->salaActual].posiciones[casX][casY-1];
+   08E6 DD 6E F9      [19] 1292 	ld	l,-7 (ix)
+   08E9 C3r22r0B      [10] 1293 	jp	00176$
+   08EC                    1294 00125$:
+                           1295 ;src/Personaje.c:141: else if(mapas[p->salaActual].posiciones[casX][casY-1]!=0 || mapas[p->salaActual].posiciones[casX+1][casY-1]!=0)
+   08EC 3Er00         [ 7] 1296 	ld	a,#<(_mapas)
+   08EE DD 86 F5      [19] 1297 	add	a, -11 (ix)
+   08F1 5F            [ 4] 1298 	ld	e,a
+   08F2 3Es00         [ 7] 1299 	ld	a,#>(_mapas)
+   08F4 DD 8E F6      [19] 1300 	adc	a, -10 (ix)
+   08F7 57            [ 4] 1301 	ld	d,a
+   08F8 DD 6E F1      [19] 1302 	ld	l,-15 (ix)
+   08FB 26 00         [ 7] 1303 	ld	h,#0x00
+   08FD 19            [11] 1304 	add	hl,de
+   08FE DD 4E E2      [19] 1305 	ld	c,-30 (ix)
+   0901 06 00         [ 7] 1306 	ld	b,#0x00
+   0903 09            [11] 1307 	add	hl,bc
+   0904 7E            [ 7] 1308 	ld	a,(hl)
+   0905 B7            [ 4] 1309 	or	a, a
+   0906 20 10         [12] 1310 	jr	NZ,00121$
+   0908 DD 6E E4      [19] 1311 	ld	l,-28 (ix)
+   090B 26 00         [ 7] 1312 	ld	h,#0x00
+   090D 19            [11] 1313 	add	hl,de
+   090E DD 5E E2      [19] 1314 	ld	e,-30 (ix)
+   0911 16 00         [ 7] 1315 	ld	d,#0x00
+   0913 19            [11] 1316 	add	hl,de
+   0914 7E            [ 7] 1317 	ld	a,(hl)
+   0915 B7            [ 4] 1318 	or	a, a
+   0916 28 05         [12] 1319 	jr	Z,00128$
+   0918                    1320 00121$:
+                           1321 ;src/Personaje.c:142: return 1;
+   0918 2E 01         [ 7] 1322 	ld	l,#0x01
+   091A C3r22r0B      [10] 1323 	jp	00176$
+   091D                    1324 00128$:
+                           1325 ;src/Personaje.c:144: return 0;
+   091D 2E 00         [ 7] 1326 	ld	l,#0x00
+   091F C3r22r0B      [10] 1327 	jp	00176$
+   0922                    1328 00163$:
+                           1329 ;src/Personaje.c:146: else if(t->S){
+   0922 DD 6E F3      [19] 1330 	ld	l,-13 (ix)
+   0925 DD 66 F4      [19] 1331 	ld	h,-12 (ix)
+   0928 23            [ 6] 1332 	inc	hl
+   0929 23            [ 6] 1333 	inc	hl
+   092A 7E            [ 7] 1334 	ld	a,(hl)
+   092B B7            [ 4] 1335 	or	a, a
+   092C CAr17r0A      [10] 1336 	jp	Z,00160$
+                           1337 ;src/Personaje.c:147: if(posy%16==0){
+   092F DD 7E E9      [19] 1338 	ld	a,-23 (ix)
+   0932 B7            [ 4] 1339 	or	a, a
+   0933 C2r12r0A      [10] 1340 	jp	NZ,00142$
+                           1341 ;src/Personaje.c:107: if(mapas[p->salaActual].posiciones[casX-1][casY]==2){
+   0936 DD 6E FC      [19] 1342 	ld	l,-4 (ix)
+   0939 DD 66 FD      [19] 1343 	ld	h,-3 (ix)
+   093C 56            [ 7] 1344 	ld	d,(hl)
+   093D 1E 00         [ 7] 1345 	ld	e,#0x00
+                           1346 ;src/Personaje.c:148: if(posx%16==0){
+   093F DD 7E ED      [19] 1347 	ld	a,-19 (ix)
+   0942 DD B6 EC      [19] 1348 	or	a,-20 (ix)
+   0945 C2rECr09      [10] 1349 	jp	NZ,00139$
+                           1350 ;src/Personaje.c:149: if(mapas[p->salaActual].posiciones[casX+1][casY]==2){
+   0948 21r00r00      [10] 1351 	ld	hl,#_mapas
+   094B 19            [11] 1352 	add	hl,de
+   094C DD 4E E4      [19] 1353 	ld	c,-28 (ix)
+   094F 06 00         [ 7] 1354 	ld	b,#0x00
+   0951 09            [11] 1355 	add	hl,bc
+   0952 DD 4E E1      [19] 1356 	ld	c,-31 (ix)
+   0955 06 00         [ 7] 1357 	ld	b,#0x00
+   0957 09            [11] 1358 	add	hl,bc
+   0958 4E            [ 7] 1359 	ld	c,(hl)
+   0959 79            [ 4] 1360 	ld	a,c
+   095A D6 02         [ 7] 1361 	sub	a, #0x02
+   095C C2rE8r09      [10] 1362 	jp	NZ,00134$
+                           1363 ;src/Personaje.c:152: for (i = 0; i < 4; ++i)
+   095F 21r00r00      [10] 1364 	ld	hl,#_mapas
+   0962 19            [11] 1365 	add	hl,de
+   0963 7D            [ 4] 1366 	ld	a,l
+   0964 C6 F0         [ 7] 1367 	add	a, #0xF0
+   0966 DD 77 EF      [19] 1368 	ld	-17 (ix),a
+   0969 7C            [ 4] 1369 	ld	a,h
+   096A CE 00         [ 7] 1370 	adc	a, #0x00
+   096C DD 77 F0      [19] 1371 	ld	-16 (ix),a
+   096F 1E 00         [ 7] 1372 	ld	e,#0x00
+   0971                    1373 00172$:
+                           1374 ;src/Personaje.c:154: if (casX+1==mapas[p->salaActual].puertas[i].x && casY==mapas[p->salaActual].puertas[i].y){
+   0971 DD 7E F7      [19] 1375 	ld	a,-9 (ix)
+   0974 C6 01         [ 7] 1376 	add	a, #0x01
+   0976 DD 77 E7      [19] 1377 	ld	-25 (ix),a
+   0979 DD 7E F8      [19] 1378 	ld	a,-8 (ix)
+   097C CE 00         [ 7] 1379 	adc	a, #0x00
+   097E DD 77 E8      [19] 1380 	ld	-24 (ix),a
+   0981 7B            [ 4] 1381 	ld	a,e
+   0982 87            [ 4] 1382 	add	a, a
+   0983 87            [ 4] 1383 	add	a, a
+   0984 67            [ 4] 1384 	ld	h,a
+   0985 DD 7E EF      [19] 1385 	ld	a,-17 (ix)
+   0988 84            [ 4] 1386 	add	a, h
+   0989 DD 77 E2      [19] 1387 	ld	-30 (ix),a
+   098C DD 7E F0      [19] 1388 	ld	a,-16 (ix)
+   098F CE 00         [ 7] 1389 	adc	a, #0x00
+   0991 DD 77 E3      [19] 1390 	ld	-29 (ix),a
+   0994 DD 6E E2      [19] 1391 	ld	l,-30 (ix)
+   0997 DD 66 E3      [19] 1392 	ld	h,-29 (ix)
+   099A 56            [ 7] 1393 	ld	d,(hl)
+   099B 23            [ 6] 1394 	inc	hl
+   099C 46            [ 7] 1395 	ld	b,(hl)
+   099D DD 7E E7      [19] 1396 	ld	a,-25 (ix)
+   09A0 92            [ 4] 1397 	sub	a, d
+   09A1 20 3F         [12] 1398 	jr	NZ,00173$
+   09A3 DD 7E E8      [19] 1399 	ld	a,-24 (ix)
+   09A6 90            [ 4] 1400 	sub	a, b
+   09A7 20 39         [12] 1401 	jr	NZ,00173$
+   09A9 DD 6E E2      [19] 1402 	ld	l,-30 (ix)
+   09AC DD 66 E3      [19] 1403 	ld	h,-29 (ix)
+   09AF 23            [ 6] 1404 	inc	hl
+   09B0 23            [ 6] 1405 	inc	hl
+   09B1 DD 7E E1      [19] 1406 	ld	a,-31 (ix)
+   09B4 96            [ 7] 1407 	sub	a,(hl)
+   09B5 20 2B         [12] 1408 	jr	NZ,00173$
+                           1409 ;src/Personaje.c:155: cambiarSala(mapas[p->salaActual].puertas[i].salaDestino, p, posx, posy);
+   09B7 DD 6E E2      [19] 1410 	ld	l,-30 (ix)
+   09BA DD 66 E3      [19] 1411 	ld	h,-29 (ix)
+   09BD 23            [ 6] 1412 	inc	hl
+   09BE 23            [ 6] 1413 	inc	hl
+   09BF 23            [ 6] 1414 	inc	hl
+   09C0 5E            [ 7] 1415 	ld	e,(hl)
+   09C1 DD 7E E0      [19] 1416 	ld	a,-32 (ix)
+   09C4 F5            [11] 1417 	push	af
+   09C5 33            [ 6] 1418 	inc	sp
+   09C6 C1            [10] 1419 	pop	bc
+   09C7 E1            [10] 1420 	pop	hl
+   09C8 E5            [11] 1421 	push	hl
+   09C9 C5            [11] 1422 	push	bc
+   09CA E5            [11] 1423 	push	hl
+   09CB DD 6E EA      [19] 1424 	ld	l,-22 (ix)
+   09CE DD 66 EB      [19] 1425 	ld	h,-21 (ix)
+   09D1 E5            [11] 1426 	push	hl
+   09D2 7B            [ 4] 1427 	ld	a,e
+   09D3 F5            [11] 1428 	push	af
+   09D4 33            [ 6] 1429 	inc	sp
+   09D5 CDr6Ar0E      [17] 1430 	call	_cambiarSala
+   09D8 21 06 00      [10] 1431 	ld	hl,#6
+   09DB 39            [11] 1432 	add	hl,sp
+   09DC F9            [ 6] 1433 	ld	sp,hl
+                           1434 ;src/Personaje.c:156: return 2;
+   09DD 2E 02         [ 7] 1435 	ld	l,#0x02
+   09DF C3r22r0B      [10] 1436 	jp	00176$
+   09E2                    1437 00173$:
+                           1438 ;src/Personaje.c:152: for (i = 0; i < 4; ++i)
+   09E2 1C            [ 4] 1439 	inc	e
+   09E3 7B            [ 4] 1440 	ld	a,e
+   09E4 D6 04         [ 7] 1441 	sub	a, #0x04
+   09E6 38 89         [12] 1442 	jr	C,00172$
+   09E8                    1443 00134$:
+                           1444 ;src/Personaje.c:160: return mapas[p->salaActual].posiciones[casX+1][casY];
+   09E8 69            [ 4] 1445 	ld	l,c
+   09E9 C3r22r0B      [10] 1446 	jp	00176$
+   09EC                    1447 00139$:
+                           1448 ;src/Personaje.c:162: else if(mapas[p->salaActual].posiciones[casX+1][casY]!=0 || mapas[p->salaActual].posiciones[casX+1][casY+1]!=0)
+   09EC 21r00r00      [10] 1449 	ld	hl,#_mapas+0
+   09EF 19            [11] 1450 	add	hl,de
+   09F0 7D            [ 4] 1451 	ld	a,l
+   09F1 DD 86 E4      [19] 1452 	add	a, -28 (ix)
+   09F4 5F            [ 4] 1453 	ld	e,a
+   09F5 7C            [ 4] 1454 	ld	a,h
+   09F6 CE 00         [ 7] 1455 	adc	a, #0x00
+   09F8 57            [ 4] 1456 	ld	d,a
+   09F9 DD 6E E1      [19] 1457 	ld	l,-31 (ix)
+   09FC 26 00         [ 7] 1458 	ld	h,#0x00
+   09FE 19            [11] 1459 	add	hl,de
+   09FF 7E            [ 7] 1460 	ld	a,(hl)
+   0A00 B7            [ 4] 1461 	or	a, a
+   0A01 20 0A         [12] 1462 	jr	NZ,00135$
+   0A03 DD 6E EE      [19] 1463 	ld	l,-18 (ix)
+   0A06 26 00         [ 7] 1464 	ld	h,#0x00
+   0A08 19            [11] 1465 	add	hl,de
+   0A09 7E            [ 7] 1466 	ld	a,(hl)
+   0A0A B7            [ 4] 1467 	or	a, a
+   0A0B 28 05         [12] 1468 	jr	Z,00142$
+   0A0D                    1469 00135$:
+                           1470 ;src/Personaje.c:163: return 1;
+   0A0D 2E 01         [ 7] 1471 	ld	l,#0x01
+   0A0F C3r22r0B      [10] 1472 	jp	00176$
+   0A12                    1473 00142$:
+                           1474 ;src/Personaje.c:165: return 0;
+   0A12 2E 00         [ 7] 1475 	ld	l,#0x00
+   0A14 C3r22r0B      [10] 1476 	jp	00176$
+   0A17                    1477 00160$:
+                           1478 ;src/Personaje.c:167: else if(t->D){  
+   0A17 DD 6E F3      [19] 1479 	ld	l,-13 (ix)
+   0A1A DD 66 F4      [19] 1480 	ld	h,-12 (ix)
+   0A1D 23            [ 6] 1481 	inc	hl
+   0A1E 23            [ 6] 1482 	inc	hl
+   0A1F 23            [ 6] 1483 	inc	hl
+   0A20 7E            [ 7] 1484 	ld	a,(hl)
+   0A21 B7            [ 4] 1485 	or	a, a
+   0A22 CAr20r0B      [10] 1486 	jp	Z,00164$
+                           1487 ;src/Personaje.c:168: if(posx%16==0){
+   0A25 DD 7E ED      [19] 1488 	ld	a,-19 (ix)
+   0A28 DD B6 EC      [19] 1489 	or	a,-20 (ix)
+   0A2B C2r1Cr0B      [10] 1490 	jp	NZ,00156$
+                           1491 ;src/Personaje.c:107: if(mapas[p->salaActual].posiciones[casX-1][casY]==2){
+   0A2E DD 6E FC      [19] 1492 	ld	l,-4 (ix)
+   0A31 DD 66 FD      [19] 1493 	ld	h,-3 (ix)
+   0A34 56            [ 7] 1494 	ld	d,(hl)
+   0A35 1E 00         [ 7] 1495 	ld	e,#0x00
+                           1496 ;src/Personaje.c:169: if(posy%16==0){
+   0A37 DD 7E E9      [19] 1497 	ld	a,-23 (ix)
+   0A3A B7            [ 4] 1498 	or	a, a
+   0A3B C2rF3r0A      [10] 1499 	jp	NZ,00153$
+                           1500 ;src/Personaje.c:170: if(mapas[p->salaActual].posiciones[casX][casY+1]==2){
+   0A3E 21r00r00      [10] 1501 	ld	hl,#_mapas
+   0A41 19            [11] 1502 	add	hl,de
+   0A42 DD 4E F1      [19] 1503 	ld	c,-15 (ix)
+   0A45 06 00         [ 7] 1504 	ld	b,#0x00
+   0A47 09            [11] 1505 	add	hl,bc
+   0A48 DD 4E EE      [19] 1506 	ld	c,-18 (ix)
+   0A4B 06 00         [ 7] 1507 	ld	b,#0x00
+   0A4D 09            [11] 1508 	add	hl,bc
+   0A4E 4E            [ 7] 1509 	ld	c,(hl)
+   0A4F 79            [ 4] 1510 	ld	a,c
+   0A50 D6 02         [ 7] 1511 	sub	a, #0x02
+   0A52 C2rF0r0A      [10] 1512 	jp	NZ,00148$
+                           1513 ;src/Personaje.c:173: for (i = 0; i < 4; ++i)
+   0A55 21r00r00      [10] 1514 	ld	hl,#_mapas
+   0A58 19            [11] 1515 	add	hl,de
+   0A59 7D            [ 4] 1516 	ld	a,l
+   0A5A C6 F0         [ 7] 1517 	add	a, #0xF0
+   0A5C DD 77 EF      [19] 1518 	ld	-17 (ix),a
+   0A5F 7C            [ 4] 1519 	ld	a,h
+   0A60 CE 00         [ 7] 1520 	adc	a, #0x00
+   0A62 DD 77 F0      [19] 1521 	ld	-16 (ix),a
+   0A65 1E 00         [ 7] 1522 	ld	e,#0x00
+   0A67                    1523 00174$:
+                           1524 ;src/Personaje.c:175: if (casX==mapas[p->salaActual].puertas[i].x && casY+1==mapas[p->salaActual].puertas[i].y){
+   0A67 7B            [ 4] 1525 	ld	a,e
+   0A68 87            [ 4] 1526 	add	a, a
+   0A69 87            [ 4] 1527 	add	a, a
+   0A6A 67            [ 4] 1528 	ld	h,a
+   0A6B DD 7E EF      [19] 1529 	ld	a,-17 (ix)
+   0A6E 84            [ 4] 1530 	add	a, h
+   0A6F DD 77 E7      [19] 1531 	ld	-25 (ix),a
+   0A72 DD 7E F0      [19] 1532 	ld	a,-16 (ix)
+   0A75 CE 00         [ 7] 1533 	adc	a, #0x00
+   0A77 DD 77 E8      [19] 1534 	ld	-24 (ix),a
+   0A7A DD 6E E7      [19] 1535 	ld	l,-25 (ix)
+   0A7D DD 66 E8      [19] 1536 	ld	h,-24 (ix)
+   0A80 56            [ 7] 1537 	ld	d,(hl)
+   0A81 23            [ 6] 1538 	inc	hl
+   0A82 46            [ 7] 1539 	ld	b,(hl)
+   0A83 DD 7E F7      [19] 1540 	ld	a,-9 (ix)
+   0A86 92            [ 4] 1541 	sub	a, d
+   0A87 20 60         [12] 1542 	jr	NZ,00175$
+   0A89 DD 7E F8      [19] 1543 	ld	a,-8 (ix)
+   0A8C 90            [ 4] 1544 	sub	a, b
+   0A8D 20 5A         [12] 1545 	jr	NZ,00175$
+   0A8F DD 7E FE      [19] 1546 	ld	a,-2 (ix)
+   0A92 C6 01         [ 7] 1547 	add	a, #0x01
+   0A94 DD 77 E2      [19] 1548 	ld	-30 (ix),a
+   0A97 DD 7E FF      [19] 1549 	ld	a,-1 (ix)
+   0A9A CE 00         [ 7] 1550 	adc	a, #0x00
+   0A9C DD 77 E3      [19] 1551 	ld	-29 (ix),a
+   0A9F DD 6E E7      [19] 1552 	ld	l,-25 (ix)
+   0AA2 DD 66 E8      [19] 1553 	ld	h,-24 (ix)
+   0AA5 23            [ 6] 1554 	inc	hl
+   0AA6 23            [ 6] 1555 	inc	hl
+   0AA7 7E            [ 7] 1556 	ld	a,(hl)
+   0AA8 DD 77 F5      [19] 1557 	ld	-11 (ix),a
+   0AAB DD 36 F6 00   [19] 1558 	ld	-10 (ix),#0x00
+   0AAF DD 7E E2      [19] 1559 	ld	a,-30 (ix)
+   0AB2 DD 96 F5      [19] 1560 	sub	a, -11 (ix)
+   0AB5 20 32         [12] 1561 	jr	NZ,00175$
+   0AB7 DD 7E E3      [19] 1562 	ld	a,-29 (ix)
+   0ABA DD 96 F6      [19] 1563 	sub	a, -10 (ix)
+   0ABD 20 2A         [12] 1564 	jr	NZ,00175$
+                           1565 ;src/Personaje.c:176: cambiarSala(mapas[p->salaActual].puertas[i].salaDestino, p, posx, posy);
+   0ABF DD 6E E7      [19] 1566 	ld	l,-25 (ix)
+   0AC2 DD 66 E8      [19] 1567 	ld	h,-24 (ix)
+   0AC5 23            [ 6] 1568 	inc	hl
+   0AC6 23            [ 6] 1569 	inc	hl
+   0AC7 23            [ 6] 1570 	inc	hl
+   0AC8 5E            [ 7] 1571 	ld	e,(hl)
+   0AC9 DD 7E E0      [19] 1572 	ld	a,-32 (ix)
+   0ACC F5            [11] 1573 	push	af
+   0ACD 33            [ 6] 1574 	inc	sp
+   0ACE C1            [10] 1575 	pop	bc
+   0ACF E1            [10] 1576 	pop	hl
+   0AD0 E5            [11] 1577 	push	hl
+   0AD1 C5            [11] 1578 	push	bc
+   0AD2 E5            [11] 1579 	push	hl
+   0AD3 DD 6E EA      [19] 1580 	ld	l,-22 (ix)
+   0AD6 DD 66 EB      [19] 1581 	ld	h,-21 (ix)
+   0AD9 E5            [11] 1582 	push	hl
+   0ADA 7B            [ 4] 1583 	ld	a,e
+   0ADB F5            [11] 1584 	push	af
+   0ADC 33            [ 6] 1585 	inc	sp
+   0ADD CDr6Ar0E      [17] 1586 	call	_cambiarSala
+   0AE0 21 06 00      [10] 1587 	ld	hl,#6
+   0AE3 39            [11] 1588 	add	hl,sp
+   0AE4 F9            [ 6] 1589 	ld	sp,hl
+                           1590 ;src/Personaje.c:177: return 2;
+   0AE5 2E 02         [ 7] 1591 	ld	l,#0x02
+   0AE7 18 39         [12] 1592 	jr	00176$
+   0AE9                    1593 00175$:
+                           1594 ;src/Personaje.c:173: for (i = 0; i < 4; ++i)
+   0AE9 1C            [ 4] 1595 	inc	e
+   0AEA 7B            [ 4] 1596 	ld	a,e
+   0AEB D6 04         [ 7] 1597 	sub	a, #0x04
+   0AED DAr67r0A      [10] 1598 	jp	C,00174$
+   0AF0                    1599 00148$:
+                           1600 ;src/Personaje.c:181: return mapas[p->salaActual].posiciones[casX][casY+1];
+   0AF0 69            [ 4] 1601 	ld	l,c
+   0AF1 18 2F         [12] 1602 	jr	00176$
+   0AF3                    1603 00153$:
+                           1604 ;src/Personaje.c:183: else if(mapas[p->salaActual].posiciones[casX][casY+1]!=0 || mapas[p->salaActual].posiciones[casX+1][casY+1]!=0)
+   0AF3 21r00r00      [10] 1605 	ld	hl,#_mapas+0
+   0AF6 19            [11] 1606 	add	hl,de
+   0AF7 EB            [ 4] 1607 	ex	de,hl
+   0AF8 DD 6E F1      [19] 1608 	ld	l,-15 (ix)
+   0AFB 26 00         [ 7] 1609 	ld	h,#0x00
+   0AFD 19            [11] 1610 	add	hl,de
+   0AFE DD 4E EE      [19] 1611 	ld	c,-18 (ix)
+   0B01 06 00         [ 7] 1612 	ld	b,#0x00
+   0B03 09            [11] 1613 	add	hl,bc
+   0B04 7E            [ 7] 1614 	ld	a,(hl)
+   0B05 B7            [ 4] 1615 	or	a, a
+   0B06 20 10         [12] 1616 	jr	NZ,00149$
+   0B08 DD 6E E4      [19] 1617 	ld	l,-28 (ix)
+   0B0B 26 00         [ 7] 1618 	ld	h,#0x00
+   0B0D 19            [11] 1619 	add	hl,de
+   0B0E DD 5E EE      [19] 1620 	ld	e,-18 (ix)
+   0B11 16 00         [ 7] 1621 	ld	d,#0x00
+   0B13 19            [11] 1622 	add	hl,de
+   0B14 7E            [ 7] 1623 	ld	a,(hl)
+   0B15 B7            [ 4] 1624 	or	a, a
+   0B16 28 04         [12] 1625 	jr	Z,00156$
+   0B18                    1626 00149$:
+                           1627 ;src/Personaje.c:184: return 1;
+   0B18 2E 01         [ 7] 1628 	ld	l,#0x01
+   0B1A 18 06         [12] 1629 	jr	00176$
+   0B1C                    1630 00156$:
+                           1631 ;src/Personaje.c:186: return 0;
+   0B1C 2E 00         [ 7] 1632 	ld	l,#0x00
+   0B1E 18 02         [12] 1633 	jr	00176$
+   0B20                    1634 00164$:
+                           1635 ;src/Personaje.c:188: return 7;  
+   0B20 2E 07         [ 7] 1636 	ld	l,#0x07
+   0B22                    1637 00176$:
+   0B22 DD F9         [10] 1638 	ld	sp, ix
+   0B24 DD E1         [14] 1639 	pop	ix
+   0B26 C9            [10] 1640 	ret
+                           1641 ;src/Personaje.c:190: u8 comprobarColisionDiagonal(personaje *p, estadoTeclado *t){
+                           1642 ;	---------------------------------
+                           1643 ; Function comprobarColisionDiagonal
+                           1644 ; ---------------------------------
+   0B27                    1645 _comprobarColisionDiagonal::
+   0B27 DD E5         [15] 1646 	push	ix
+   0B29 DD 21 00 00   [14] 1647 	ld	ix,#0
+   0B2D DD 39         [15] 1648 	add	ix,sp
+   0B2F 21 F5 FF      [10] 1649 	ld	hl,#-11
+   0B32 39            [11] 1650 	add	hl,sp
+   0B33 F9            [ 6] 1651 	ld	sp,hl
+                           1652 ;src/Personaje.c:192: u8 casX=p->y/16, casY=p->x/16;
+   0B34 DD 4E 04      [19] 1653 	ld	c,4 (ix)
+   0B37 DD 46 05      [19] 1654 	ld	b,5 (ix)
+   0B3A C5            [11] 1655 	push	bc
+   0B3B FD E1         [14] 1656 	pop	iy
+   0B3D FD 7E 02      [19] 1657 	ld	a,2 (iy)
+   0B40 DD 77 FF      [19] 1658 	ld	-1 (ix), a
+   0B43 07            [ 4] 1659 	rlca
+   0B44 07            [ 4] 1660 	rlca
+   0B45 07            [ 4] 1661 	rlca
+   0B46 07            [ 4] 1662 	rlca
+   0B47 E6 0F         [ 7] 1663 	and	a,#0x0F
+   0B49 DD 77 F6      [19] 1664 	ld	-10 (ix),a
+   0B4C 69            [ 4] 1665 	ld	l, c
+   0B4D 60            [ 4] 1666 	ld	h, b
+   0B4E 5E            [ 7] 1667 	ld	e,(hl)
+   0B4F 23            [ 6] 1668 	inc	hl
+   0B50 56            [ 7] 1669 	ld	d,(hl)
+   0B51 6B            [ 4] 1670 	ld	l, e
+   0B52 62            [ 4] 1671 	ld	h, d
+   0B53 CB 7A         [ 8] 1672 	bit	7, d
+   0B55 28 04         [12] 1673 	jr	Z,00178$
+   0B57 21 0F 00      [10] 1674 	ld	hl,#0x000F
+   0B5A 19            [11] 1675 	add	hl,de
+   0B5B                    1676 00178$:
+   0B5B CB 2C         [ 8] 1677 	sra	h
+   0B5D CB 1D         [ 8] 1678 	rr	l
+   0B5F CB 2C         [ 8] 1679 	sra	h
+   0B61 CB 1D         [ 8] 1680 	rr	l
+   0B63 CB 2C         [ 8] 1681 	sra	h
+   0B65 CB 1D         [ 8] 1682 	rr	l
+   0B67 CB 2C         [ 8] 1683 	sra	h
+   0B69 CB 1D         [ 8] 1684 	rr	l
+   0B6B DD 75 F5      [19] 1685 	ld	-11 (ix),l
+                           1686 ;src/Personaje.c:193: if(p->x%16!=0 && p->y%16!=0)
+   0B6E C5            [11] 1687 	push	bc
+   0B6F 21 10 00      [10] 1688 	ld	hl,#0x0010
+   0B72 E5            [11] 1689 	push	hl
+   0B73 D5            [11] 1690 	push	de
+   0B74 CDr00r00      [17] 1691 	call	__modsint
+   0B77 F1            [10] 1692 	pop	af
+   0B78 F1            [10] 1693 	pop	af
+   0B79 DD 74 FE      [19] 1694 	ld	-2 (ix),h
+   0B7C DD 75 FD      [19] 1695 	ld	-3 (ix),l
+   0B7F C1            [10] 1696 	pop	bc
+   0B80 DD 7E FF      [19] 1697 	ld	a,-1 (ix)
+   0B83 E6 0F         [ 7] 1698 	and	a, #0x0F
+   0B85 DD 77 FF      [19] 1699 	ld	-1 (ix),a
+   0B88 DD 7E FE      [19] 1700 	ld	a,-2 (ix)
+   0B8B DD B6 FD      [19] 1701 	or	a,-3 (ix)
+   0B8E 28 0B         [12] 1702 	jr	Z,00102$
+   0B90 DD 7E FF      [19] 1703 	ld	a,-1 (ix)
+   0B93 B7            [ 4] 1704 	or	a, a
+   0B94 28 05         [12] 1705 	jr	Z,00102$
+                           1706 ;src/Personaje.c:194: return 0;
+   0B96 2E 00         [ 7] 1707 	ld	l,#0x00
+   0B98 C3r65r0E      [10] 1708 	jp	00176$
+   0B9B                    1709 00102$:
+                           1710 ;src/Personaje.c:195: if     (t->W && t->A)
+   0B9B DD 5E 06      [19] 1711 	ld	e,6 (ix)
+   0B9E DD 56 07      [19] 1712 	ld	d,7 (ix)
+   0BA1 1A            [ 7] 1713 	ld	a,(de)
+   0BA2 DD 77 FC      [19] 1714 	ld	-4 (ix),a
+   0BA5 D5            [11] 1715 	push	de
+   0BA6 FD E1         [14] 1716 	pop	iy
+   0BA8 FD 23         [10] 1717 	inc	iy
+   0BAA DD 7E FC      [19] 1718 	ld	a,-4 (ix)
+   0BAD B7            [ 4] 1719 	or	a, a
+   0BAE 28 0A         [12] 1720 	jr	Z,00117$
+   0BB0 FD 7E 00      [19] 1721 	ld	a, 0 (iy)
+   0BB3 B7            [ 4] 1722 	or	a, a
+   0BB4 28 04         [12] 1723 	jr	Z,00117$
+                           1724 ;src/Personaje.c:196: direccion=1;
+   0BB6 1E 01         [ 7] 1725 	ld	e,#0x01
+   0BB8 18 47         [12] 1726 	jr	00118$
+   0BBA                    1727 00117$:
+                           1728 ;src/Personaje.c:197: else if(t->W && t->D)
+   0BBA 21 03 00      [10] 1729 	ld	hl,#0x0003
+   0BBD 19            [11] 1730 	add	hl,de
+   0BBE DD 75 FA      [19] 1731 	ld	-6 (ix),l
+   0BC1 DD 74 FB      [19] 1732 	ld	-5 (ix),h
+   0BC4 DD 7E FC      [19] 1733 	ld	a,-4 (ix)
+   0BC7 B7            [ 4] 1734 	or	a, a
+   0BC8 28 0E         [12] 1735 	jr	Z,00113$
+   0BCA DD 6E FA      [19] 1736 	ld	l,-6 (ix)
+   0BCD DD 66 FB      [19] 1737 	ld	h,-5 (ix)
+   0BD0 7E            [ 7] 1738 	ld	a,(hl)
+   0BD1 B7            [ 4] 1739 	or	a, a
+   0BD2 28 04         [12] 1740 	jr	Z,00113$
+                           1741 ;src/Personaje.c:198: direccion=2;
+   0BD4 1E 02         [ 7] 1742 	ld	e,#0x02
+   0BD6 18 29         [12] 1743 	jr	00118$
+   0BD8                    1744 00113$:
+                           1745 ;src/Personaje.c:199: else if(t->S && t->D)
+   0BD8 EB            [ 4] 1746 	ex	de,hl
+   0BD9 23            [ 6] 1747 	inc	hl
+   0BDA 23            [ 6] 1748 	inc	hl
+   0BDB 56            [ 7] 1749 	ld	d,(hl)
+   0BDC 7A            [ 4] 1750 	ld	a,d
+   0BDD B7            [ 4] 1751 	or	a, a
+   0BDE 28 0E         [12] 1752 	jr	Z,00109$
+   0BE0 DD 6E FA      [19] 1753 	ld	l,-6 (ix)
+   0BE3 DD 66 FB      [19] 1754 	ld	h,-5 (ix)
+   0BE6 7E            [ 7] 1755 	ld	a,(hl)
+   0BE7 B7            [ 4] 1756 	or	a, a
+   0BE8 28 04         [12] 1757 	jr	Z,00109$
+                           1758 ;src/Personaje.c:200: direccion=3;
+   0BEA 1E 03         [ 7] 1759 	ld	e,#0x03
+   0BEC 18 13         [12] 1760 	jr	00118$
+   0BEE                    1761 00109$:
+                           1762 ;src/Personaje.c:201: else if(t->S && t->A)
+   0BEE 7A            [ 4] 1763 	ld	a,d
+   0BEF B7            [ 4] 1764 	or	a, a
+   0BF0 28 0A         [12] 1765 	jr	Z,00105$
+   0BF2 FD 7E 00      [19] 1766 	ld	a, 0 (iy)
+   0BF5 B7            [ 4] 1767 	or	a, a
+   0BF6 28 04         [12] 1768 	jr	Z,00105$
+                           1769 ;src/Personaje.c:202: direccion=4;   
+   0BF8 1E 04         [ 7] 1770 	ld	e,#0x04
+   0BFA 18 05         [12] 1771 	jr	00118$
+   0BFC                    1772 00105$:
+                           1773 ;src/Personaje.c:204: return 7;  
+   0BFC 2E 07         [ 7] 1774 	ld	l,#0x07
+   0BFE C3r65r0E      [10] 1775 	jp	00176$
+   0C01                    1776 00118$:
+                           1777 ;src/Personaje.c:208: if(mapas[p->salaActual].posiciones[casX][casY-1]!=0 || 
+   0C01 21 06 00      [10] 1778 	ld	hl,#0x0006
+   0C04 09            [11] 1779 	add	hl,bc
+   0C05 4D            [ 4] 1780 	ld	c,l
+   0C06 44            [ 4] 1781 	ld	b,h
+   0C07 D5            [11] 1782 	push	de
+   0C08 DD 7E F6      [19] 1783 	ld	a,-10 (ix)
+   0C0B 5F            [ 4] 1784 	ld	e,a
+   0C0C 87            [ 4] 1785 	add	a, a
+   0C0D 87            [ 4] 1786 	add	a, a
+   0C0E 83            [ 4] 1787 	add	a, e
+   0C0F 87            [ 4] 1788 	add	a, a
+   0C10 87            [ 4] 1789 	add	a, a
+   0C11 D1            [10] 1790 	pop	de
+   0C12 DD 77 FA      [19] 1791 	ld	-6 (ix),a
+   0C15 DD 7E F5      [19] 1792 	ld	a,-11 (ix)
+   0C18 C6 FF         [ 7] 1793 	add	a,#0xFF
+   0C1A DD 77 FC      [19] 1794 	ld	-4 (ix),a
+                           1795 ;src/Personaje.c:209: mapas[p->salaActual].posiciones[casX+1][casY-1]!=0)
+   0C1D DD 6E F6      [19] 1796 	ld	l,-10 (ix)
+   0C20 2C            [ 4] 1797 	inc	l
+                           1798 ;src/Personaje.c:213: if(mapas[p->salaActual].posiciones[casX+1][casY+1]!=0 || 
+   0C21 DD 7E F5      [19] 1799 	ld	a,-11 (ix)
+   0C24 3C            [ 4] 1800 	inc	a
+   0C25 DD 77 F9      [19] 1801 	ld	-7 (ix),a
+                           1802 ;src/Personaje.c:209: mapas[p->salaActual].posiciones[casX+1][casY-1]!=0)
+   0C28 D5            [11] 1803 	push	de
+   0C29 5D            [ 4] 1804 	ld	e,l
+   0C2A 29            [11] 1805 	add	hl, hl
+   0C2B 29            [11] 1806 	add	hl, hl
+   0C2C 19            [11] 1807 	add	hl, de
+   0C2D 29            [11] 1808 	add	hl, hl
+   0C2E 29            [11] 1809 	add	hl, hl
+   0C2F D1            [10] 1810 	pop	de
+   0C30 DD 75 F8      [19] 1811 	ld	-8 (ix),l
+                           1812 ;src/Personaje.c:206: if(p->x%16==0 && p->y%16!=0){
+   0C33 DD 7E FE      [19] 1813 	ld	a,-2 (ix)
+   0C36 DD B6 FD      [19] 1814 	or	a,-3 (ix)
+   0C39 20 6C         [12] 1815 	jr	NZ,00131$
+   0C3B DD 7E FF      [19] 1816 	ld	a,-1 (ix)
+   0C3E B7            [ 4] 1817 	or	a, a
+   0C3F 28 66         [12] 1818 	jr	Z,00131$
+                           1819 ;src/Personaje.c:208: if(mapas[p->salaActual].posiciones[casX][casY-1]!=0 || 
+   0C41 0A            [ 7] 1820 	ld	a,(bc)
+   0C42 67            [ 4] 1821 	ld	h, a
+   0C43 2E 00         [ 7] 1822 	ld	l,#0x00
+                           1823 ;src/Personaje.c:207: if(direccion==1 || direccion==4){
+   0C45 7B            [ 4] 1824 	ld	a,e
+   0C46 3D            [ 4] 1825 	dec	a
+   0C47 28 05         [12] 1826 	jr	Z,00126$
+   0C49 7B            [ 4] 1827 	ld	a,e
+   0C4A D6 04         [ 7] 1828 	sub	a, #0x04
+   0C4C 20 2A         [12] 1829 	jr	NZ,00127$
+   0C4E                    1830 00126$:
+                           1831 ;src/Personaje.c:208: if(mapas[p->salaActual].posiciones[casX][casY-1]!=0 || 
+   0C4E 11r00r00      [10] 1832 	ld	de,#_mapas+0
+   0C51 19            [11] 1833 	add	hl,de
+   0C52 EB            [ 4] 1834 	ex	de,hl
+   0C53 DD 6E FA      [19] 1835 	ld	l,-6 (ix)
+   0C56 26 00         [ 7] 1836 	ld	h,#0x00
+   0C58 19            [11] 1837 	add	hl,de
+   0C59 DD 4E FC      [19] 1838 	ld	c,-4 (ix)
+   0C5C 06 00         [ 7] 1839 	ld	b,#0x00
+   0C5E 09            [11] 1840 	add	hl,bc
+   0C5F 7E            [ 7] 1841 	ld	a,(hl)
+   0C60 B7            [ 4] 1842 	or	a, a
+   0C61 20 10         [12] 1843 	jr	NZ,00120$
+                           1844 ;src/Personaje.c:209: mapas[p->salaActual].posiciones[casX+1][casY-1]!=0)
+   0C63 DD 6E F8      [19] 1845 	ld	l,-8 (ix)
+   0C66 26 00         [ 7] 1846 	ld	h,#0x00
+   0C68 19            [11] 1847 	add	hl,de
+   0C69 DD 5E FC      [19] 1848 	ld	e,-4 (ix)
+   0C6C 16 00         [ 7] 1849 	ld	d,#0x00
+   0C6E 19            [11] 1850 	add	hl,de
+   0C6F 7E            [ 7] 1851 	ld	a,(hl)
+   0C70 B7            [ 4] 1852 	or	a, a
+   0C71 28 2F         [12] 1853 	jr	Z,00128$
+   0C73                    1854 00120$:
+                           1855 ;src/Personaje.c:210: return 1;
+   0C73 2E 01         [ 7] 1856 	ld	l,#0x01
+   0C75 C3r65r0E      [10] 1857 	jp	00176$
+   0C78                    1858 00127$:
+                           1859 ;src/Personaje.c:213: if(mapas[p->salaActual].posiciones[casX+1][casY+1]!=0 || 
+   0C78 11r00r00      [10] 1860 	ld	de,#_mapas+0
+   0C7B 19            [11] 1861 	add	hl,de
+   0C7C EB            [ 4] 1862 	ex	de,hl
+   0C7D DD 6E F8      [19] 1863 	ld	l,-8 (ix)
+   0C80 26 00         [ 7] 1864 	ld	h,#0x00
+   0C82 19            [11] 1865 	add	hl,de
+   0C83 DD 4E F9      [19] 1866 	ld	c,-7 (ix)
+   0C86 06 00         [ 7] 1867 	ld	b,#0x00
+   0C88 09            [11] 1868 	add	hl,bc
+   0C89 7E            [ 7] 1869 	ld	a,(hl)
+   0C8A B7            [ 4] 1870 	or	a, a
+   0C8B 20 10         [12] 1871 	jr	NZ,00123$
+                           1872 ;src/Personaje.c:214: mapas[p->salaActual].posiciones[casX][casY+1]!=0)
+   0C8D DD 6E FA      [19] 1873 	ld	l,-6 (ix)
+   0C90 26 00         [ 7] 1874 	ld	h,#0x00
+   0C92 19            [11] 1875 	add	hl,de
+   0C93 DD 5E F9      [19] 1876 	ld	e,-7 (ix)
+   0C96 16 00         [ 7] 1877 	ld	d,#0x00
+   0C98 19            [11] 1878 	add	hl,de
+   0C99 7E            [ 7] 1879 	ld	a,(hl)
+   0C9A B7            [ 4] 1880 	or	a, a
+   0C9B 28 05         [12] 1881 	jr	Z,00128$
+   0C9D                    1882 00123$:
+                           1883 ;src/Personaje.c:215: return 1;
+   0C9D 2E 01         [ 7] 1884 	ld	l,#0x01
+   0C9F C3r65r0E      [10] 1885 	jp	00176$
+   0CA2                    1886 00128$:
+                           1887 ;src/Personaje.c:217: return 0;
+   0CA2 2E 00         [ 7] 1888 	ld	l,#0x00
+   0CA4 C3r65r0E      [10] 1889 	jp	00176$
+   0CA7                    1890 00131$:
+                           1891 ;src/Personaje.c:220: switch(direccion){
+   0CA7 7B            [ 4] 1892 	ld	a,e
+   0CA8 D6 01         [ 7] 1893 	sub	a, #0x01
+   0CAA DAr63r0E      [10] 1894 	jp	C,00175$
+   0CAD 3E 04         [ 7] 1895 	ld	a,#0x04
+   0CAF 93            [ 4] 1896 	sub	a, e
+   0CB0 DAr63r0E      [10] 1897 	jp	C,00175$
+   0CB3 1D            [ 4] 1898 	dec	e
+                           1899 ;src/Personaje.c:223: if(mapas[p->salaActual].posiciones[casX-1][casY-1]!=0 ||
+   0CB4 DD 7E F6      [19] 1900 	ld	a,-10 (ix)
+   0CB7 C6 FF         [ 7] 1901 	add	a,#0xFF
+                           1902 ;src/Personaje.c:208: if(mapas[p->salaActual].posiciones[casX][casY-1]!=0 || 
+   0CB9 F5            [11] 1903 	push	af
+   0CBA 0A            [ 7] 1904 	ld	a,(bc)
+   0CBB 4F            [ 4] 1905 	ld	c,a
+   0CBC F1            [10] 1906 	pop	af
+                           1907 ;src/Personaje.c:223: if(mapas[p->salaActual].posiciones[casX-1][casY-1]!=0 ||
+   0CBD D5            [11] 1908 	push	de
+   0CBE 5F            [ 4] 1909 	ld	e,a
+   0CBF 87            [ 4] 1910 	add	a, a
+   0CC0 87            [ 4] 1911 	add	a, a
+   0CC1 83            [ 4] 1912 	add	a, e
+   0CC2 87            [ 4] 1913 	add	a, a
+   0CC3 87            [ 4] 1914 	add	a, a
+   0CC4 D1            [10] 1915 	pop	de
+   0CC5 DD 77 F7      [19] 1916 	ld	-9 (ix),a
+                           1917 ;src/Personaje.c:208: if(mapas[p->salaActual].posiciones[casX][casY-1]!=0 || 
+   0CC8 41            [ 4] 1918 	ld	b,c
+   0CC9 0E 00         [ 7] 1919 	ld	c,#0x00
+                           1920 ;src/Personaje.c:220: switch(direccion){
+   0CCB 16 00         [ 7] 1921 	ld	d,#0x00
+   0CCD 21rD4r0C      [10] 1922 	ld	hl,#00326$
+   0CD0 19            [11] 1923 	add	hl,de
+   0CD1 19            [11] 1924 	add	hl,de
+   0CD2 19            [11] 1925 	add	hl,de
+   0CD3 E9            [ 4] 1926 	jp	(hl)
+   0CD4                    1927 00326$:
+   0CD4 C3rE0r0C      [10] 1928 	jp	00133$
+   0CD7 C3r52r0D      [10] 1929 	jp	00145$
+   0CDA C3rA4r0D      [10] 1930 	jp	00154$
+   0CDD C3rF5r0D      [10] 1931 	jp	00163$
+                           1932 ;src/Personaje.c:221: case 1:
+   0CE0                    1933 00133$:
+                           1934 ;src/Personaje.c:222: if(p->x%16==0 && p->y%16==0){//CENTRADO
+   0CE0 DD 7E FE      [19] 1935 	ld	a,-2 (ix)
+   0CE3 DD B6 FD      [19] 1936 	or	a,-3 (ix)
+   0CE6 20 33         [12] 1937 	jr	NZ,00140$
+   0CE8 DD 7E FF      [19] 1938 	ld	a,-1 (ix)
+   0CEB B7            [ 4] 1939 	or	a, a
+   0CEC 20 2D         [12] 1940 	jr	NZ,00140$
+                           1941 ;src/Personaje.c:223: if(mapas[p->salaActual].posiciones[casX-1][casY-1]!=0 ||
+   0CEE 21r00r00      [10] 1942 	ld	hl,#_mapas+0
+   0CF1 09            [11] 1943 	add	hl,bc
+   0CF2 EB            [ 4] 1944 	ex	de,hl
+   0CF3 DD 6E F7      [19] 1945 	ld	l,-9 (ix)
+   0CF6 26 00         [ 7] 1946 	ld	h,#0x00
+   0CF8 19            [11] 1947 	add	hl,de
+   0CF9 DD 7E FC      [19] 1948 	ld	a,-4 (ix)
+   0CFC 85            [ 4] 1949 	add	a, l
+   0CFD 6F            [ 4] 1950 	ld	l,a
+   0CFE 3E 00         [ 7] 1951 	ld	a,#0x00
+   0D00 8C            [ 4] 1952 	adc	a, h
+   0D01 67            [ 4] 1953 	ld	h,a
+   0D02 7E            [ 7] 1954 	ld	a,(hl)
+   0D03 B7            [ 4] 1955 	or	a, a
+   0D04 20 10         [12] 1956 	jr	NZ,00134$
+                           1957 ;src/Personaje.c:224: mapas[p->salaActual].posiciones[casX][casY-1]!=0)
+   0D06 DD 6E FA      [19] 1958 	ld	l,-6 (ix)
+   0D09 26 00         [ 7] 1959 	ld	h,#0x00
+   0D0B 19            [11] 1960 	add	hl,de
+   0D0C DD 5E FC      [19] 1961 	ld	e,-4 (ix)
+   0D0F 16 00         [ 7] 1962 	ld	d,#0x00
+   0D11 19            [11] 1963 	add	hl,de
+   0D12 7E            [ 7] 1964 	ld	a,(hl)
+   0D13 B7            [ 4] 1965 	or	a, a
+   0D14 28 1E         [12] 1966 	jr	Z,00141$
+   0D16                    1967 00134$:
+                           1968 ;src/Personaje.c:225: return 1;
+   0D16 2E 01         [ 7] 1969 	ld	l,#0x01
+   0D18 C3r65r0E      [10] 1970 	jp	00176$
+   0D1B                    1971 00140$:
+                           1972 ;src/Personaje.c:228: if(mapas[p->salaActual].posiciones[casX-1][casY+1]!=0)
+   0D1B 21r00r00      [10] 1973 	ld	hl,#_mapas
+   0D1E 09            [11] 1974 	add	hl,bc
+   0D1F DD 5E F7      [19] 1975 	ld	e,-9 (ix)
+   0D22 16 00         [ 7] 1976 	ld	d,#0x00
+   0D24 19            [11] 1977 	add	hl,de
+   0D25 DD 5E F9      [19] 1978 	ld	e,-7 (ix)
+   0D28 16 00         [ 7] 1979 	ld	d,#0x00
+   0D2A 19            [11] 1980 	add	hl,de
+   0D2B 7E            [ 7] 1981 	ld	a,(hl)
+   0D2C B7            [ 4] 1982 	or	a, a
+   0D2D 28 05         [12] 1983 	jr	Z,00141$
+                           1984 ;src/Personaje.c:229: return 1;
+   0D2F 2E 01         [ 7] 1985 	ld	l,#0x01
+   0D31 C3r65r0E      [10] 1986 	jp	00176$
+   0D34                    1987 00141$:
+                           1988 ;src/Personaje.c:231: if(mapas[p->salaActual].posiciones[casX-1][casY]!=0)//CASILLAS COMUNES
+   0D34 21r00r00      [10] 1989 	ld	hl,#_mapas
+   0D37 09            [11] 1990 	add	hl,bc
+   0D38 DD 5E F7      [19] 1991 	ld	e,-9 (ix)
+   0D3B 16 00         [ 7] 1992 	ld	d,#0x00
+   0D3D 19            [11] 1993 	add	hl,de
+   0D3E DD 5E F5      [19] 1994 	ld	e,-11 (ix)
+   0D41 16 00         [ 7] 1995 	ld	d,#0x00
+   0D43 19            [11] 1996 	add	hl,de
+   0D44 7E            [ 7] 1997 	ld	a,(hl)
+   0D45 B7            [ 4] 1998 	or	a, a
+   0D46 28 05         [12] 1999 	jr	Z,00144$
+                           2000 ;src/Personaje.c:232: return 1;
+   0D48 2E 01         [ 7] 2001 	ld	l,#0x01
+   0D4A C3r65r0E      [10] 2002 	jp	00176$
+   0D4D                    2003 00144$:
+                           2004 ;src/Personaje.c:233: return 0;
+   0D4D 2E 00         [ 7] 2005 	ld	l,#0x00
+   0D4F C3r65r0E      [10] 2006 	jp	00176$
+                           2007 ;src/Personaje.c:236: case 2:
+   0D52                    2008 00145$:
+                           2009 ;src/Personaje.c:237: if(p->x%16==0 && p->y%16==0){//CENTRADO
+   0D52 DD 7E FE      [19] 2010 	ld	a,-2 (ix)
+   0D55 DD B6 FD      [19] 2011 	or	a,-3 (ix)
+   0D58 20 1F         [12] 2012 	jr	NZ,00149$
+   0D5A DD 7E FF      [19] 2013 	ld	a,-1 (ix)
+   0D5D B7            [ 4] 2014 	or	a, a
+   0D5E 20 19         [12] 2015 	jr	NZ,00149$
+                           2016 ;src/Personaje.c:238: if(mapas[p->salaActual].posiciones[casX][casY+1]!=0)
+   0D60 21r00r00      [10] 2017 	ld	hl,#_mapas
+   0D63 09            [11] 2018 	add	hl,bc
+   0D64 DD 5E FA      [19] 2019 	ld	e,-6 (ix)
+   0D67 16 00         [ 7] 2020 	ld	d,#0x00
+   0D69 19            [11] 2021 	add	hl,de
+   0D6A DD 5E F9      [19] 2022 	ld	e,-7 (ix)
+   0D6D 16 00         [ 7] 2023 	ld	d,#0x00
+   0D6F 19            [11] 2024 	add	hl,de
+   0D70 7E            [ 7] 2025 	ld	a,(hl)
+   0D71 B7            [ 4] 2026 	or	a, a
+   0D72 28 05         [12] 2027 	jr	Z,00149$
+                           2028 ;src/Personaje.c:239: return 1;
+   0D74 2E 01         [ 7] 2029 	ld	l,#0x01
+   0D76 C3r65r0E      [10] 2030 	jp	00176$
+   0D79                    2031 00149$:
+                           2032 ;src/Personaje.c:241: if(mapas[p->salaActual].posiciones[casX-1][casY+1]!=0 || 
+   0D79 21r00r00      [10] 2033 	ld	hl,#_mapas
+   0D7C 09            [11] 2034 	add	hl,bc
+   0D7D DD 7E F7      [19] 2035 	ld	a,-9 (ix)
+   0D80 85            [ 4] 2036 	add	a, l
+   0D81 5F            [ 4] 2037 	ld	e,a
+   0D82 3E 00         [ 7] 2038 	ld	a,#0x00
+   0D84 8C            [ 4] 2039 	adc	a, h
+   0D85 57            [ 4] 2040 	ld	d,a
+   0D86 DD 6E F9      [19] 2041 	ld	l,-7 (ix)
+   0D89 26 00         [ 7] 2042 	ld	h,#0x00
+   0D8B 19            [11] 2043 	add	hl,de
+   0D8C 7E            [ 7] 2044 	ld	a,(hl)
+   0D8D B7            [ 4] 2045 	or	a, a
+   0D8E 20 0A         [12] 2046 	jr	NZ,00151$
+                           2047 ;src/Personaje.c:242: mapas[p->salaActual].posiciones[casX-1][casY]!=0    )//CASILLAS COMUNES
+   0D90 DD 6E F5      [19] 2048 	ld	l,-11 (ix)
+   0D93 26 00         [ 7] 2049 	ld	h,#0x00
+   0D95 19            [11] 2050 	add	hl,de
+   0D96 7E            [ 7] 2051 	ld	a,(hl)
+   0D97 B7            [ 4] 2052 	or	a, a
+   0D98 28 05         [12] 2053 	jr	Z,00152$
+   0D9A                    2054 00151$:
+                           2055 ;src/Personaje.c:243: return 1;
+   0D9A 2E 01         [ 7] 2056 	ld	l,#0x01
+   0D9C C3r65r0E      [10] 2057 	jp	00176$
+   0D9F                    2058 00152$:
+                           2059 ;src/Personaje.c:244: return 0;
+   0D9F 2E 00         [ 7] 2060 	ld	l,#0x00
+   0DA1 C3r65r0E      [10] 2061 	jp	00176$
+                           2062 ;src/Personaje.c:247: case 3:
+   0DA4                    2063 00154$:
+                           2064 ;src/Personaje.c:248: if(p->x%16==0 && p->y%16==0){//CENTRADO
+   0DA4 DD 7E FE      [19] 2065 	ld	a,-2 (ix)
+   0DA7 DD B6 FD      [19] 2066 	or	a,-3 (ix)
+   0DAA 20 1F         [12] 2067 	jr	NZ,00158$
+   0DAC DD 7E FF      [19] 2068 	ld	a,-1 (ix)
+   0DAF B7            [ 4] 2069 	or	a, a
+   0DB0 20 19         [12] 2070 	jr	NZ,00158$
+                           2071 ;src/Personaje.c:249: if(mapas[p->salaActual].posiciones[casX][casY+1]!=0)
+   0DB2 21r00r00      [10] 2072 	ld	hl,#_mapas
+   0DB5 09            [11] 2073 	add	hl,bc
+   0DB6 DD 5E FA      [19] 2074 	ld	e,-6 (ix)
+   0DB9 16 00         [ 7] 2075 	ld	d,#0x00
+   0DBB 19            [11] 2076 	add	hl,de
+   0DBC DD 5E F9      [19] 2077 	ld	e,-7 (ix)
+   0DBF 16 00         [ 7] 2078 	ld	d,#0x00
+   0DC1 19            [11] 2079 	add	hl,de
+   0DC2 7E            [ 7] 2080 	ld	a,(hl)
+   0DC3 B7            [ 4] 2081 	or	a, a
+   0DC4 28 05         [12] 2082 	jr	Z,00158$
+                           2083 ;src/Personaje.c:250: return 1;
+   0DC6 2E 01         [ 7] 2084 	ld	l,#0x01
+   0DC8 C3r65r0E      [10] 2085 	jp	00176$
+   0DCB                    2086 00158$:
+                           2087 ;src/Personaje.c:252: if(mapas[p->salaActual].posiciones[casX+1][casY+1]!=0 || 
+   0DCB 21r00r00      [10] 2088 	ld	hl,#_mapas
+   0DCE 09            [11] 2089 	add	hl,bc
+   0DCF DD 7E F8      [19] 2090 	ld	a,-8 (ix)
+   0DD2 85            [ 4] 2091 	add	a, l
+   0DD3 5F            [ 4] 2092 	ld	e,a
+   0DD4 3E 00         [ 7] 2093 	ld	a,#0x00
+   0DD6 8C            [ 4] 2094 	adc	a, h
+   0DD7 57            [ 4] 2095 	ld	d,a
+   0DD8 DD 6E F9      [19] 2096 	ld	l,-7 (ix)
+   0DDB 26 00         [ 7] 2097 	ld	h,#0x00
+   0DDD 19            [11] 2098 	add	hl,de
+   0DDE 7E            [ 7] 2099 	ld	a,(hl)
+   0DDF B7            [ 4] 2100 	or	a, a
+   0DE0 20 0A         [12] 2101 	jr	NZ,00160$
+                           2102 ;src/Personaje.c:253: mapas[p->salaActual].posiciones[casX+1][casY]!=0    )//CASILLAS COMUNES
+   0DE2 DD 6E F5      [19] 2103 	ld	l,-11 (ix)
+   0DE5 26 00         [ 7] 2104 	ld	h,#0x00
+   0DE7 19            [11] 2105 	add	hl,de
+   0DE8 7E            [ 7] 2106 	ld	a,(hl)
+   0DE9 B7            [ 4] 2107 	or	a, a
+   0DEA 28 05         [12] 2108 	jr	Z,00161$
+   0DEC                    2109 00160$:
+                           2110 ;src/Personaje.c:254: return 1;
+   0DEC 2E 01         [ 7] 2111 	ld	l,#0x01
+   0DEE C3r65r0E      [10] 2112 	jp	00176$
+   0DF1                    2113 00161$:
+                           2114 ;src/Personaje.c:255: return 0;
+   0DF1 2E 00         [ 7] 2115 	ld	l,#0x00
+   0DF3 18 70         [12] 2116 	jr	00176$
+                           2117 ;src/Personaje.c:258: case 4:
+   0DF5                    2118 00163$:
+                           2119 ;src/Personaje.c:259: if(p->x%16==0 && p->y%16==0){//CENTRADO
+   0DF5 DD 7E FE      [19] 2120 	ld	a,-2 (ix)
+   0DF8 DD B6 FD      [19] 2121 	or	a,-3 (ix)
+   0DFB 20 32         [12] 2122 	jr	NZ,00170$
+   0DFD DD 7E FF      [19] 2123 	ld	a,-1 (ix)
+   0E00 B7            [ 4] 2124 	or	a, a
+   0E01 20 2C         [12] 2125 	jr	NZ,00170$
+                           2126 ;src/Personaje.c:260: if(mapas[p->salaActual].posiciones[casX+1][casY-1]!=0 ||
+   0E03 21r00r00      [10] 2127 	ld	hl,#_mapas
+   0E06 09            [11] 2128 	add	hl,bc
+   0E07 EB            [ 4] 2129 	ex	de,hl
+   0E08 DD 6E F8      [19] 2130 	ld	l,-8 (ix)
+   0E0B 26 00         [ 7] 2131 	ld	h,#0x00
+   0E0D 19            [11] 2132 	add	hl,de
+   0E0E 7D            [ 4] 2133 	ld	a,l
+   0E0F DD 86 FC      [19] 2134 	add	a, -4 (ix)
+   0E12 6F            [ 4] 2135 	ld	l,a
+   0E13 7C            [ 4] 2136 	ld	a,h
+   0E14 CE 00         [ 7] 2137 	adc	a, #0x00
+   0E16 67            [ 4] 2138 	ld	h,a
+   0E17 7E            [ 7] 2139 	ld	a,(hl)
+   0E18 B7            [ 4] 2140 	or	a, a
+   0E19 20 10         [12] 2141 	jr	NZ,00164$
+                           2142 ;src/Personaje.c:261: mapas[p->salaActual].posiciones[casX][casY-1]!=0)
+   0E1B DD 6E FA      [19] 2143 	ld	l,-6 (ix)
+   0E1E 26 00         [ 7] 2144 	ld	h,#0x00
+   0E20 19            [11] 2145 	add	hl,de
+   0E21 DD 5E FC      [19] 2146 	ld	e,-4 (ix)
+   0E24 16 00         [ 7] 2147 	ld	d,#0x00
+   0E26 19            [11] 2148 	add	hl,de
+   0E27 7E            [ 7] 2149 	ld	a,(hl)
+   0E28 B7            [ 4] 2150 	or	a, a
+   0E29 28 1C         [12] 2151 	jr	Z,00171$
+   0E2B                    2152 00164$:
+                           2153 ;src/Personaje.c:262: return 1;
+   0E2B 2E 01         [ 7] 2154 	ld	l,#0x01
+   0E2D 18 36         [12] 2155 	jr	00176$
+   0E2F                    2156 00170$:
+                           2157 ;src/Personaje.c:265: if(mapas[p->salaActual].posiciones[casX+1][casY+1]!=0)
+   0E2F 21r00r00      [10] 2158 	ld	hl,#_mapas
+   0E32 09            [11] 2159 	add	hl,bc
+   0E33 DD 5E F8      [19] 2160 	ld	e,-8 (ix)
+   0E36 16 00         [ 7] 2161 	ld	d,#0x00
+   0E38 19            [11] 2162 	add	hl,de
+   0E39 DD 5E F9      [19] 2163 	ld	e,-7 (ix)
+   0E3C 16 00         [ 7] 2164 	ld	d,#0x00
+   0E3E 19            [11] 2165 	add	hl,de
+   0E3F 7E            [ 7] 2166 	ld	a,(hl)
+   0E40 B7            [ 4] 2167 	or	a, a
+   0E41 28 04         [12] 2168 	jr	Z,00171$
+                           2169 ;src/Personaje.c:266: return 1;
+   0E43 2E 01         [ 7] 2170 	ld	l,#0x01
+   0E45 18 1E         [12] 2171 	jr	00176$
+   0E47                    2172 00171$:
+                           2173 ;src/Personaje.c:268: if(mapas[p->salaActual].posiciones[casX+1][casY]!=0)//CASILLAS COMUNES
+   0E47 21r00r00      [10] 2174 	ld	hl,#_mapas
+   0E4A 09            [11] 2175 	add	hl,bc
+   0E4B DD 5E F8      [19] 2176 	ld	e,-8 (ix)
+   0E4E 16 00         [ 7] 2177 	ld	d,#0x00
+   0E50 19            [11] 2178 	add	hl,de
+   0E51 DD 5E F5      [19] 2179 	ld	e,-11 (ix)
+   0E54 16 00         [ 7] 2180 	ld	d,#0x00
+   0E56 19            [11] 2181 	add	hl,de
+   0E57 7E            [ 7] 2182 	ld	a,(hl)
+   0E58 B7            [ 4] 2183 	or	a, a
+   0E59 28 04         [12] 2184 	jr	Z,00174$
+                           2185 ;src/Personaje.c:269: return 1;
+   0E5B 2E 01         [ 7] 2186 	ld	l,#0x01
+   0E5D 18 06         [12] 2187 	jr	00176$
+   0E5F                    2188 00174$:
+                           2189 ;src/Personaje.c:270: return 0;
+   0E5F 2E 00         [ 7] 2190 	ld	l,#0x00
+   0E61 18 02         [12] 2191 	jr	00176$
+                           2192 ;src/Personaje.c:272: }
+   0E63                    2193 00175$:
+                           2194 ;src/Personaje.c:273: return 0;
+   0E63 2E 00         [ 7] 2195 	ld	l,#0x00
+   0E65                    2196 00176$:
+   0E65 DD F9         [10] 2197 	ld	sp, ix
+   0E67 DD E1         [14] 2198 	pop	ix
+   0E69 C9            [10] 2199 	ret
+                           2200 ;src/Personaje.c:275: void cambiarSala(u8 s, personaje *p, int x, u8 y){
+                           2201 ;	---------------------------------
+                           2202 ; Function cambiarSala
+                           2203 ; ---------------------------------
+   0E6A                    2204 _cambiarSala::
+   0E6A DD E5         [15] 2205 	push	ix
+   0E6C DD 21 00 00   [14] 2206 	ld	ix,#0
+   0E70 DD 39         [15] 2207 	add	ix,sp
+                           2208 ;src/Personaje.c:276: p->salaActual=s;
+   0E72 DD 4E 05      [19] 2209 	ld	c,5 (ix)
+   0E75 DD 46 06      [19] 2210 	ld	b,6 (ix)
+   0E78 21 06 00      [10] 2211 	ld	hl,#0x0006
+   0E7B 09            [11] 2212 	add	hl,bc
+   0E7C EB            [ 4] 2213 	ex	de,hl
+   0E7D DD 7E 04      [19] 2214 	ld	a,4 (ix)
+   0E80 12            [ 7] 2215 	ld	(de),a
+                           2216 ;src/Personaje.c:278: if(x==16)
+   0E81 DD 7E 07      [19] 2217 	ld	a,7 (ix)
+   0E84 D6 10         [ 7] 2218 	sub	a, #0x10
+   0E86 20 0F         [12] 2219 	jr	NZ,00108$
+   0E88 DD 7E 08      [19] 2220 	ld	a,8 (ix)
+   0E8B B7            [ 4] 2221 	or	a, a
+   0E8C 20 09         [12] 2222 	jr	NZ,00108$
+                           2223 ;src/Personaje.c:279: p->x=288;
+   0E8E 69            [ 4] 2224 	ld	l, c
+   0E8F 60            [ 4] 2225 	ld	h, b
+   0E90 36 20         [10] 2226 	ld	(hl),#0x20
+   0E92 23            [ 6] 2227 	inc	hl
+   0E93 36 01         [10] 2228 	ld	(hl),#0x01
+   0E95 18 27         [12] 2229 	jr	00109$
+   0E97                    2230 00108$:
+                           2231 ;src/Personaje.c:280: else if(x==288)
+   0E97 DD 7E 07      [19] 2232 	ld	a,7 (ix)
+   0E9A D6 20         [ 7] 2233 	sub	a, #0x20
+   0E9C 20 0F         [12] 2234 	jr	NZ,00105$
+   0E9E DD 7E 08      [19] 2235 	ld	a,8 (ix)
+   0EA1 3D            [ 4] 2236 	dec	a
+   0EA2 20 09         [12] 2237 	jr	NZ,00105$
+                           2238 ;src/Personaje.c:281: p->x=16;
+   0EA4 69            [ 4] 2239 	ld	l, c
+   0EA5 60            [ 4] 2240 	ld	h, b
+   0EA6 36 10         [10] 2241 	ld	(hl),#0x10
+   0EA8 23            [ 6] 2242 	inc	hl
+   0EA9 36 00         [10] 2243 	ld	(hl),#0x00
+   0EAB 18 11         [12] 2244 	jr	00109$
+   0EAD                    2245 00105$:
+                           2246 ;src/Personaje.c:283: p->y=160;
+   0EAD 69            [ 4] 2247 	ld	l, c
+   0EAE 60            [ 4] 2248 	ld	h, b
+   0EAF 23            [ 6] 2249 	inc	hl
+   0EB0 23            [ 6] 2250 	inc	hl
+                           2251 ;src/Personaje.c:282: else if(y==16)
+   0EB1 DD 7E 09      [19] 2252 	ld	a,9 (ix)
+   0EB4 D6 10         [ 7] 2253 	sub	a, #0x10
+   0EB6 20 04         [12] 2254 	jr	NZ,00102$
+                           2255 ;src/Personaje.c:283: p->y=160;
+   0EB8 36 A0         [10] 2256 	ld	(hl),#0xA0
+   0EBA 18 02         [12] 2257 	jr	00109$
+   0EBC                    2258 00102$:
+                           2259 ;src/Personaje.c:285: p->y=16;
+   0EBC 36 10         [10] 2260 	ld	(hl),#0x10
+   0EBE                    2261 00109$:
+                           2262 ;src/Personaje.c:287: p->generaEnemigos=1;
+   0EBE 21 0A 00      [10] 2263 	ld	hl,#0x000A
+   0EC1 09            [11] 2264 	add	hl,bc
+   0EC2 36 01         [10] 2265 	ld	(hl),#0x01
+                           2266 ;src/Personaje.c:288: pintarEscenario(p->salaActual);
+   0EC4 1A            [ 7] 2267 	ld	a,(de)
+   0EC5 F5            [11] 2268 	push	af
+   0EC6 33            [ 6] 2269 	inc	sp
+   0EC7 CDr00r00      [17] 2270 	call	_pintarEscenario
+   0ECA 33            [ 6] 2271 	inc	sp
+   0ECB DD E1         [14] 2272 	pop	ix
+   0ECD C9            [10] 2273 	ret
+                           2274 ;src/Personaje.c:290: void ataca(personaje *p){
+                           2275 ;	---------------------------------
+                           2276 ; Function ataca
+                           2277 ; ---------------------------------
+   0ECE                    2278 _ataca::
+   0ECE DD E5         [15] 2279 	push	ix
+   0ED0 DD 21 00 00   [14] 2280 	ld	ix,#0
+   0ED4 DD 39         [15] 2281 	add	ix,sp
+   0ED6 F5            [11] 2282 	push	af
+                           2283 ;src/Personaje.c:291: if(p->ataquePreparado){
+   0ED7 DD 4E 04      [19] 2284 	ld	c,4 (ix)
+   0EDA DD 46 05      [19] 2285 	ld	b,5 (ix)
+   0EDD 21 09 00      [10] 2286 	ld	hl,#0x0009
+   0EE0 09            [11] 2287 	add	hl,bc
+   0EE1 E3            [19] 2288 	ex	(sp), hl
+   0EE2 E1            [10] 2289 	pop	hl
+   0EE3 E5            [11] 2290 	push	hl
+   0EE4 7E            [ 7] 2291 	ld	a,(hl)
+   0EE5 B7            [ 4] 2292 	or	a, a
+   0EE6 28 17         [12] 2293 	jr	Z,00104$
+                           2294 ;src/Personaje.c:292: p->atacando=1;
+   0EE8 21 07 00      [10] 2295 	ld	hl,#0x0007
+   0EEB 09            [11] 2296 	add	hl,bc
+   0EEC 36 01         [10] 2297 	ld	(hl),#0x01
+                           2298 ;src/Personaje.c:293: p->cansancioAtaque++;
+   0EEE 21 08 00      [10] 2299 	ld	hl,#0x0008
+   0EF1 09            [11] 2300 	add	hl,bc
+   0EF2 7E            [ 7] 2301 	ld	a,(hl)
+   0EF3 3C            [ 4] 2302 	inc	a
+   0EF4 77            [ 7] 2303 	ld	(hl),a
+                           2304 ;src/Personaje.c:294: if(p->cansancioAtaque==7)
+   0EF5 D6 07         [ 7] 2305 	sub	a, #0x07
+   0EF7 20 0B         [12] 2306 	jr	NZ,00106$
+                           2307 ;src/Personaje.c:295: p->ataquePreparado=0;
+   0EF9 E1            [10] 2308 	pop	hl
+   0EFA E5            [11] 2309 	push	hl
+   0EFB 36 00         [10] 2310 	ld	(hl),#0x00
+   0EFD 18 05         [12] 2311 	jr	00106$
+   0EFF                    2312 00104$:
+                           2313 ;src/Personaje.c:298: noAtaca(p);
+   0EFF C5            [11] 2314 	push	bc
+   0F00 CDr09r0F      [17] 2315 	call	_noAtaca
+   0F03 F1            [10] 2316 	pop	af
+   0F04                    2317 00106$:
+   0F04 DD F9         [10] 2318 	ld	sp, ix
+   0F06 DD E1         [14] 2319 	pop	ix
+   0F08 C9            [10] 2320 	ret
+                           2321 ;src/Personaje.c:300: void noAtaca(personaje *p){
+                           2322 ;	---------------------------------
+                           2323 ; Function noAtaca
+                           2324 ; ---------------------------------
+   0F09                    2325 _noAtaca::
+   0F09 DD E5         [15] 2326 	push	ix
+   0F0B DD 21 00 00   [14] 2327 	ld	ix,#0
+   0F0F DD 39         [15] 2328 	add	ix,sp
+                           2329 ;src/Personaje.c:301: p->atacando=0;
+   0F11 DD 5E 04      [19] 2330 	ld	e,4 (ix)
+   0F14 DD 56 05      [19] 2331 	ld	d,5 (ix)
+   0F17 21 07 00      [10] 2332 	ld	hl,#0x0007
+   0F1A 19            [11] 2333 	add	hl,de
+   0F1B 36 00         [10] 2334 	ld	(hl),#0x00
+                           2335 ;src/Personaje.c:302: p->cansancioAtaque--;
+   0F1D 21 08 00      [10] 2336 	ld	hl,#0x0008
+   0F20 19            [11] 2337 	add	hl,de
+   0F21 7E            [ 7] 2338 	ld	a,(hl)
+   0F22 C6 FF         [ 7] 2339 	add	a,#0xFF
+   0F24 77            [ 7] 2340 	ld	(hl),a
+                           2341 ;src/Personaje.c:303: if(p->cansancioAtaque==0)
+   0F25 B7            [ 4] 2342 	or	a, a
+   0F26 20 06         [12] 2343 	jr	NZ,00103$
+                           2344 ;src/Personaje.c:304: p->ataquePreparado=1;
+   0F28 21 09 00      [10] 2345 	ld	hl,#0x0009
+   0F2B 19            [11] 2346 	add	hl,de
+   0F2C 36 01         [10] 2347 	ld	(hl),#0x01
+   0F2E                    2348 00103$:
+   0F2E DD E1         [14] 2349 	pop	ix
+   0F30 C9            [10] 2350 	ret
+                           2351 ;src/Personaje.c:306: void danyo(personaje *p){
+                           2352 ;	---------------------------------
+                           2353 ; Function danyo
+                           2354 ; ---------------------------------
+   0F31                    2355 _danyo::
+                           2356 ;src/Personaje.c:307: p->vida-=1;
+   0F31 C1            [10] 2357 	pop	bc
+   0F32 D1            [10] 2358 	pop	de
+   0F33 D5            [11] 2359 	push	de
+   0F34 C5            [11] 2360 	push	bc
+   0F35 13            [ 6] 2361 	inc	de
+   0F36 13            [ 6] 2362 	inc	de
+   0F37 13            [ 6] 2363 	inc	de
+   0F38 1A            [ 7] 2364 	ld	a,(de)
+   0F39 C6 FF         [ 7] 2365 	add	a,#0xFF
+   0F3B 12            [ 7] 2366 	ld	(de),a
+                           2367 ;src/Personaje.c:308: quitaVida();
+   0F3C C3r00r00      [10] 2368 	jp  _quitaVida
+                           2369 	.area _CODE
+                           2370 	.area _INITIALIZER
+                           2371 	.area _CABS (ABS)

@@ -1,0 +1,48 @@
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 1.
+Hexadecimal [16-Bits]
+
+Symbol Table
+
+    .__.$$$.                                                    =  2710 L
+    .__.ABS.                                                    =  0000 G
+    .__.CPU.                                                    =  0000 L
+    .__.H$L.                                                    =  0000 L
+    __modsint                                                      **** GX
+  0 _ataca                                                         0ECE GR
+  0 _cambiarSala                                                   0E6A GR
+  0 _comprobarColision                                             056C GR
+  0 _comprobarColisionDiagonal                                     0B27 GR
+    _cpct_drawSolidBox                                             **** GX
+    _cpct_drawSprite                                               **** GX
+    _cpct_getScreenPtr                                             **** GX
+    _cpct_isKeyPressed                                             **** GX
+    _cpct_px2byteM1                                                **** GX
+    _cpct_scanKeyboard_f                                           **** GX
+  0 _danyo                                                         0F31 GR
+  0 _desplazamientoHorizontal                                      03F0 GR
+  0 _desplazamientoVertical                                        03EF GR
+    _mapas                                                         **** GX
+  0 _muevePersonaje                                                0000 GR
+  0 _noAtaca                                                       0F09 GR
+    _personaje_tileset                                             **** GX
+  0 _pintaPersonaje                                                03F1 GR
+    _pintarEscenario                                               **** GX
+    _quitaVida                                                     **** GX
+    _video_memory_start                                            **** GX
+
+
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 2.
+Hexadecimal [16-Bits]
+
+Area Table
+
+   0 _CODE                                      size  F3F   flags    0
+   1 _DATA                                      size    0   flags    0
+   2 _INITIALIZED                               size    0   flags    0
+   3 _DABS                                      size    0   flags    8
+   4 _HOME                                      size    0   flags    0
+   5 _GSINIT                                    size    0   flags    0
+   6 _GSFINAL                                   size    0   flags    0
+   7 _INITIALIZER                               size    0   flags    0
+   8 _CABS                                      size    0   flags    8
+

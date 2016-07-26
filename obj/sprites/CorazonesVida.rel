@@ -1,0 +1,28 @@
+XL2
+H 9 areas 3 global symbols
+M CorazonesVida
+O -mz80
+S .__.ABS. Def0000
+A _CODE size 20 flags 0 addr 0
+S _CorazonVacio Def0010
+S _CorazonLleno Def0000
+A _DATA size 0 flags 0 addr 0
+A _INITIALIZED size 0 flags 0 addr 0
+A _DABS size 0 flags 8 addr 0
+A _HOME size 0 flags 0 addr 0
+A _GSINIT size 0 flags 0 addr 0
+A _GSFINAL size 0 flags 0 addr 0
+A _INITIALIZER size 0 flags 0 addr 0
+A _CABS size 0 flags 8 addr 0
+T 00 00
+R 00 00 00 00
+T 00 00 0F 0F 09 09 01 08 00 00 08 01 0C 03 0C 03
+R 00 00 00 00
+T 0E 00 0E 07
+R 00 00 00 00
+T 10 00
+R 00 00 00 00
+T 10 00 0F 0F 6F 6F EF 7F FF FF 7F EF 3F CF 3F CF
+R 00 00 00 00
+T 1E 00 1F 8F
+R 00 00 00 00

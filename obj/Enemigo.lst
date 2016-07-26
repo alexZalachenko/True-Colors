@@ -1,0 +1,2230 @@
+                              1 ;--------------------------------------------------------
+                              2 ; File Created by SDCC : free open source ANSI-C Compiler
+                              3 ; Version 3.5.0 #9253 (Sep 23 2015) (CYGWIN)
+                              4 ; This file was generated Fri Oct 23 22:07:31 2015
+                              5 ;--------------------------------------------------------
+                              6 	.module Enemigo
+                              7 	.optsdcc -mz80
+                              8 	
+                              9 ;--------------------------------------------------------
+                             10 ; Public variables in this module
+                             11 ;--------------------------------------------------------
+                             12 	.globl _danyo
+                             13 	.globl _cpct_getRandomUniform_u8_f
+                             14 	.globl _cpct_getScreenPtr
+                             15 	.globl _cpct_drawSolidBox
+                             16 	.globl _cpct_drawSprite
+                             17 	.globl _cpct_px2byteM1
+                             18 	.globl _ActualizarArr
+                             19 	.globl _generaEnemigos
+                             20 	.globl _Actualizar
+                             21 	.globl _Patrulla
+                             22 	.globl _MoveE
+                             23 	.globl _ColisionE
+                             24 	.globl _Vision
+                             25 	.globl _Combate
+                             26 	.globl _atacaE
+                             27 	.globl _noAtacaE
+                             28 	.globl _initEnemigo
+                             29 	.globl _pintaEnemigo
+                             30 	.globl _pintaEnemigos
+                             31 	.globl _quitarVida
+                             32 	.globl _recibirDanyo
+                             33 ;--------------------------------------------------------
+                             34 ; special function registers
+                             35 ;--------------------------------------------------------
+                             36 ;--------------------------------------------------------
+                             37 ; ram data
+                             38 ;--------------------------------------------------------
+                             39 	.area _DATA
+                             40 ;--------------------------------------------------------
+                             41 ; ram data
+                             42 ;--------------------------------------------------------
+                             43 	.area _INITIALIZED
+                             44 ;--------------------------------------------------------
+                             45 ; absolute external ram data
+                             46 ;--------------------------------------------------------
+                             47 	.area _DABS (ABS)
+                             48 ;--------------------------------------------------------
+                             49 ; global & static initialisations
+                             50 ;--------------------------------------------------------
+                             51 	.area _HOME
+                             52 	.area _GSINIT
+                             53 	.area _GSFINAL
+                             54 	.area _GSINIT
+                             55 ;--------------------------------------------------------
+                             56 ; Home
+                             57 ;--------------------------------------------------------
+                             58 	.area _HOME
+                             59 	.area _HOME
+                             60 ;--------------------------------------------------------
+                             61 ; code
+                             62 ;--------------------------------------------------------
+                             63 	.area _CODE
+                             64 ;src/Enemigo.c:4: void ActualizarArr(enemigo *arr[], personaje *p){
+                             65 ;	---------------------------------
+                             66 ; Function ActualizarArr
+                             67 ; ---------------------------------
+   0000                      68 _ActualizarArr::
+                             69 ;src/Enemigo.c:6: for(cont=0;cont<maxEnemigosSala;cont++){
+   0000 16 00         [ 7]   70 	ld	d,#0x00
+   0002                      71 00102$:
+                             72 ;src/Enemigo.c:7: Actualizar(arr[cont],p);
+   0002 6A            [ 4]   73 	ld	l,d
+   0003 26 00         [ 7]   74 	ld	h,#0x00
+   0005 29            [11]   75 	add	hl, hl
+   0006 4D            [ 4]   76 	ld	c, l
+   0007 44            [ 4]   77 	ld	b, h
+   0008 FD 21 02 00   [14]   78 	ld	iy,#2
+   000C FD 39         [15]   79 	add	iy,sp
+   000E FD 7E 00      [19]   80 	ld	a,0 (iy)
+   0011 81            [ 4]   81 	add	a, c
+   0012 4F            [ 4]   82 	ld	c,a
+   0013 FD 7E 01      [19]   83 	ld	a,1 (iy)
+   0016 88            [ 4]   84 	adc	a, b
+   0017 47            [ 4]   85 	ld	b,a
+   0018 69            [ 4]   86 	ld	l, c
+   0019 60            [ 4]   87 	ld	h, b
+   001A 4E            [ 7]   88 	ld	c,(hl)
+   001B 23            [ 6]   89 	inc	hl
+   001C 46            [ 7]   90 	ld	b,(hl)
+   001D D5            [11]   91 	push	de
+   001E 21 06 00      [10]   92 	ld	hl, #6
+   0021 39            [11]   93 	add	hl, sp
+   0022 7E            [ 7]   94 	ld	a, (hl)
+   0023 23            [ 6]   95 	inc	hl
+   0024 66            [ 7]   96 	ld	h, (hl)
+   0025 6F            [ 4]   97 	ld	l, a
+   0026 E5            [11]   98 	push	hl
+   0027 C5            [11]   99 	push	bc
+   0028 CDrCDr00      [17]  100 	call	_Actualizar
+   002B F1            [10]  101 	pop	af
+   002C F1            [10]  102 	pop	af
+   002D D1            [10]  103 	pop	de
+                            104 ;src/Enemigo.c:6: for(cont=0;cont<maxEnemigosSala;cont++){
+   002E 14            [ 4]  105 	inc	d
+   002F 7A            [ 4]  106 	ld	a,d
+   0030 D6 03         [ 7]  107 	sub	a, #0x03
+   0032 38 CE         [12]  108 	jr	C,00102$
+   0034 C9            [10]  109 	ret
+                            110 ;src/Enemigo.c:11: void generaEnemigos(u8 sala, enemigo* arr[]){
+                            111 ;	---------------------------------
+                            112 ; Function generaEnemigos
+                            113 ; ---------------------------------
+   0035                     114 _generaEnemigos::
+   0035 DD E5         [15]  115 	push	ix
+   0037 DD 21 00 00   [14]  116 	ld	ix,#0
+   003B DD 39         [15]  117 	add	ix,sp
+   003D F5            [11]  118 	push	af
+   003E 3B            [ 6]  119 	dec	sp
+                            120 ;src/Enemigo.c:14: do{
+   003F DD 36 FD 00   [19]  121 	ld	-3 (ix),#0x00
+   0043                     122 00101$:
+                            123 ;src/Enemigo.c:15: cordx=cpct_getRandomUniform_u8_f(0)%18+1;
+   0043 2E 00         [ 7]  124 	ld	l,#0x00
+   0045 CDr00r00      [17]  125 	call	_cpct_getRandomUniform_u8_f
+   0048 55            [ 4]  126 	ld	d,l
+   0049 3E 12         [ 7]  127 	ld	a,#0x12
+   004B F5            [11]  128 	push	af
+   004C 33            [ 6]  129 	inc	sp
+   004D D5            [11]  130 	push	de
+   004E 33            [ 6]  131 	inc	sp
+   004F CDr00r00      [17]  132 	call	__moduchar
+   0052 F1            [10]  133 	pop	af
+   0053 45            [ 4]  134 	ld	b,l
+   0054 04            [ 4]  135 	inc	b
+                            136 ;src/Enemigo.c:16: cordy=cpct_getRandomUniform_u8_f(0)%10+1;
+   0055 C5            [11]  137 	push	bc
+   0056 2E 00         [ 7]  138 	ld	l,#0x00
+   0058 CDr00r00      [17]  139 	call	_cpct_getRandomUniform_u8_f
+   005B 55            [ 4]  140 	ld	d,l
+   005C 3E 0A         [ 7]  141 	ld	a,#0x0A
+   005E F5            [11]  142 	push	af
+   005F 33            [ 6]  143 	inc	sp
+   0060 D5            [11]  144 	push	de
+   0061 33            [ 6]  145 	inc	sp
+   0062 CDr00r00      [17]  146 	call	__moduchar
+   0065 F1            [10]  147 	pop	af
+   0066 C1            [10]  148 	pop	bc
+   0067 4D            [ 4]  149 	ld	c,l
+   0068 0C            [ 4]  150 	inc	c
+                            151 ;src/Enemigo.c:17: }while(mapas[sala].posiciones[cordy][cordx]!=0);
+   0069 DD 56 04      [19]  152 	ld	d, 4 (ix)
+   006C 1E 00         [ 7]  153 	ld	e,#0x00
+   006E 21r00r00      [10]  154 	ld	hl,#_mapas
+   0071 19            [11]  155 	add	hl,de
+   0072 EB            [ 4]  156 	ex	de,hl
+   0073 79            [ 4]  157 	ld	a,c
+   0074 87            [ 4]  158 	add	a, a
+   0075 87            [ 4]  159 	add	a, a
+   0076 81            [ 4]  160 	add	a, c
+   0077 87            [ 4]  161 	add	a, a
+   0078 87            [ 4]  162 	add	a, a
+   0079 6F            [ 4]  163 	ld	l,a
+   007A 26 00         [ 7]  164 	ld	h,#0x00
+   007C 19            [11]  165 	add	hl,de
+   007D 58            [ 4]  166 	ld	e,b
+   007E 16 00         [ 7]  167 	ld	d,#0x00
+   0080 19            [11]  168 	add	hl,de
+   0081 7E            [ 7]  169 	ld	a,(hl)
+   0082 B7            [ 4]  170 	or	a, a
+   0083 20 BE         [12]  171 	jr	NZ,00101$
+                            172 ;src/Enemigo.c:18: initEnemigo(arr[cont], cordx, cordy);
+   0085 DD 6E FD      [19]  173 	ld	l,-3 (ix)
+   0088 26 00         [ 7]  174 	ld	h,#0x00
+   008A 29            [11]  175 	add	hl, hl
+   008B EB            [ 4]  176 	ex	de,hl
+   008C DD 7E 05      [19]  177 	ld	a,5 (ix)
+   008F 83            [ 4]  178 	add	a, e
+   0090 DD 77 FE      [19]  179 	ld	-2 (ix),a
+   0093 DD 7E 06      [19]  180 	ld	a,6 (ix)
+   0096 8A            [ 4]  181 	adc	a, d
+   0097 DD 77 FF      [19]  182 	ld	-1 (ix),a
+   009A DD 6E FE      [19]  183 	ld	l,-2 (ix)
+   009D DD 66 FF      [19]  184 	ld	h,-1 (ix)
+   00A0 5E            [ 7]  185 	ld	e,(hl)
+   00A1 23            [ 6]  186 	inc	hl
+   00A2 56            [ 7]  187 	ld	d,(hl)
+   00A3 79            [ 4]  188 	ld	a,c
+   00A4 F5            [11]  189 	push	af
+   00A5 33            [ 6]  190 	inc	sp
+   00A6 C5            [11]  191 	push	bc
+   00A7 33            [ 6]  192 	inc	sp
+   00A8 D5            [11]  193 	push	de
+   00A9 CDrB1r09      [17]  194 	call	_initEnemigo
+   00AC F1            [10]  195 	pop	af
+   00AD F1            [10]  196 	pop	af
+                            197 ;src/Enemigo.c:19: arr[cont]->danyino=0;
+   00AE DD 6E FE      [19]  198 	ld	l,-2 (ix)
+   00B1 DD 66 FF      [19]  199 	ld	h,-1 (ix)
+   00B4 5E            [ 7]  200 	ld	e,(hl)
+   00B5 23            [ 6]  201 	inc	hl
+   00B6 56            [ 7]  202 	ld	d,(hl)
+   00B7 21 0C 00      [10]  203 	ld	hl,#0x000C
+   00BA 19            [11]  204 	add	hl,de
+   00BB 36 00         [10]  205 	ld	(hl),#0x00
+                            206 ;src/Enemigo.c:13: for(cont=0;cont<maxEnemigosSala;cont++){
+   00BD DD 34 FD      [23]  207 	inc	-3 (ix)
+   00C0 DD 7E FD      [19]  208 	ld	a,-3 (ix)
+   00C3 D6 03         [ 7]  209 	sub	a, #0x03
+   00C5 DAr43r00      [10]  210 	jp	C,00101$
+   00C8 DD F9         [10]  211 	ld	sp, ix
+   00CA DD E1         [14]  212 	pop	ix
+   00CC C9            [10]  213 	ret
+                            214 ;src/Enemigo.c:24: void Actualizar(enemigo *e, personaje *p){
+                            215 ;	---------------------------------
+                            216 ; Function Actualizar
+                            217 ; ---------------------------------
+   00CD                     218 _Actualizar::
+                            219 ;src/Enemigo.c:25: if(e->estado==0){
+   00CD C1            [10]  220 	pop	bc
+   00CE D1            [10]  221 	pop	de
+   00CF D5            [11]  222 	push	de
+   00D0 C5            [11]  223 	push	bc
+   00D1 D5            [11]  224 	push	de
+   00D2 FD E1         [14]  225 	pop	iy
+   00D4 FD 7E 04      [19]  226 	ld	a,4 (iy)
+   00D7 B7            [ 4]  227 	or	a, a
+   00D8 20 0F         [12]  228 	jr	NZ,00102$
+                            229 ;src/Enemigo.c:26: Patrulla(e, p);
+   00DA 21 04 00      [10]  230 	ld	hl, #4
+   00DD 39            [11]  231 	add	hl, sp
+   00DE 4E            [ 7]  232 	ld	c, (hl)
+   00DF 23            [ 6]  233 	inc	hl
+   00E0 46            [ 7]  234 	ld	b, (hl)
+   00E1 C5            [11]  235 	push	bc
+   00E2 D5            [11]  236 	push	de
+   00E3 CDrF8r00      [17]  237 	call	_Patrulla
+   00E6 F1            [10]  238 	pop	af
+   00E7 F1            [10]  239 	pop	af
+   00E8 C9            [10]  240 	ret
+   00E9                     241 00102$:
+                            242 ;src/Enemigo.c:29: Combate(e,p);// Seguramente haya que pasarle el personaje 
+   00E9 21 04 00      [10]  243 	ld	hl, #4
+   00EC 39            [11]  244 	add	hl, sp
+   00ED 4E            [ 7]  245 	ld	c, (hl)
+   00EE 23            [ 6]  246 	inc	hl
+   00EF 46            [ 7]  247 	ld	b, (hl)
+   00F0 C5            [11]  248 	push	bc
+   00F1 D5            [11]  249 	push	de
+   00F2 CDrAAr07      [17]  250 	call	_Combate
+   00F5 F1            [10]  251 	pop	af
+   00F6 F1            [10]  252 	pop	af
+   00F7 C9            [10]  253 	ret
+                            254 ;src/Enemigo.c:34: void Patrulla(enemigo *e, personaje *p){
+                            255 ;	---------------------------------
+                            256 ; Function Patrulla
+                            257 ; ---------------------------------
+   00F8                     258 _Patrulla::
+                            259 ;src/Enemigo.c:35: if(Vision(e,p)==1){
+   00F8 21 04 00      [10]  260 	ld	hl, #4
+   00FB 39            [11]  261 	add	hl, sp
+   00FC 4E            [ 7]  262 	ld	c, (hl)
+   00FD 23            [ 6]  263 	inc	hl
+   00FE 46            [ 7]  264 	ld	b, (hl)
+   00FF C5            [11]  265 	push	bc
+   0100 21 04 00      [10]  266 	ld	hl, #4
+   0103 39            [11]  267 	add	hl, sp
+   0104 4E            [ 7]  268 	ld	c, (hl)
+   0105 23            [ 6]  269 	inc	hl
+   0106 46            [ 7]  270 	ld	b, (hl)
+   0107 C5            [11]  271 	push	bc
+   0108 CDr21r04      [17]  272 	call	_Vision
+   010B F1            [10]  273 	pop	af
+   010C F1            [10]  274 	pop	af
+   010D 2D            [ 4]  275 	dec	l
+   010E 20 0A         [12]  276 	jr	NZ,00102$
+                            277 ;src/Enemigo.c:36: e->estado=1;
+   0110 C1            [10]  278 	pop	bc
+   0111 E1            [10]  279 	pop	hl
+   0112 E5            [11]  280 	push	hl
+   0113 C5            [11]  281 	push	bc
+   0114 01 04 00      [10]  282 	ld	bc,#0x0004
+   0117 09            [11]  283 	add	hl,bc
+   0118 36 01         [10]  284 	ld	(hl),#0x01
+   011A                     285 00102$:
+                            286 ;src/Enemigo.c:39: MoveE(e, p);
+   011A 21 04 00      [10]  287 	ld	hl, #4
+   011D 39            [11]  288 	add	hl, sp
+   011E 4E            [ 7]  289 	ld	c, (hl)
+   011F 23            [ 6]  290 	inc	hl
+   0120 46            [ 7]  291 	ld	b, (hl)
+   0121 C5            [11]  292 	push	bc
+   0122 21 04 00      [10]  293 	ld	hl, #4
+   0125 39            [11]  294 	add	hl, sp
+   0126 4E            [ 7]  295 	ld	c, (hl)
+   0127 23            [ 6]  296 	inc	hl
+   0128 46            [ 7]  297 	ld	b, (hl)
+   0129 C5            [11]  298 	push	bc
+   012A CDr30r01      [17]  299 	call	_MoveE
+   012D F1            [10]  300 	pop	af
+   012E F1            [10]  301 	pop	af
+   012F C9            [10]  302 	ret
+                            303 ;src/Enemigo.c:41: void MoveE(enemigo *e, personaje *p){
+                            304 ;	---------------------------------
+                            305 ; Function MoveE
+                            306 ; ---------------------------------
+   0130                     307 _MoveE::
+   0130 DD E5         [15]  308 	push	ix
+   0132 DD 21 00 00   [14]  309 	ld	ix,#0
+   0136 DD 39         [15]  310 	add	ix,sp
+   0138 F5            [11]  311 	push	af
+   0139 F5            [11]  312 	push	af
+                            313 ;src/Enemigo.c:42: if(ColisionE(e, p)!=0){
+   013A DD 6E 06      [19]  314 	ld	l,6 (ix)
+   013D DD 66 07      [19]  315 	ld	h,7 (ix)
+   0140 E5            [11]  316 	push	hl
+   0141 DD 6E 04      [19]  317 	ld	l,4 (ix)
+   0144 DD 66 05      [19]  318 	ld	h,5 (ix)
+   0147 E5            [11]  319 	push	hl
+   0148 CDrBEr01      [17]  320 	call	_ColisionE
+   014B F1            [10]  321 	pop	af
+   014C F1            [10]  322 	pop	af
+   014D 4D            [ 4]  323 	ld	c,l
+                            324 ;src/Enemigo.c:43: e->direccion++;
+   014E DD 5E 04      [19]  325 	ld	e,4 (ix)
+   0151 DD 56 05      [19]  326 	ld	d,5 (ix)
+   0154 21 08 00      [10]  327 	ld	hl,#0x0008
+   0157 19            [11]  328 	add	hl,de
+   0158 E3            [19]  329 	ex	(sp), hl
+                            330 ;src/Enemigo.c:49: if(e->direccion==0){
+   0159 E1            [10]  331 	pop	hl
+   015A E5            [11]  332 	push	hl
+   015B 6E            [ 7]  333 	ld	l,(hl)
+                            334 ;src/Enemigo.c:42: if(ColisionE(e, p)!=0){
+   015C 79            [ 4]  335 	ld	a,c
+   015D B7            [ 4]  336 	or	a, a
+   015E 28 10         [12]  337 	jr	Z,00104$
+                            338 ;src/Enemigo.c:43: e->direccion++;
+   0160 55            [ 4]  339 	ld	d,l
+   0161 14            [ 4]  340 	inc	d
+   0162 E1            [10]  341 	pop	hl
+   0163 E5            [11]  342 	push	hl
+   0164 72            [ 7]  343 	ld	(hl),d
+                            344 ;src/Enemigo.c:44: if(e->direccion>3){
+   0165 3E 03         [ 7]  345 	ld	a,#0x03
+   0167 92            [ 4]  346 	sub	a, d
+   0168 30 4F         [12]  347 	jr	NC,00113$
+                            348 ;src/Enemigo.c:45: e->direccion=0;
+   016A E1            [10]  349 	pop	hl
+   016B E5            [11]  350 	push	hl
+   016C 36 00         [10]  351 	ld	(hl),#0x00
+                            352 ;src/Enemigo.c:47: return;
+   016E 18 49         [12]  353 	jr	00113$
+   0170                     354 00104$:
+                            355 ;src/Enemigo.c:49: if(e->direccion==0){
+   0170 7D            [ 4]  356 	ld	a,l
+   0171 B7            [ 4]  357 	or	a, a
+   0172 20 0C         [12]  358 	jr	NZ,00106$
+                            359 ;src/Enemigo.c:50: e->x+=2;
+   0174 6B            [ 4]  360 	ld	l, e
+   0175 62            [ 4]  361 	ld	h, d
+   0176 4E            [ 7]  362 	ld	c,(hl)
+   0177 23            [ 6]  363 	inc	hl
+   0178 46            [ 7]  364 	ld	b,(hl)
+   0179 03            [ 6]  365 	inc	bc
+   017A 03            [ 6]  366 	inc	bc
+   017B 6B            [ 4]  367 	ld	l, e
+   017C 62            [ 4]  368 	ld	h, d
+   017D 71            [ 7]  369 	ld	(hl),c
+   017E 23            [ 6]  370 	inc	hl
+   017F 70            [ 7]  371 	ld	(hl),b
+   0180                     372 00106$:
+                            373 ;src/Enemigo.c:52: if(e->direccion==1){
+   0180 E1            [10]  374 	pop	hl
+   0181 E5            [11]  375 	push	hl
+   0182 6E            [ 7]  376 	ld	l,(hl)
+                            377 ;src/Enemigo.c:53: e->y-=2;
+   0183 4B            [ 4]  378 	ld	c, e
+   0184 42            [ 4]  379 	ld	b, d
+   0185 03            [ 6]  380 	inc	bc
+   0186 03            [ 6]  381 	inc	bc
+                            382 ;src/Enemigo.c:52: if(e->direccion==1){
+   0187 2D            [ 4]  383 	dec	l
+   0188 20 04         [12]  384 	jr	NZ,00108$
+                            385 ;src/Enemigo.c:53: e->y-=2;
+   018A 0A            [ 7]  386 	ld	a,(bc)
+   018B C6 FE         [ 7]  387 	add	a,#0xFE
+   018D 02            [ 7]  388 	ld	(bc),a
+   018E                     389 00108$:
+                            390 ;src/Enemigo.c:55: if(e->direccion==2){
+   018E E1            [10]  391 	pop	hl
+   018F E5            [11]  392 	push	hl
+   0190 7E            [ 7]  393 	ld	a,(hl)
+   0191 D6 02         [ 7]  394 	sub	a, #0x02
+   0193 20 19         [12]  395 	jr	NZ,00110$
+                            396 ;src/Enemigo.c:56: e->x-=2;
+   0195 6B            [ 4]  397 	ld	l, e
+   0196 62            [ 4]  398 	ld	h, d
+   0197 7E            [ 7]  399 	ld	a, (hl)
+   0198 23            [ 6]  400 	inc	hl
+   0199 6E            [ 7]  401 	ld	l,(hl)
+   019A C6 FE         [ 7]  402 	add	a,#0xFE
+   019C DD 77 FE      [19]  403 	ld	-2 (ix),a
+   019F 7D            [ 4]  404 	ld	a,l
+   01A0 CE FF         [ 7]  405 	adc	a,#0xFF
+   01A2 DD 77 FF      [19]  406 	ld	-1 (ix),a
+   01A5 DD 7E FE      [19]  407 	ld	a,-2 (ix)
+   01A8 12            [ 7]  408 	ld	(de),a
+   01A9 13            [ 6]  409 	inc	de
+   01AA DD 7E FF      [19]  410 	ld	a,-1 (ix)
+   01AD 12            [ 7]  411 	ld	(de),a
+   01AE                     412 00110$:
+                            413 ;src/Enemigo.c:58: if(e->direccion==3){
+   01AE E1            [10]  414 	pop	hl
+   01AF E5            [11]  415 	push	hl
+   01B0 7E            [ 7]  416 	ld	a,(hl)
+   01B1 D6 03         [ 7]  417 	sub	a, #0x03
+   01B3 20 04         [12]  418 	jr	NZ,00113$
+                            419 ;src/Enemigo.c:59: e->y+=2;
+   01B5 0A            [ 7]  420 	ld	a,(bc)
+   01B6 C6 02         [ 7]  421 	add	a, #0x02
+   01B8 02            [ 7]  422 	ld	(bc),a
+   01B9                     423 00113$:
+   01B9 DD F9         [10]  424 	ld	sp, ix
+   01BB DD E1         [14]  425 	pop	ix
+   01BD C9            [10]  426 	ret
+                            427 ;src/Enemigo.c:64: u8 ColisionE(enemigo *e, personaje *p){
+                            428 ;	---------------------------------
+                            429 ; Function ColisionE
+                            430 ; ---------------------------------
+   01BE                     431 _ColisionE::
+   01BE DD E5         [15]  432 	push	ix
+   01C0 DD 21 00 00   [14]  433 	ld	ix,#0
+   01C4 DD 39         [15]  434 	add	ix,sp
+   01C6 21 EE FF      [10]  435 	ld	hl,#-18
+   01C9 39            [11]  436 	add	hl,sp
+   01CA F9            [ 6]  437 	ld	sp,hl
+                            438 ;src/Enemigo.c:65: int posx=e->x; 
+   01CB DD 4E 04      [19]  439 	ld	c,4 (ix)
+   01CE DD 46 05      [19]  440 	ld	b,5 (ix)
+   01D1 69            [ 4]  441 	ld	l, c
+   01D2 60            [ 4]  442 	ld	h, b
+   01D3 5E            [ 7]  443 	ld	e,(hl)
+   01D4 23            [ 6]  444 	inc	hl
+   01D5 56            [ 7]  445 	ld	d,(hl)
+                            446 ;src/Enemigo.c:66: u8  posy=e->y;
+   01D6 C5            [11]  447 	push	bc
+   01D7 FD E1         [14]  448 	pop	iy
+   01D9 FD 7E 02      [19]  449 	ld	a,2 (iy)
+                            450 ;src/Enemigo.c:67: u8 casX=posy/16, casY=posx/16;
+   01DC DD 77 EE      [19]  451 	ld	-18 (ix), a
+   01DF 07            [ 4]  452 	rlca
+   01E0 07            [ 4]  453 	rlca
+   01E1 07            [ 4]  454 	rlca
+   01E2 07            [ 4]  455 	rlca
+   01E3 E6 0F         [ 7]  456 	and	a,#0x0F
+   01E5 DD 77 EF      [19]  457 	ld	-17 (ix),a
+   01E8 6B            [ 4]  458 	ld	l, e
+   01E9 62            [ 4]  459 	ld	h, d
+   01EA CB 7A         [ 8]  460 	bit	7, d
+   01EC 28 04         [12]  461 	jr	Z,00143$
+   01EE 21 0F 00      [10]  462 	ld	hl,#0x000F
+   01F1 19            [11]  463 	add	hl,de
+   01F2                     464 00143$:
+   01F2 CB 2C         [ 8]  465 	sra	h
+   01F4 CB 1D         [ 8]  466 	rr	l
+   01F6 CB 2C         [ 8]  467 	sra	h
+   01F8 CB 1D         [ 8]  468 	rr	l
+   01FA CB 2C         [ 8]  469 	sra	h
+   01FC CB 1D         [ 8]  470 	rr	l
+   01FE CB 2C         [ 8]  471 	sra	h
+   0200 CB 1D         [ 8]  472 	rr	l
+   0202 DD 75 F0      [19]  473 	ld	-16 (ix),l
+                            474 ;src/Enemigo.c:68: if(e->direccion==0){
+   0205 C5            [11]  475 	push	bc
+   0206 FD E1         [14]  476 	pop	iy
+   0208 FD 7E 08      [19]  477 	ld	a,8 (iy)
+   020B DD 77 F3      [19]  478 	ld	-13 (ix),a
+                            479 ;src/Enemigo.c:69: if(posx%16==0){
+   020E 21 10 00      [10]  480 	ld	hl,#0x0010
+   0211 E5            [11]  481 	push	hl
+   0212 D5            [11]  482 	push	de
+                            483 ;src/Enemigo.c:70: if(posy%16==0){
+   0213 CDr00r00      [17]  484 	call	__modsint
+   0216 F1            [10]  485 	pop	af
+   0217 F1            [10]  486 	pop	af
+   0218 DD 74 F2      [19]  487 	ld	-14 (ix),h
+   021B DD 75 F1      [19]  488 	ld	-15 (ix),l
+   021E DD 7E EE      [19]  489 	ld	a,-18 (ix)
+   0221 E6 0F         [ 7]  490 	and	a, #0x0F
+   0223 DD 77 F5      [19]  491 	ld	-11 (ix),a
+                            492 ;src/Enemigo.c:72: return mapas[p->salaActual].posiciones[casX][casY+1];
+   0226 DD 4E 06      [19]  493 	ld	c,6 (ix)
+   0229 DD 46 07      [19]  494 	ld	b,7 (ix)
+   022C DD 7E EF      [19]  495 	ld	a,-17 (ix)
+   022F 5F            [ 4]  496 	ld	e,a
+   0230 87            [ 4]  497 	add	a, a
+   0231 87            [ 4]  498 	add	a, a
+   0232 83            [ 4]  499 	add	a, e
+   0233 87            [ 4]  500 	add	a, a
+   0234 87            [ 4]  501 	add	a, a
+   0235 DD 77 FC      [19]  502 	ld	-4 (ix),a
+   0238 DD 7E F0      [19]  503 	ld	a,-16 (ix)
+   023B 3C            [ 4]  504 	inc	a
+   023C DD 77 F4      [19]  505 	ld	-12 (ix),a
+                            506 ;src/Enemigo.c:74: else if(mapas[p->salaActual].posiciones[casX][casY+1]!=0 || mapas[p->salaActual].posiciones[casX+1][casY+1]!=0)
+   023F DD 5E EF      [19]  507 	ld	e,-17 (ix)
+   0242 1C            [ 4]  508 	inc	e
+                            509 ;src/Enemigo.c:72: return mapas[p->salaActual].posiciones[casX][casY+1];
+   0243 21 06 00      [10]  510 	ld	hl,#0x0006
+   0246 09            [11]  511 	add	hl,bc
+   0247 DD 75 F7      [19]  512 	ld	-9 (ix),l
+   024A DD 74 F8      [19]  513 	ld	-8 (ix),h
+                            514 ;src/Enemigo.c:74: else if(mapas[p->salaActual].posiciones[casX][casY+1]!=0 || mapas[p->salaActual].posiciones[casX+1][casY+1]!=0)
+   024D 7B            [ 4]  515 	ld	a,e
+   024E 87            [ 4]  516 	add	a, a
+   024F 87            [ 4]  517 	add	a, a
+   0250 83            [ 4]  518 	add	a, e
+   0251 87            [ 4]  519 	add	a, a
+   0252 87            [ 4]  520 	add	a, a
+   0253 DD 77 F6      [19]  521 	ld	-10 (ix),a
+                            522 ;src/Enemigo.c:68: if(e->direccion==0){
+   0256 DD 7E F3      [19]  523 	ld	a,-13 (ix)
+   0259 B7            [ 4]  524 	or	a, a
+   025A 20 5A         [12]  525 	jr	NZ,00110$
+                            526 ;src/Enemigo.c:69: if(posx%16==0){
+   025C DD 7E F2      [19]  527 	ld	a,-14 (ix)
+   025F DD B6 F1      [19]  528 	or	a,-15 (ix)
+   0262 20 4D         [12]  529 	jr	NZ,00108$
+                            530 ;src/Enemigo.c:72: return mapas[p->salaActual].posiciones[casX][casY+1];
+   0264 DD 6E F7      [19]  531 	ld	l,-9 (ix)
+   0267 DD 66 F8      [19]  532 	ld	h,-8 (ix)
+   026A 66            [ 7]  533 	ld	h, (hl)
+   026B 2E 00         [ 7]  534 	ld	l,#0x00
+                            535 ;src/Enemigo.c:70: if(posy%16==0){
+   026D DD 7E F5      [19]  536 	ld	a,-11 (ix)
+   0270 B7            [ 4]  537 	or	a, a
+   0271 20 14         [12]  538 	jr	NZ,00105$
+                            539 ;src/Enemigo.c:72: return mapas[p->salaActual].posiciones[casX][casY+1];
+   0273 11r00r00      [10]  540 	ld	de,#_mapas+0
+   0276 19            [11]  541 	add	hl,de
+   0277 DD 5E FC      [19]  542 	ld	e,-4 (ix)
+   027A 16 00         [ 7]  543 	ld	d,#0x00
+   027C 19            [11]  544 	add	hl,de
+   027D DD 5E F4      [19]  545 	ld	e,-12 (ix)
+   0280 16 00         [ 7]  546 	ld	d,#0x00
+   0282 19            [11]  547 	add	hl,de
+   0283 6E            [ 7]  548 	ld	l,(hl)
+   0284 C3r1Cr04      [10]  549 	jp	00141$
+   0287                     550 00105$:
+                            551 ;src/Enemigo.c:74: else if(mapas[p->salaActual].posiciones[casX][casY+1]!=0 || mapas[p->salaActual].posiciones[casX+1][casY+1]!=0)
+   0287 11r00r00      [10]  552 	ld	de,#_mapas+0
+   028A 19            [11]  553 	add	hl,de
+   028B EB            [ 4]  554 	ex	de,hl
+   028C DD 6E FC      [19]  555 	ld	l,-4 (ix)
+   028F 26 00         [ 7]  556 	ld	h,#0x00
+   0291 19            [11]  557 	add	hl,de
+   0292 DD 4E F4      [19]  558 	ld	c,-12 (ix)
+   0295 06 00         [ 7]  559 	ld	b,#0x00
+   0297 09            [11]  560 	add	hl,bc
+   0298 7E            [ 7]  561 	ld	a,(hl)
+   0299 B7            [ 4]  562 	or	a, a
+   029A 20 10         [12]  563 	jr	NZ,00101$
+   029C DD 6E F6      [19]  564 	ld	l,-10 (ix)
+   029F 26 00         [ 7]  565 	ld	h,#0x00
+   02A1 19            [11]  566 	add	hl,de
+   02A2 DD 5E F4      [19]  567 	ld	e,-12 (ix)
+   02A5 16 00         [ 7]  568 	ld	d,#0x00
+   02A7 19            [11]  569 	add	hl,de
+   02A8 7E            [ 7]  570 	ld	a,(hl)
+   02A9 B7            [ 4]  571 	or	a, a
+   02AA 28 05         [12]  572 	jr	Z,00108$
+   02AC                     573 00101$:
+                            574 ;src/Enemigo.c:76: return 1;
+   02AC 2E 01         [ 7]  575 	ld	l,#0x01
+   02AE C3r1Cr04      [10]  576 	jp	00141$
+   02B1                     577 00108$:
+                            578 ;src/Enemigo.c:78: return 0;
+   02B1 2E 00         [ 7]  579 	ld	l,#0x00
+   02B3 C3r1Cr04      [10]  580 	jp	00141$
+   02B6                     581 00110$:
+                            582 ;src/Enemigo.c:80: if(e->direccion==1){
+   02B6 DD 7E F3      [19]  583 	ld	a,-13 (ix)
+   02B9 3D            [ 4]  584 	dec	a
+   02BA C2r65r03      [10]  585 	jp	NZ,00120$
+                            586 ;src/Enemigo.c:81: if(posy%16==0){
+   02BD DD 7E F5      [19]  587 	ld	a,-11 (ix)
+   02C0 B7            [ 4]  588 	or	a, a
+   02C1 C2r60r03      [10]  589 	jp	NZ,00118$
+                            590 ;src/Enemigo.c:84: return mapas[p->salaActual].posiciones[casX-1][casY];
+   02C4 DD 7E EF      [19]  591 	ld	a,-17 (ix)
+   02C7 C6 FF         [ 7]  592 	add	a,#0xFF
+   02C9 DD 77 FB      [19]  593 	ld	-5 (ix), a
+   02CC 4F            [ 4]  594 	ld	c,a
+   02CD 87            [ 4]  595 	add	a, a
+   02CE 87            [ 4]  596 	add	a, a
+   02CF 81            [ 4]  597 	add	a, c
+   02D0 87            [ 4]  598 	add	a, a
+   02D1 87            [ 4]  599 	add	a, a
+   02D2 DD 77 FB      [19]  600 	ld	-5 (ix),a
+                            601 ;src/Enemigo.c:72: return mapas[p->salaActual].posiciones[casX][casY+1];
+   02D5 DD 6E F7      [19]  602 	ld	l,-9 (ix)
+   02D8 DD 66 F8      [19]  603 	ld	h,-8 (ix)
+   02DB 7E            [ 7]  604 	ld	a,(hl)
+   02DC DD 77 FF      [19]  605 	ld	-1 (ix), a
+   02DF DD 77 FD      [19]  606 	ld	-3 (ix),a
+   02E2 DD 36 FE 00   [19]  607 	ld	-2 (ix),#0x00
+   02E6 DD 7E FD      [19]  608 	ld	a,-3 (ix)
+   02E9 DD 77 FE      [19]  609 	ld	-2 (ix),a
+   02EC DD 36 FD 00   [19]  610 	ld	-3 (ix),#0x00
+                            611 ;src/Enemigo.c:82: if(posx%16==0){
+   02F0 DD 7E F2      [19]  612 	ld	a,-14 (ix)
+   02F3 DD B6 F1      [19]  613 	or	a,-15 (ix)
+   02F6 20 3C         [12]  614 	jr	NZ,00115$
+                            615 ;src/Enemigo.c:84: return mapas[p->salaActual].posiciones[casX-1][casY];
+   02F8 DD 7E FD      [19]  616 	ld	a,-3 (ix)
+   02FB C6r00         [ 7]  617 	add	a, #<(_mapas)
+   02FD DD 77 F9      [19]  618 	ld	-7 (ix),a
+   0300 DD 7E FE      [19]  619 	ld	a,-2 (ix)
+   0303 CEs00         [ 7]  620 	adc	a, #>(_mapas)
+   0305 DD 77 FA      [19]  621 	ld	-6 (ix),a
+   0308 DD 7E F9      [19]  622 	ld	a,-7 (ix)
+   030B DD 86 FB      [19]  623 	add	a, -5 (ix)
+   030E DD 77 F9      [19]  624 	ld	-7 (ix),a
+   0311 DD 7E FA      [19]  625 	ld	a,-6 (ix)
+   0314 CE 00         [ 7]  626 	adc	a, #0x00
+   0316 DD 77 FA      [19]  627 	ld	-6 (ix),a
+   0319 DD 7E F9      [19]  628 	ld	a,-7 (ix)
+   031C DD 86 F0      [19]  629 	add	a, -16 (ix)
+   031F DD 77 F9      [19]  630 	ld	-7 (ix),a
+   0322 DD 7E FA      [19]  631 	ld	a,-6 (ix)
+   0325 CE 00         [ 7]  632 	adc	a, #0x00
+   0327 DD 77 FA      [19]  633 	ld	-6 (ix),a
+   032A DD 6E F9      [19]  634 	ld	l,-7 (ix)
+   032D DD 66 FA      [19]  635 	ld	h,-6 (ix)
+   0330 6E            [ 7]  636 	ld	l,(hl)
+   0331 C3r1Cr04      [10]  637 	jp	00141$
+   0334                     638 00115$:
+                            639 ;src/Enemigo.c:86: else if(mapas[p->salaActual].posiciones[casX-1][casY]!=0 || mapas[p->salaActual].posiciones[casX-1][casY+1]!=0)
+   0334 21r00r00      [10]  640 	ld	hl,#_mapas+0
+   0337 DD 5E FD      [19]  641 	ld	e,-3 (ix)
+   033A DD 56 FE      [19]  642 	ld	d,-2 (ix)
+   033D 19            [11]  643 	add	hl,de
+   033E 7D            [ 4]  644 	ld	a,l
+   033F DD 86 FB      [19]  645 	add	a, -5 (ix)
+   0342 5F            [ 4]  646 	ld	e,a
+   0343 7C            [ 4]  647 	ld	a,h
+   0344 CE 00         [ 7]  648 	adc	a, #0x00
+   0346 57            [ 4]  649 	ld	d,a
+   0347 DD 6E F0      [19]  650 	ld	l,-16 (ix)
+   034A 26 00         [ 7]  651 	ld	h,#0x00
+   034C 19            [11]  652 	add	hl,de
+   034D 7E            [ 7]  653 	ld	a,(hl)
+   034E B7            [ 4]  654 	or	a, a
+   034F 20 0A         [12]  655 	jr	NZ,00111$
+   0351 DD 6E F4      [19]  656 	ld	l,-12 (ix)
+   0354 26 00         [ 7]  657 	ld	h,#0x00
+   0356 19            [11]  658 	add	hl,de
+   0357 7E            [ 7]  659 	ld	a,(hl)
+   0358 B7            [ 4]  660 	or	a, a
+   0359 28 05         [12]  661 	jr	Z,00118$
+   035B                     662 00111$:
+                            663 ;src/Enemigo.c:87: return 1;
+   035B 2E 01         [ 7]  664 	ld	l,#0x01
+   035D C3r1Cr04      [10]  665 	jp	00141$
+   0360                     666 00118$:
+                            667 ;src/Enemigo.c:89: return 0;
+   0360 2E 00         [ 7]  668 	ld	l,#0x00
+   0362 C3r1Cr04      [10]  669 	jp	00141$
+   0365                     670 00120$:
+                            671 ;src/Enemigo.c:91: if(e->direccion==2){
+   0365 DD 7E F3      [19]  672 	ld	a,-13 (ix)
+   0368 D6 02         [ 7]  673 	sub	a, #0x02
+   036A 20 54         [12]  674 	jr	NZ,00130$
+                            675 ;src/Enemigo.c:92: if(posx%16==0){
+   036C DD 7E F2      [19]  676 	ld	a,-14 (ix)
+   036F DD B6 F1      [19]  677 	or	a,-15 (ix)
+   0372 20 48         [12]  678 	jr	NZ,00128$
+                            679 ;src/Enemigo.c:95: return mapas[p->salaActual].posiciones[casX][casY-1];
+   0374 DD 5E F0      [19]  680 	ld	e,-16 (ix)
+   0377 1D            [ 4]  681 	dec	e
+                            682 ;src/Enemigo.c:72: return mapas[p->salaActual].posiciones[casX][casY+1];
+   0378 DD 6E F7      [19]  683 	ld	l,-9 (ix)
+   037B DD 66 F8      [19]  684 	ld	h,-8 (ix)
+   037E 66            [ 7]  685 	ld	h, (hl)
+   037F 2E 00         [ 7]  686 	ld	l,#0x00
+                            687 ;src/Enemigo.c:93: if(posy%16==0){
+   0381 DD 7E F5      [19]  688 	ld	a,-11 (ix)
+   0384 B7            [ 4]  689 	or	a, a
+   0385 20 11         [12]  690 	jr	NZ,00125$
+                            691 ;src/Enemigo.c:95: return mapas[p->salaActual].posiciones[casX][casY-1];
+   0387 01r00r00      [10]  692 	ld	bc,#_mapas+0
+   038A 09            [11]  693 	add	hl,bc
+   038B DD 4E FC      [19]  694 	ld	c,-4 (ix)
+   038E 06 00         [ 7]  695 	ld	b,#0x00
+   0390 09            [11]  696 	add	hl,bc
+   0391 16 00         [ 7]  697 	ld	d,#0x00
+   0393 19            [11]  698 	add	hl,de
+   0394 6E            [ 7]  699 	ld	l,(hl)
+   0395 C3r1Cr04      [10]  700 	jp	00141$
+   0398                     701 00125$:
+                            702 ;src/Enemigo.c:98: else if(mapas[p->salaActual].posiciones[casX][casY-1]!=0 || mapas[p->salaActual].posiciones[casX+1][casY-1]!=0)
+   0398 01r00r00      [10]  703 	ld	bc,#_mapas+0
+   039B 09            [11]  704 	add	hl,bc
+   039C 4D            [ 4]  705 	ld	c,l
+   039D 44            [ 4]  706 	ld	b,h
+   039E DD 6E FC      [19]  707 	ld	l,-4 (ix)
+   03A1 26 00         [ 7]  708 	ld	h,#0x00
+   03A3 09            [11]  709 	add	hl,bc
+   03A4 16 00         [ 7]  710 	ld	d,#0x00
+   03A6 19            [11]  711 	add	hl, de
+   03A7 7E            [ 7]  712 	ld	a,(hl)
+   03A8 B7            [ 4]  713 	or	a, a
+   03A9 20 0D         [12]  714 	jr	NZ,00121$
+   03AB DD 6E F6      [19]  715 	ld	l,-10 (ix)
+   03AE 26 00         [ 7]  716 	ld	h,#0x00
+   03B0 09            [11]  717 	add	hl,bc
+   03B1 16 00         [ 7]  718 	ld	d,#0x00
+   03B3 19            [11]  719 	add	hl,de
+   03B4 7E            [ 7]  720 	ld	a,(hl)
+   03B5 B7            [ 4]  721 	or	a, a
+   03B6 28 04         [12]  722 	jr	Z,00128$
+   03B8                     723 00121$:
+                            724 ;src/Enemigo.c:99: return 1;
+   03B8 2E 01         [ 7]  725 	ld	l,#0x01
+   03BA 18 60         [12]  726 	jr	00141$
+   03BC                     727 00128$:
+                            728 ;src/Enemigo.c:101: return 0;
+   03BC 2E 00         [ 7]  729 	ld	l,#0x00
+   03BE 18 5C         [12]  730 	jr	00141$
+   03C0                     731 00130$:
+                            732 ;src/Enemigo.c:103: if(e->direccion==3){
+   03C0 DD 7E F3      [19]  733 	ld	a,-13 (ix)
+   03C3 D6 03         [ 7]  734 	sub	a, #0x03
+   03C5 20 53         [12]  735 	jr	NZ,00140$
+                            736 ;src/Enemigo.c:104: if(posy%16==0){
+   03C7 DD 7E F5      [19]  737 	ld	a,-11 (ix)
+   03CA B7            [ 4]  738 	or	a, a
+   03CB 20 49         [12]  739 	jr	NZ,00138$
+                            740 ;src/Enemigo.c:72: return mapas[p->salaActual].posiciones[casX][casY+1];
+   03CD DD 6E F7      [19]  741 	ld	l,-9 (ix)
+   03D0 DD 66 F8      [19]  742 	ld	h,-8 (ix)
+   03D3 66            [ 7]  743 	ld	h, (hl)
+   03D4 2E 00         [ 7]  744 	ld	l,#0x00
+                            745 ;src/Enemigo.c:105: if(posx%16==0){
+   03D6 DD 7E F2      [19]  746 	ld	a,-14 (ix)
+   03D9 DD B6 F1      [19]  747 	or	a,-15 (ix)
+   03DC 20 13         [12]  748 	jr	NZ,00135$
+                            749 ;src/Enemigo.c:107: return mapas[p->salaActual].posiciones[casX+1][casY];
+   03DE 11r00r00      [10]  750 	ld	de,#_mapas+0
+   03E1 19            [11]  751 	add	hl,de
+   03E2 DD 5E F6      [19]  752 	ld	e,-10 (ix)
+   03E5 16 00         [ 7]  753 	ld	d,#0x00
+   03E7 19            [11]  754 	add	hl,de
+   03E8 DD 5E F0      [19]  755 	ld	e,-16 (ix)
+   03EB 16 00         [ 7]  756 	ld	d,#0x00
+   03ED 19            [11]  757 	add	hl,de
+   03EE 6E            [ 7]  758 	ld	l,(hl)
+   03EF 18 2B         [12]  759 	jr	00141$
+   03F1                     760 00135$:
+                            761 ;src/Enemigo.c:109: else if(mapas[p->salaActual].posiciones[casX+1][casY]!=0 || mapas[p->salaActual].posiciones[casX+1][casY+1]!=0)
+   03F1 11r00r00      [10]  762 	ld	de,#_mapas+0
+   03F4 19            [11]  763 	add	hl,de
+   03F5 DD 7E F6      [19]  764 	ld	a,-10 (ix)
+   03F8 85            [ 4]  765 	add	a, l
+   03F9 5F            [ 4]  766 	ld	e,a
+   03FA 3E 00         [ 7]  767 	ld	a,#0x00
+   03FC 8C            [ 4]  768 	adc	a, h
+   03FD 57            [ 4]  769 	ld	d,a
+   03FE DD 6E F0      [19]  770 	ld	l,-16 (ix)
+   0401 26 00         [ 7]  771 	ld	h,#0x00
+   0403 19            [11]  772 	add	hl,de
+   0404 7E            [ 7]  773 	ld	a,(hl)
+   0405 B7            [ 4]  774 	or	a, a
+   0406 20 0A         [12]  775 	jr	NZ,00131$
+   0408 DD 6E F4      [19]  776 	ld	l,-12 (ix)
+   040B 26 00         [ 7]  777 	ld	h,#0x00
+   040D 19            [11]  778 	add	hl,de
+   040E 7E            [ 7]  779 	ld	a,(hl)
+   040F B7            [ 4]  780 	or	a, a
+   0410 28 04         [12]  781 	jr	Z,00138$
+   0412                     782 00131$:
+                            783 ;src/Enemigo.c:110: return 1;
+   0412 2E 01         [ 7]  784 	ld	l,#0x01
+   0414 18 06         [12]  785 	jr	00141$
+   0416                     786 00138$:
+                            787 ;src/Enemigo.c:112: return 0;
+   0416 2E 00         [ 7]  788 	ld	l,#0x00
+   0418 18 02         [12]  789 	jr	00141$
+   041A                     790 00140$:
+                            791 ;src/Enemigo.c:114: return 7;
+   041A 2E 07         [ 7]  792 	ld	l,#0x07
+   041C                     793 00141$:
+   041C DD F9         [10]  794 	ld	sp, ix
+   041E DD E1         [14]  795 	pop	ix
+   0420 C9            [10]  796 	ret
+                            797 ;src/Enemigo.c:118: u8 Vision(enemigo *e, personaje *p){
+                            798 ;	---------------------------------
+                            799 ; Function Vision
+                            800 ; ---------------------------------
+   0421                     801 _Vision::
+   0421 DD E5         [15]  802 	push	ix
+   0423 DD 21 00 00   [14]  803 	ld	ix,#0
+   0427 DD 39         [15]  804 	add	ix,sp
+   0429 21 EF FF      [10]  805 	ld	hl,#-17
+   042C 39            [11]  806 	add	hl,sp
+   042D F9            [ 6]  807 	ld	sp,hl
+                            808 ;src/Enemigo.c:120: p1=0;
+   042E 0E 00         [ 7]  809 	ld	c,#0x00
+                            810 ;src/Enemigo.c:121: p11=0;
+   0430 1E 00         [ 7]  811 	ld	e,#0x00
+                            812 ;src/Enemigo.c:122: p12=0;
+   0432 DD 36 EF 00   [19]  813 	ld	-17 (ix),#0x00
+                            814 ;src/Enemigo.c:123: p2=0;
+   0436 DD 36 F2 00   [19]  815 	ld	-14 (ix),#0x00
+                            816 ;src/Enemigo.c:124: p21=0;
+   043A DD 36 F1 00   [19]  817 	ld	-15 (ix),#0x00
+                            818 ;src/Enemigo.c:125: p22=0;
+   043E DD 36 F0 00   [19]  819 	ld	-16 (ix),#0x00
+                            820 ;src/Enemigo.c:126: if(e->direccion==0){
+   0442 DD 7E 04      [19]  821 	ld	a,4 (ix)
+   0445 DD 77 F3      [19]  822 	ld	-13 (ix),a
+   0448 DD 7E 05      [19]  823 	ld	a,5 (ix)
+   044B DD 77 F4      [19]  824 	ld	-12 (ix),a
+   044E E5            [11]  825 	push	hl
+   044F DD 6E F3      [19]  826 	ld	l,-13 (ix)
+   0452 DD 66 F4      [19]  827 	ld	h,-12 (ix)
+   0455 E5            [11]  828 	push	hl
+   0456 FD E1         [14]  829 	pop	iy
+   0458 E1            [10]  830 	pop	hl
+   0459 FD 7E 08      [19]  831 	ld	a,8 (iy)
+   045C DD 77 FF      [19]  832 	ld	-1 (ix),a
+                            833 ;src/Enemigo.c:127: if(p->x>=((e->x)+16))
+   045F DD 7E 06      [19]  834 	ld	a,6 (ix)
+   0462 DD 77 FD      [19]  835 	ld	-3 (ix),a
+   0465 DD 7E 07      [19]  836 	ld	a,7 (ix)
+   0468 DD 77 FE      [19]  837 	ld	-2 (ix),a
+                            838 ;src/Enemigo.c:133: if(p->y>=((e->y)-16))
+   046B DD 7E F3      [19]  839 	ld	a,-13 (ix)
+   046E C6 02         [ 7]  840 	add	a, #0x02
+   0470 DD 77 FB      [19]  841 	ld	-5 (ix),a
+   0473 DD 7E F4      [19]  842 	ld	a,-12 (ix)
+   0476 CE 00         [ 7]  843 	adc	a, #0x00
+   0478 DD 77 FC      [19]  844 	ld	-4 (ix),a
+   047B DD 7E FD      [19]  845 	ld	a,-3 (ix)
+   047E C6 02         [ 7]  846 	add	a, #0x02
+   0480 DD 77 F9      [19]  847 	ld	-7 (ix),a
+   0483 DD 7E FE      [19]  848 	ld	a,-2 (ix)
+   0486 CE 00         [ 7]  849 	adc	a, #0x00
+   0488 DD 77 FA      [19]  850 	ld	-6 (ix),a
+                            851 ;src/Enemigo.c:126: if(e->direccion==0){
+   048B DD 7E FF      [19]  852 	ld	a,-1 (ix)
+   048E B7            [ 4]  853 	or	a, a
+   048F C2r61r05      [10]  854 	jp	NZ,00119$
+                            855 ;src/Enemigo.c:127: if(p->x>=((e->x)+16))
+   0492 DD 6E FD      [19]  856 	ld	l,-3 (ix)
+   0495 DD 66 FE      [19]  857 	ld	h,-2 (ix)
+   0498 7E            [ 7]  858 	ld	a,(hl)
+   0499 DD 77 F7      [19]  859 	ld	-9 (ix),a
+   049C 23            [ 6]  860 	inc	hl
+   049D 7E            [ 7]  861 	ld	a,(hl)
+   049E DD 77 F8      [19]  862 	ld	-8 (ix),a
+   04A1 DD 6E F3      [19]  863 	ld	l,-13 (ix)
+   04A4 DD 66 F4      [19]  864 	ld	h,-12 (ix)
+   04A7 7E            [ 7]  865 	ld	a,(hl)
+   04A8 DD 77 F5      [19]  866 	ld	-11 (ix),a
+   04AB 23            [ 6]  867 	inc	hl
+   04AC 7E            [ 7]  868 	ld	a,(hl)
+   04AD DD 77 F6      [19]  869 	ld	-10 (ix),a
+   04B0 DD 7E F5      [19]  870 	ld	a,-11 (ix)
+   04B3 C6 10         [ 7]  871 	add	a, #0x10
+   04B5 67            [ 4]  872 	ld	h,a
+   04B6 DD 7E F6      [19]  873 	ld	a,-10 (ix)
+   04B9 CE 00         [ 7]  874 	adc	a, #0x00
+   04BB 6F            [ 4]  875 	ld	l,a
+   04BC DD 7E F7      [19]  876 	ld	a,-9 (ix)
+   04BF 94            [ 4]  877 	sub	a, h
+   04C0 DD 7E F8      [19]  878 	ld	a,-8 (ix)
+   04C3 9D            [ 4]  879 	sbc	a, l
+   04C4 E2rC9r04      [10]  880 	jp	PO, 00355$
+   04C7 EE 80         [ 7]  881 	xor	a, #0x80
+   04C9                     882 00355$:
+   04C9 FArCEr04      [10]  883 	jp	M,00102$
+                            884 ;src/Enemigo.c:128: p11=1;
+   04CC 1E 01         [ 7]  885 	ld	e,#0x01
+   04CE                     886 00102$:
+                            887 ;src/Enemigo.c:129: if(p->x<=((e->x)+16*3))
+   04CE DD 7E F5      [19]  888 	ld	a,-11 (ix)
+   04D1 C6 30         [ 7]  889 	add	a, #0x30
+   04D3 67            [ 4]  890 	ld	h,a
+   04D4 DD 7E F6      [19]  891 	ld	a,-10 (ix)
+   04D7 CE 00         [ 7]  892 	adc	a, #0x00
+   04D9 6F            [ 4]  893 	ld	l,a
+   04DA 7C            [ 4]  894 	ld	a,h
+   04DB DD 96 F7      [19]  895 	sub	a, -9 (ix)
+   04DE 7D            [ 4]  896 	ld	a,l
+   04DF DD 9E F8      [19]  897 	sbc	a, -8 (ix)
+   04E2 E2rE7r04      [10]  898 	jp	PO, 00356$
+   04E5 EE 80         [ 7]  899 	xor	a, #0x80
+   04E7                     900 00356$:
+   04E7 FArEEr04      [10]  901 	jp	M,00104$
+                            902 ;src/Enemigo.c:130: p12=1;
+   04EA DD 36 EF 01   [19]  903 	ld	-17 (ix),#0x01
+   04EE                     904 00104$:
+                            905 ;src/Enemigo.c:131: if(p11==1&&p12==1)
+   04EE 7B            [ 4]  906 	ld	a,e
+   04EF 3D            [ 4]  907 	dec	a
+   04F0 20 08         [12]  908 	jr	NZ,00106$
+   04F2 DD 7E EF      [19]  909 	ld	a,-17 (ix)
+   04F5 3D            [ 4]  910 	dec	a
+   04F6 20 02         [12]  911 	jr	NZ,00106$
+                            912 ;src/Enemigo.c:132: p1=1;
+   04F8 0E 01         [ 7]  913 	ld	c,#0x01
+   04FA                     914 00106$:
+                            915 ;src/Enemigo.c:133: if(p->y>=((e->y)-16))
+   04FA DD 6E F9      [19]  916 	ld	l,-7 (ix)
+   04FD DD 66 FA      [19]  917 	ld	h,-6 (ix)
+   0500 46            [ 7]  918 	ld	b,(hl)
+   0501 DD 6E FB      [19]  919 	ld	l,-5 (ix)
+   0504 DD 66 FC      [19]  920 	ld	h,-4 (ix)
+   0507 6E            [ 7]  921 	ld	l,(hl)
+   0508 26 00         [ 7]  922 	ld	h,#0x00
+   050A 7D            [ 4]  923 	ld	a,l
+   050B C6 F0         [ 7]  924 	add	a,#0xF0
+   050D DD 77 F5      [19]  925 	ld	-11 (ix),a
+   0510 7C            [ 4]  926 	ld	a,h
+   0511 CE FF         [ 7]  927 	adc	a,#0xFF
+   0513 DD 77 F6      [19]  928 	ld	-10 (ix),a
+   0516 16 00         [ 7]  929 	ld	d,#0x00
+   0518 78            [ 4]  930 	ld	a,b
+   0519 DD 96 F5      [19]  931 	sub	a, -11 (ix)
+   051C 7A            [ 4]  932 	ld	a,d
+   051D DD 9E F6      [19]  933 	sbc	a, -10 (ix)
+   0520 E2r25r05      [10]  934 	jp	PO, 00361$
+   0523 EE 80         [ 7]  935 	xor	a, #0x80
+   0525                     936 00361$:
+   0525 FAr2Cr05      [10]  937 	jp	M,00109$
+                            938 ;src/Enemigo.c:134: p21=1;
+   0528 DD 36 F1 01   [19]  939 	ld	-15 (ix),#0x01
+   052C                     940 00109$:
+                            941 ;src/Enemigo.c:135: if(p->y<=((e->y)+16))
+   052C D5            [11]  942 	push	de
+   052D 11 10 00      [10]  943 	ld	de,#0x0010
+   0530 19            [11]  944 	add	hl, de
+   0531 D1            [10]  945 	pop	de
+   0532 7D            [ 4]  946 	ld	a,l
+   0533 90            [ 4]  947 	sub	a, b
+   0534 7C            [ 4]  948 	ld	a,h
+   0535 9A            [ 4]  949 	sbc	a, d
+   0536 E2r3Br05      [10]  950 	jp	PO, 00362$
+   0539 EE 80         [ 7]  951 	xor	a, #0x80
+   053B                     952 00362$:
+   053B FAr42r05      [10]  953 	jp	M,00111$
+                            954 ;src/Enemigo.c:136: p22=1;    
+   053E DD 36 F0 01   [19]  955 	ld	-16 (ix),#0x01
+   0542                     956 00111$:
+                            957 ;src/Enemigo.c:137: if(p21==1&&p22==1)
+   0542 DD 7E F1      [19]  958 	ld	a,-15 (ix)
+   0545 3D            [ 4]  959 	dec	a
+   0546 20 0A         [12]  960 	jr	NZ,00113$
+   0548 DD 7E F0      [19]  961 	ld	a,-16 (ix)
+   054B 3D            [ 4]  962 	dec	a
+   054C 20 04         [12]  963 	jr	NZ,00113$
+                            964 ;src/Enemigo.c:138: p2=1;
+   054E DD 36 F2 01   [19]  965 	ld	-14 (ix),#0x01
+   0552                     966 00113$:
+                            967 ;src/Enemigo.c:139: if(p1==1&&p2==1)
+   0552 79            [ 4]  968 	ld	a,c
+   0553 3D            [ 4]  969 	dec	a
+   0554 20 0B         [12]  970 	jr	NZ,00119$
+   0556 DD 7E F2      [19]  971 	ld	a,-14 (ix)
+   0559 3D            [ 4]  972 	dec	a
+   055A 20 05         [12]  973 	jr	NZ,00119$
+                            974 ;src/Enemigo.c:140: return 1;
+   055C 2E 01         [ 7]  975 	ld	l,#0x01
+   055E C3rA5r07      [10]  976 	jp	00177$
+   0561                     977 00119$:
+                            978 ;src/Enemigo.c:142: if(e->direccion==1){
+   0561 DD 7E FF      [19]  979 	ld	a,-1 (ix)
+   0564 3D            [ 4]  980 	dec	a
+   0565 C2r23r06      [10]  981 	jp	NZ,00138$
+                            982 ;src/Enemigo.c:143: if(p->x>=((e->x)-16))
+   0568 DD 6E FD      [19]  983 	ld	l,-3 (ix)
+   056B DD 66 FE      [19]  984 	ld	h,-2 (ix)
+   056E 46            [ 7]  985 	ld	b,(hl)
+   056F 23            [ 6]  986 	inc	hl
+   0570 56            [ 7]  987 	ld	d,(hl)
+   0571 DD 6E F3      [19]  988 	ld	l,-13 (ix)
+   0574 DD 66 F4      [19]  989 	ld	h,-12 (ix)
+   0577 7E            [ 7]  990 	ld	a, (hl)
+   0578 23            [ 6]  991 	inc	hl
+   0579 66            [ 7]  992 	ld	h,(hl)
+   057A 6F            [ 4]  993 	ld	l,a
+   057B C6 F0         [ 7]  994 	add	a,#0xF0
+   057D DD 77 F5      [19]  995 	ld	-11 (ix),a
+   0580 7C            [ 4]  996 	ld	a,h
+   0581 CE FF         [ 7]  997 	adc	a,#0xFF
+   0583 DD 77 F6      [19]  998 	ld	-10 (ix),a
+   0586 78            [ 4]  999 	ld	a,b
+   0587 DD 96 F5      [19] 1000 	sub	a, -11 (ix)
+   058A 7A            [ 4] 1001 	ld	a,d
+   058B DD 9E F6      [19] 1002 	sbc	a, -10 (ix)
+   058E E2r93r05      [10] 1003 	jp	PO, 00373$
+   0591 EE 80         [ 7] 1004 	xor	a, #0x80
+   0593                    1005 00373$:
+   0593 FAr98r05      [10] 1006 	jp	M,00121$
+                           1007 ;src/Enemigo.c:144: p11=1;
+   0596 1E 01         [ 7] 1008 	ld	e,#0x01
+   0598                    1009 00121$:
+                           1010 ;src/Enemigo.c:145: if(p->x<=((e->x)+16))
+   0598 D5            [11] 1011 	push	de
+   0599 11 10 00      [10] 1012 	ld	de,#0x0010
+   059C 19            [11] 1013 	add	hl, de
+   059D D1            [10] 1014 	pop	de
+   059E 7D            [ 4] 1015 	ld	a,l
+   059F 90            [ 4] 1016 	sub	a, b
+   05A0 7C            [ 4] 1017 	ld	a,h
+   05A1 9A            [ 4] 1018 	sbc	a, d
+   05A2 E2rA7r05      [10] 1019 	jp	PO, 00374$
+   05A5 EE 80         [ 7] 1020 	xor	a, #0x80
+   05A7                    1021 00374$:
+   05A7 FArAEr05      [10] 1022 	jp	M,00123$
+                           1023 ;src/Enemigo.c:146: p12=1;
+   05AA DD 36 EF 01   [19] 1024 	ld	-17 (ix),#0x01
+   05AE                    1025 00123$:
+                           1026 ;src/Enemigo.c:147: if(p11==1&&p12==1)
+   05AE 7B            [ 4] 1027 	ld	a,e
+   05AF 3D            [ 4] 1028 	dec	a
+   05B0 20 08         [12] 1029 	jr	NZ,00125$
+   05B2 DD 7E EF      [19] 1030 	ld	a,-17 (ix)
+   05B5 3D            [ 4] 1031 	dec	a
+   05B6 20 02         [12] 1032 	jr	NZ,00125$
+                           1033 ;src/Enemigo.c:148: p1=1;
+   05B8 0E 01         [ 7] 1034 	ld	c,#0x01
+   05BA                    1035 00125$:
+                           1036 ;src/Enemigo.c:149: if(p->y<=((e->y)-16))
+   05BA DD 6E F9      [19] 1037 	ld	l,-7 (ix)
+   05BD DD 66 FA      [19] 1038 	ld	h,-6 (ix)
+   05C0 46            [ 7] 1039 	ld	b,(hl)
+   05C1 DD 6E FB      [19] 1040 	ld	l,-5 (ix)
+   05C4 DD 66 FC      [19] 1041 	ld	h,-4 (ix)
+   05C7 6E            [ 7] 1042 	ld	l,(hl)
+   05C8 26 00         [ 7] 1043 	ld	h,#0x00
+   05CA 7D            [ 4] 1044 	ld	a,l
+   05CB C6 F0         [ 7] 1045 	add	a,#0xF0
+   05CD DD 77 F5      [19] 1046 	ld	-11 (ix),a
+   05D0 7C            [ 4] 1047 	ld	a,h
+   05D1 CE FF         [ 7] 1048 	adc	a,#0xFF
+   05D3 DD 77 F6      [19] 1049 	ld	-10 (ix),a
+   05D6 16 00         [ 7] 1050 	ld	d,#0x00
+   05D8 DD 7E F5      [19] 1051 	ld	a,-11 (ix)
+   05DB 90            [ 4] 1052 	sub	a, b
+   05DC DD 7E F6      [19] 1053 	ld	a,-10 (ix)
+   05DF 9A            [ 4] 1054 	sbc	a, d
+   05E0 E2rE5r05      [10] 1055 	jp	PO, 00379$
+   05E3 EE 80         [ 7] 1056 	xor	a, #0x80
+   05E5                    1057 00379$:
+   05E5 FArECr05      [10] 1058 	jp	M,00128$
+                           1059 ;src/Enemigo.c:150: p21=1;
+   05E8 DD 36 F1 01   [19] 1060 	ld	-15 (ix),#0x01
+   05EC                    1061 00128$:
+                           1062 ;src/Enemigo.c:151: if(p->y>=((e->y)-(16*3)))
+   05EC 7D            [ 4] 1063 	ld	a,l
+   05ED C6 D0         [ 7] 1064 	add	a,#0xD0
+   05EF 6F            [ 4] 1065 	ld	l,a
+   05F0 7C            [ 4] 1066 	ld	a,h
+   05F1 CE FF         [ 7] 1067 	adc	a,#0xFF
+   05F3 67            [ 4] 1068 	ld	h,a
+   05F4 78            [ 4] 1069 	ld	a,b
+   05F5 95            [ 4] 1070 	sub	a, l
+   05F6 7A            [ 4] 1071 	ld	a,d
+   05F7 9C            [ 4] 1072 	sbc	a, h
+   05F8 E2rFDr05      [10] 1073 	jp	PO, 00380$
+   05FB EE 80         [ 7] 1074 	xor	a, #0x80
+   05FD                    1075 00380$:
+   05FD FAr04r06      [10] 1076 	jp	M,00130$
+                           1077 ;src/Enemigo.c:152: p22=1;    
+   0600 DD 36 F0 01   [19] 1078 	ld	-16 (ix),#0x01
+   0604                    1079 00130$:
+                           1080 ;src/Enemigo.c:153: if(p21==1&&p22==1)
+   0604 DD 7E F1      [19] 1081 	ld	a,-15 (ix)
+   0607 3D            [ 4] 1082 	dec	a
+   0608 20 0A         [12] 1083 	jr	NZ,00132$
+   060A DD 7E F0      [19] 1084 	ld	a,-16 (ix)
+   060D 3D            [ 4] 1085 	dec	a
+   060E 20 04         [12] 1086 	jr	NZ,00132$
+                           1087 ;src/Enemigo.c:154: p2=1;
+   0610 DD 36 F2 01   [19] 1088 	ld	-14 (ix),#0x01
+   0614                    1089 00132$:
+                           1090 ;src/Enemigo.c:155: if(p1==1&&p2==1)
+   0614 79            [ 4] 1091 	ld	a,c
+   0615 3D            [ 4] 1092 	dec	a
+   0616 20 0B         [12] 1093 	jr	NZ,00138$
+   0618 DD 7E F2      [19] 1094 	ld	a,-14 (ix)
+   061B 3D            [ 4] 1095 	dec	a
+   061C 20 05         [12] 1096 	jr	NZ,00138$
+                           1097 ;src/Enemigo.c:156: return 1;
+   061E 2E 01         [ 7] 1098 	ld	l,#0x01
+   0620 C3rA5r07      [10] 1099 	jp	00177$
+   0623                    1100 00138$:
+                           1101 ;src/Enemigo.c:158: if(e->direccion==2){
+   0623 DD 7E FF      [19] 1102 	ld	a,-1 (ix)
+   0626 D6 02         [ 7] 1103 	sub	a, #0x02
+   0628 C2rE6r06      [10] 1104 	jp	NZ,00157$
+                           1105 ;src/Enemigo.c:159: if(p->x<=((e->x)-16))
+   062B DD 6E FD      [19] 1106 	ld	l,-3 (ix)
+   062E DD 66 FE      [19] 1107 	ld	h,-2 (ix)
+   0631 46            [ 7] 1108 	ld	b,(hl)
+   0632 23            [ 6] 1109 	inc	hl
+   0633 56            [ 7] 1110 	ld	d,(hl)
+   0634 DD 6E F3      [19] 1111 	ld	l,-13 (ix)
+   0637 DD 66 F4      [19] 1112 	ld	h,-12 (ix)
+   063A 7E            [ 7] 1113 	ld	a, (hl)
+   063B 23            [ 6] 1114 	inc	hl
+   063C 6E            [ 7] 1115 	ld	l,(hl)
+   063D 67            [ 4] 1116 	ld	h,a
+   063E C6 F0         [ 7] 1117 	add	a,#0xF0
+   0640 DD 77 F5      [19] 1118 	ld	-11 (ix),a
+   0643 7D            [ 4] 1119 	ld	a,l
+   0644 CE FF         [ 7] 1120 	adc	a,#0xFF
+   0646 DD 77 F6      [19] 1121 	ld	-10 (ix),a
+   0649 DD 7E F5      [19] 1122 	ld	a,-11 (ix)
+   064C 90            [ 4] 1123 	sub	a, b
+   064D DD 7E F6      [19] 1124 	ld	a,-10 (ix)
+   0650 9A            [ 4] 1125 	sbc	a, d
+   0651 E2r56r06      [10] 1126 	jp	PO, 00391$
+   0654 EE 80         [ 7] 1127 	xor	a, #0x80
+   0656                    1128 00391$:
+   0656 FAr5Br06      [10] 1129 	jp	M,00140$
+                           1130 ;src/Enemigo.c:160: p11=1;
+   0659 1E 01         [ 7] 1131 	ld	e,#0x01
+   065B                    1132 00140$:
+                           1133 ;src/Enemigo.c:161: if(p->x>=((e->x)-16*3))
+   065B 7C            [ 4] 1134 	ld	a,h
+   065C C6 D0         [ 7] 1135 	add	a,#0xD0
+   065E 67            [ 4] 1136 	ld	h,a
+   065F 7D            [ 4] 1137 	ld	a,l
+   0660 CE FF         [ 7] 1138 	adc	a,#0xFF
+   0662 6F            [ 4] 1139 	ld	l,a
+   0663 78            [ 4] 1140 	ld	a,b
+   0664 94            [ 4] 1141 	sub	a, h
+   0665 7A            [ 4] 1142 	ld	a,d
+   0666 9D            [ 4] 1143 	sbc	a, l
+   0667 E2r6Cr06      [10] 1144 	jp	PO, 00392$
+   066A EE 80         [ 7] 1145 	xor	a, #0x80
+   066C                    1146 00392$:
+   066C FAr73r06      [10] 1147 	jp	M,00142$
+                           1148 ;src/Enemigo.c:162: p12=1;
+   066F DD 36 EF 01   [19] 1149 	ld	-17 (ix),#0x01
+   0673                    1150 00142$:
+                           1151 ;src/Enemigo.c:163: if(p11==1&&p12==1)
+   0673 7B            [ 4] 1152 	ld	a,e
+   0674 3D            [ 4] 1153 	dec	a
+   0675 20 08         [12] 1154 	jr	NZ,00144$
+   0677 DD 7E EF      [19] 1155 	ld	a,-17 (ix)
+   067A 3D            [ 4] 1156 	dec	a
+   067B 20 02         [12] 1157 	jr	NZ,00144$
+                           1158 ;src/Enemigo.c:164: p1=1;
+   067D 0E 01         [ 7] 1159 	ld	c,#0x01
+   067F                    1160 00144$:
+                           1161 ;src/Enemigo.c:165: if(p->y>=((e->y)-16))
+   067F DD 6E F9      [19] 1162 	ld	l,-7 (ix)
+   0682 DD 66 FA      [19] 1163 	ld	h,-6 (ix)
+   0685 56            [ 7] 1164 	ld	d,(hl)
+   0686 DD 6E FB      [19] 1165 	ld	l,-5 (ix)
+   0689 DD 66 FC      [19] 1166 	ld	h,-4 (ix)
+   068C 6E            [ 7] 1167 	ld	l,(hl)
+   068D 26 00         [ 7] 1168 	ld	h,#0x00
+   068F 7D            [ 4] 1169 	ld	a,l
+   0690 C6 F0         [ 7] 1170 	add	a,#0xF0
+   0692 DD 77 F5      [19] 1171 	ld	-11 (ix),a
+   0695 7C            [ 4] 1172 	ld	a,h
+   0696 CE FF         [ 7] 1173 	adc	a,#0xFF
+   0698 DD 77 F6      [19] 1174 	ld	-10 (ix),a
+   069B 06 00         [ 7] 1175 	ld	b,#0x00
+   069D 7A            [ 4] 1176 	ld	a,d
+   069E DD 96 F5      [19] 1177 	sub	a, -11 (ix)
+   06A1 78            [ 4] 1178 	ld	a,b
+   06A2 DD 9E F6      [19] 1179 	sbc	a, -10 (ix)
+   06A5 E2rAAr06      [10] 1180 	jp	PO, 00397$
+   06A8 EE 80         [ 7] 1181 	xor	a, #0x80
+   06AA                    1182 00397$:
+   06AA FArB1r06      [10] 1183 	jp	M,00147$
+                           1184 ;src/Enemigo.c:166: p21=1;
+   06AD DD 36 F1 01   [19] 1185 	ld	-15 (ix),#0x01
+   06B1                    1186 00147$:
+                           1187 ;src/Enemigo.c:167: if(p->y<=((e->y)+16))
+   06B1 D5            [11] 1188 	push	de
+   06B2 11 10 00      [10] 1189 	ld	de,#0x0010
+   06B5 19            [11] 1190 	add	hl, de
+   06B6 D1            [10] 1191 	pop	de
+   06B7 7D            [ 4] 1192 	ld	a,l
+   06B8 92            [ 4] 1193 	sub	a, d
+   06B9 7C            [ 4] 1194 	ld	a,h
+   06BA 98            [ 4] 1195 	sbc	a, b
+   06BB E2rC0r06      [10] 1196 	jp	PO, 00398$
+   06BE EE 80         [ 7] 1197 	xor	a, #0x80
+   06C0                    1198 00398$:
+   06C0 FArC7r06      [10] 1199 	jp	M,00149$
+                           1200 ;src/Enemigo.c:168: p22=1;    
+   06C3 DD 36 F0 01   [19] 1201 	ld	-16 (ix),#0x01
+   06C7                    1202 00149$:
+                           1203 ;src/Enemigo.c:169: if(p21==1&&p22==1)
+   06C7 DD 7E F1      [19] 1204 	ld	a,-15 (ix)
+   06CA 3D            [ 4] 1205 	dec	a
+   06CB 20 0A         [12] 1206 	jr	NZ,00151$
+   06CD DD 7E F0      [19] 1207 	ld	a,-16 (ix)
+   06D0 3D            [ 4] 1208 	dec	a
+   06D1 20 04         [12] 1209 	jr	NZ,00151$
+                           1210 ;src/Enemigo.c:170: p2=1;
+   06D3 DD 36 F2 01   [19] 1211 	ld	-14 (ix),#0x01
+   06D7                    1212 00151$:
+                           1213 ;src/Enemigo.c:171: if(p1==1&&p2==1)
+   06D7 79            [ 4] 1214 	ld	a,c
+   06D8 3D            [ 4] 1215 	dec	a
+   06D9 20 0B         [12] 1216 	jr	NZ,00157$
+   06DB DD 7E F2      [19] 1217 	ld	a,-14 (ix)
+   06DE 3D            [ 4] 1218 	dec	a
+   06DF 20 05         [12] 1219 	jr	NZ,00157$
+                           1220 ;src/Enemigo.c:172: return 1;
+   06E1 2E 01         [ 7] 1221 	ld	l,#0x01
+   06E3 C3rA5r07      [10] 1222 	jp	00177$
+   06E6                    1223 00157$:
+                           1224 ;src/Enemigo.c:175: if(e->direccion==3){
+   06E6 DD 7E FF      [19] 1225 	ld	a,-1 (ix)
+   06E9 D6 03         [ 7] 1226 	sub	a, #0x03
+   06EB C2rA3r07      [10] 1227 	jp	NZ,00176$
+                           1228 ;src/Enemigo.c:176: if(p->x>=((e->x)-16))
+   06EE DD 6E FD      [19] 1229 	ld	l,-3 (ix)
+   06F1 DD 66 FE      [19] 1230 	ld	h,-2 (ix)
+   06F4 46            [ 7] 1231 	ld	b,(hl)
+   06F5 23            [ 6] 1232 	inc	hl
+   06F6 56            [ 7] 1233 	ld	d,(hl)
+   06F7 DD 6E F3      [19] 1234 	ld	l,-13 (ix)
+   06FA DD 66 F4      [19] 1235 	ld	h,-12 (ix)
+   06FD 7E            [ 7] 1236 	ld	a, (hl)
+   06FE 23            [ 6] 1237 	inc	hl
+   06FF 66            [ 7] 1238 	ld	h,(hl)
+   0700 6F            [ 4] 1239 	ld	l,a
+   0701 C6 F0         [ 7] 1240 	add	a,#0xF0
+   0703 DD 77 F5      [19] 1241 	ld	-11 (ix),a
+   0706 7C            [ 4] 1242 	ld	a,h
+   0707 CE FF         [ 7] 1243 	adc	a,#0xFF
+   0709 DD 77 F6      [19] 1244 	ld	-10 (ix),a
+   070C 78            [ 4] 1245 	ld	a,b
+   070D DD 96 F5      [19] 1246 	sub	a, -11 (ix)
+   0710 7A            [ 4] 1247 	ld	a,d
+   0711 DD 9E F6      [19] 1248 	sbc	a, -10 (ix)
+   0714 E2r19r07      [10] 1249 	jp	PO, 00409$
+   0717 EE 80         [ 7] 1250 	xor	a, #0x80
+   0719                    1251 00409$:
+   0719 FAr1Er07      [10] 1252 	jp	M,00159$
+                           1253 ;src/Enemigo.c:177: p11=1;
+   071C 1E 01         [ 7] 1254 	ld	e,#0x01
+   071E                    1255 00159$:
+                           1256 ;src/Enemigo.c:178: if(p->x<=((e->x)+16))
+   071E D5            [11] 1257 	push	de
+   071F 11 10 00      [10] 1258 	ld	de,#0x0010
+   0722 19            [11] 1259 	add	hl, de
+   0723 D1            [10] 1260 	pop	de
+   0724 7D            [ 4] 1261 	ld	a,l
+   0725 90            [ 4] 1262 	sub	a, b
+   0726 7C            [ 4] 1263 	ld	a,h
+   0727 9A            [ 4] 1264 	sbc	a, d
+   0728 E2r2Dr07      [10] 1265 	jp	PO, 00410$
+   072B EE 80         [ 7] 1266 	xor	a, #0x80
+   072D                    1267 00410$:
+   072D FAr34r07      [10] 1268 	jp	M,00161$
+                           1269 ;src/Enemigo.c:179: p12=1;
+   0730 DD 36 EF 01   [19] 1270 	ld	-17 (ix),#0x01
+   0734                    1271 00161$:
+                           1272 ;src/Enemigo.c:180: if(p11==1&&p12==1)
+   0734 1D            [ 4] 1273 	dec	e
+   0735 20 08         [12] 1274 	jr	NZ,00163$
+   0737 DD 7E EF      [19] 1275 	ld	a,-17 (ix)
+   073A 3D            [ 4] 1276 	dec	a
+   073B 20 02         [12] 1277 	jr	NZ,00163$
+                           1278 ;src/Enemigo.c:181: p1=1;
+   073D 0E 01         [ 7] 1279 	ld	c,#0x01
+   073F                    1280 00163$:
+                           1281 ;src/Enemigo.c:182: if(p->y>=((e->y)+16))
+   073F DD 6E F9      [19] 1282 	ld	l,-7 (ix)
+   0742 DD 66 FA      [19] 1283 	ld	h,-6 (ix)
+   0745 46            [ 7] 1284 	ld	b,(hl)
+   0746 DD 6E FB      [19] 1285 	ld	l,-5 (ix)
+   0749 DD 66 FC      [19] 1286 	ld	h,-4 (ix)
+   074C 5E            [ 7] 1287 	ld	e,(hl)
+   074D 16 00         [ 7] 1288 	ld	d,#0x00
+   074F 21 10 00      [10] 1289 	ld	hl,#0x0010
+   0752 19            [11] 1290 	add	hl,de
+   0753 DD 70 F5      [19] 1291 	ld	-11 (ix),b
+   0756 DD 36 F6 00   [19] 1292 	ld	-10 (ix),#0x00
+   075A DD 7E F5      [19] 1293 	ld	a,-11 (ix)
+   075D 95            [ 4] 1294 	sub	a, l
+   075E DD 7E F6      [19] 1295 	ld	a,-10 (ix)
+   0761 9C            [ 4] 1296 	sbc	a, h
+   0762 E2r67r07      [10] 1297 	jp	PO, 00415$
+   0765 EE 80         [ 7] 1298 	xor	a, #0x80
+   0767                    1299 00415$:
+   0767 FAr6Er07      [10] 1300 	jp	M,00166$
+                           1301 ;src/Enemigo.c:183: p21=1;
+   076A DD 36 F1 01   [19] 1302 	ld	-15 (ix),#0x01
+   076E                    1303 00166$:
+                           1304 ;src/Enemigo.c:184: if(p->y<=((e->y)+(16*3)))
+   076E 21 30 00      [10] 1305 	ld	hl,#0x0030
+   0771 19            [11] 1306 	add	hl,de
+   0772 7D            [ 4] 1307 	ld	a,l
+   0773 DD 96 F5      [19] 1308 	sub	a, -11 (ix)
+   0776 7C            [ 4] 1309 	ld	a,h
+   0777 DD 9E F6      [19] 1310 	sbc	a, -10 (ix)
+   077A E2r7Fr07      [10] 1311 	jp	PO, 00416$
+   077D EE 80         [ 7] 1312 	xor	a, #0x80
+   077F                    1313 00416$:
+   077F FAr86r07      [10] 1314 	jp	M,00168$
+                           1315 ;src/Enemigo.c:185: p22=1;    
+   0782 DD 36 F0 01   [19] 1316 	ld	-16 (ix),#0x01
+   0786                    1317 00168$:
+                           1318 ;src/Enemigo.c:186: if(p21==1&&p22==1)
+   0786 DD 7E F1      [19] 1319 	ld	a,-15 (ix)
+   0789 3D            [ 4] 1320 	dec	a
+   078A 20 0A         [12] 1321 	jr	NZ,00170$
+   078C DD 7E F0      [19] 1322 	ld	a,-16 (ix)
+   078F 3D            [ 4] 1323 	dec	a
+   0790 20 04         [12] 1324 	jr	NZ,00170$
+                           1325 ;src/Enemigo.c:187: p2=1;
+   0792 DD 36 F2 01   [19] 1326 	ld	-14 (ix),#0x01
+   0796                    1327 00170$:
+                           1328 ;src/Enemigo.c:188: if(p1==1&&p2==1)
+   0796 0D            [ 4] 1329 	dec	c
+   0797 20 0A         [12] 1330 	jr	NZ,00176$
+   0799 DD 7E F2      [19] 1331 	ld	a,-14 (ix)
+   079C 3D            [ 4] 1332 	dec	a
+   079D 20 04         [12] 1333 	jr	NZ,00176$
+                           1334 ;src/Enemigo.c:189: return 1;
+   079F 2E 01         [ 7] 1335 	ld	l,#0x01
+   07A1 18 02         [12] 1336 	jr	00177$
+   07A3                    1337 00176$:
+                           1338 ;src/Enemigo.c:191: return 0;
+   07A3 2E 00         [ 7] 1339 	ld	l,#0x00
+   07A5                    1340 00177$:
+   07A5 DD F9         [10] 1341 	ld	sp, ix
+   07A7 DD E1         [14] 1342 	pop	ix
+   07A9 C9            [10] 1343 	ret
+                           1344 ;src/Enemigo.c:194: void Combate(enemigo *e, personaje *p){
+                           1345 ;	---------------------------------
+                           1346 ; Function Combate
+                           1347 ; ---------------------------------
+   07AA                    1348 _Combate::
+   07AA DD E5         [15] 1349 	push	ix
+   07AC DD 21 00 00   [14] 1350 	ld	ix,#0
+   07B0 DD 39         [15] 1351 	add	ix,sp
+   07B2 21 F2 FF      [10] 1352 	ld	hl,#-14
+   07B5 39            [11] 1353 	add	hl,sp
+   07B6 F9            [ 6] 1354 	ld	sp,hl
+                           1355 ;src/Enemigo.c:196: p1=0;
+   07B7 DD 36 F2 00   [19] 1356 	ld	-14 (ix),#0x00
+                           1357 ;src/Enemigo.c:197: p2=0;
+   07BB 0E 00         [ 7] 1358 	ld	c,#0x00
+                           1359 ;src/Enemigo.c:198: p3=0;
+   07BD DD 36 F5 00   [19] 1360 	ld	-11 (ix),#0x00
+                           1361 ;src/Enemigo.c:199: p4=0;
+   07C1 DD 36 F4 00   [19] 1362 	ld	-12 (ix),#0x00
+                           1363 ;src/Enemigo.c:200: move=0;
+   07C5 DD 36 F3 00   [19] 1364 	ld	-13 (ix),#0x00
+                           1365 ;src/Enemigo.c:202: if(e->x>p->x+16)
+   07C9 DD 7E 04      [19] 1366 	ld	a,4 (ix)
+   07CC DD 77 FE      [19] 1367 	ld	-2 (ix),a
+   07CF DD 7E 05      [19] 1368 	ld	a,5 (ix)
+   07D2 DD 77 FF      [19] 1369 	ld	-1 (ix),a
+   07D5 DD 6E FE      [19] 1370 	ld	l,-2 (ix)
+   07D8 DD 66 FF      [19] 1371 	ld	h,-1 (ix)
+   07DB 7E            [ 7] 1372 	ld	a,(hl)
+   07DC DD 77 FC      [19] 1373 	ld	-4 (ix),a
+   07DF 23            [ 6] 1374 	inc	hl
+   07E0 7E            [ 7] 1375 	ld	a,(hl)
+   07E1 DD 77 FD      [19] 1376 	ld	-3 (ix),a
+   07E4 DD 7E 06      [19] 1377 	ld	a,6 (ix)
+   07E7 DD 77 F6      [19] 1378 	ld	-10 (ix),a
+   07EA DD 7E 07      [19] 1379 	ld	a,7 (ix)
+   07ED DD 77 F7      [19] 1380 	ld	-9 (ix),a
+   07F0 DD 6E F6      [19] 1381 	ld	l,-10 (ix)
+   07F3 DD 66 F7      [19] 1382 	ld	h,-9 (ix)
+   07F6 5E            [ 7] 1383 	ld	e,(hl)
+   07F7 23            [ 6] 1384 	inc	hl
+   07F8 56            [ 7] 1385 	ld	d,(hl)
+   07F9 21 10 00      [10] 1386 	ld	hl,#0x0010
+   07FC 19            [11] 1387 	add	hl,de
+   07FD 7D            [ 4] 1388 	ld	a,l
+   07FE DD 96 FC      [19] 1389 	sub	a, -4 (ix)
+   0801 7C            [ 4] 1390 	ld	a,h
+   0802 DD 9E FD      [19] 1391 	sbc	a, -3 (ix)
+   0805 E2r0Ar08      [10] 1392 	jp	PO, 00167$
+   0808 EE 80         [ 7] 1393 	xor	a, #0x80
+   080A                    1394 00167$:
+   080A F2r11r08      [10] 1395 	jp	P,00102$
+                           1396 ;src/Enemigo.c:203: p1=1;//izqu
+   080D DD 36 F2 01   [19] 1397 	ld	-14 (ix),#0x01
+   0811                    1398 00102$:
+                           1399 ;src/Enemigo.c:204: if(e->y<p->y-16)
+   0811 DD 6E FE      [19] 1400 	ld	l,-2 (ix)
+   0814 DD 66 FF      [19] 1401 	ld	h,-1 (ix)
+   0817 23            [ 6] 1402 	inc	hl
+   0818 23            [ 6] 1403 	inc	hl
+   0819 46            [ 7] 1404 	ld	b,(hl)
+   081A DD 6E F6      [19] 1405 	ld	l,-10 (ix)
+   081D DD 66 F7      [19] 1406 	ld	h,-9 (ix)
+   0820 23            [ 6] 1407 	inc	hl
+   0821 23            [ 6] 1408 	inc	hl
+   0822 6E            [ 7] 1409 	ld	l,(hl)
+   0823 26 00         [ 7] 1410 	ld	h,#0x00
+   0825 7D            [ 4] 1411 	ld	a,l
+   0826 C6 F0         [ 7] 1412 	add	a,#0xF0
+   0828 DD 77 FA      [19] 1413 	ld	-6 (ix),a
+   082B 7C            [ 4] 1414 	ld	a,h
+   082C CE FF         [ 7] 1415 	adc	a,#0xFF
+   082E DD 77 FB      [19] 1416 	ld	-5 (ix),a
+   0831 DD 70 F8      [19] 1417 	ld	-8 (ix),b
+   0834 DD 36 F9 00   [19] 1418 	ld	-7 (ix),#0x00
+   0838 DD 7E F8      [19] 1419 	ld	a,-8 (ix)
+   083B DD 96 FA      [19] 1420 	sub	a, -6 (ix)
+   083E DD 7E F9      [19] 1421 	ld	a,-7 (ix)
+   0841 DD 9E FB      [19] 1422 	sbc	a, -5 (ix)
+   0844 E2r49r08      [10] 1423 	jp	PO, 00168$
+   0847 EE 80         [ 7] 1424 	xor	a, #0x80
+   0849                    1425 00168$:
+   0849 F2r4Er08      [10] 1426 	jp	P,00104$
+                           1427 ;src/Enemigo.c:205: p2=1;// bot
+   084C 0E 01         [ 7] 1428 	ld	c,#0x01
+   084E                    1429 00104$:
+                           1430 ;src/Enemigo.c:206: if(e->y>p->y+16)
+   084E D5            [11] 1431 	push	de
+   084F 11 10 00      [10] 1432 	ld	de,#0x0010
+   0852 19            [11] 1433 	add	hl, de
+   0853 D1            [10] 1434 	pop	de
+   0854 7D            [ 4] 1435 	ld	a,l
+   0855 DD 96 F8      [19] 1436 	sub	a, -8 (ix)
+   0858 7C            [ 4] 1437 	ld	a,h
+   0859 DD 9E F9      [19] 1438 	sbc	a, -7 (ix)
+   085C E2r61r08      [10] 1439 	jp	PO, 00169$
+   085F EE 80         [ 7] 1440 	xor	a, #0x80
+   0861                    1441 00169$:
+   0861 F2r68r08      [10] 1442 	jp	P,00106$
+                           1443 ;src/Enemigo.c:207: p3=1; //top
+   0864 DD 36 F5 01   [19] 1444 	ld	-11 (ix),#0x01
+   0868                    1445 00106$:
+                           1446 ;src/Enemigo.c:208: if(e->x<p->x-16)
+   0868 7B            [ 4] 1447 	ld	a,e
+   0869 C6 F0         [ 7] 1448 	add	a,#0xF0
+   086B 67            [ 4] 1449 	ld	h,a
+   086C 7A            [ 4] 1450 	ld	a,d
+   086D CE FF         [ 7] 1451 	adc	a,#0xFF
+   086F 6F            [ 4] 1452 	ld	l,a
+   0870 DD 7E FC      [19] 1453 	ld	a,-4 (ix)
+   0873 94            [ 4] 1454 	sub	a, h
+   0874 DD 7E FD      [19] 1455 	ld	a,-3 (ix)
+   0877 9D            [ 4] 1456 	sbc	a, l
+   0878 E2r7Dr08      [10] 1457 	jp	PO, 00170$
+   087B EE 80         [ 7] 1458 	xor	a, #0x80
+   087D                    1459 00170$:
+   087D F2r84r08      [10] 1460 	jp	P,00108$
+                           1461 ;src/Enemigo.c:209: p4=1; //Derecha
+   0880 DD 36 F4 01   [19] 1462 	ld	-12 (ix),#0x01
+   0884                    1463 00108$:
+                           1464 ;src/Enemigo.c:211: if(e->atacando==0){
+   0884 DD 6E FE      [19] 1465 	ld	l,-2 (ix)
+   0887 DD 66 FF      [19] 1466 	ld	h,-1 (ix)
+   088A 11 09 00      [10] 1467 	ld	de, #0x0009
+   088D 19            [11] 1468 	add	hl, de
+   088E 7E            [ 7] 1469 	ld	a,(hl)
+   088F B7            [ 4] 1470 	or	a, a
+   0890 C2r10r09      [10] 1471 	jp	NZ,00122$
+                           1472 ;src/Enemigo.c:212: if(p4==1||p1==1){
+   0893 DD 7E F4      [19] 1473 	ld	a,-12 (ix)
+   0896 3D            [ 4] 1474 	dec	a
+   0897 20 04         [12] 1475 	jr	NZ,00171$
+   0899 3E 01         [ 7] 1476 	ld	a,#0x01
+   089B 18 01         [12] 1477 	jr	00172$
+   089D                    1478 00171$:
+   089D AF            [ 4] 1479 	xor	a,a
+   089E                    1480 00172$:
+   089E 67            [ 4] 1481 	ld	h,a
+                           1482 ;src/Enemigo.c:214: e->direccion=0;
+   089F DD 7E FE      [19] 1483 	ld	a,-2 (ix)
+   08A2 C6 08         [ 7] 1484 	add	a, #0x08
+   08A4 5F            [ 4] 1485 	ld	e,a
+   08A5 DD 7E FF      [19] 1486 	ld	a,-1 (ix)
+   08A8 CE 00         [ 7] 1487 	adc	a, #0x00
+   08AA 57            [ 4] 1488 	ld	d,a
+                           1489 ;src/Enemigo.c:212: if(p4==1||p1==1){
+   08AB 7C            [ 4] 1490 	ld	a,h
+   08AC B7            [ 4] 1491 	or	a, a
+   08AD 20 06         [12] 1492 	jr	NZ,00112$
+   08AF DD 7E F2      [19] 1493 	ld	a,-14 (ix)
+   08B2 3D            [ 4] 1494 	dec	a
+   08B3 20 26         [12] 1495 	jr	NZ,00113$
+   08B5                    1496 00112$:
+                           1497 ;src/Enemigo.c:213: if(p4==1){
+   08B5 7C            [ 4] 1498 	ld	a,h
+   08B6 B7            [ 4] 1499 	or	a, a
+   08B7 28 04         [12] 1500 	jr	Z,00110$
+                           1501 ;src/Enemigo.c:214: e->direccion=0;
+   08B9 AF            [ 4] 1502 	xor	a, a
+   08BA 12            [ 7] 1503 	ld	(de),a
+   08BB 18 03         [12] 1504 	jr	00111$
+   08BD                    1505 00110$:
+                           1506 ;src/Enemigo.c:216: e->direccion=2;
+   08BD 3E 02         [ 7] 1507 	ld	a,#0x02
+   08BF 12            [ 7] 1508 	ld	(de),a
+   08C0                    1509 00111$:
+                           1510 ;src/Enemigo.c:218: MoveE(e, p);
+   08C0 C5            [11] 1511 	push	bc
+   08C1 D5            [11] 1512 	push	de
+   08C2 DD 6E F6      [19] 1513 	ld	l,-10 (ix)
+   08C5 DD 66 F7      [19] 1514 	ld	h,-9 (ix)
+   08C8 E5            [11] 1515 	push	hl
+   08C9 DD 6E FE      [19] 1516 	ld	l,-2 (ix)
+   08CC DD 66 FF      [19] 1517 	ld	h,-1 (ix)
+   08CF E5            [11] 1518 	push	hl
+   08D0 CDr30r01      [17] 1519 	call	_MoveE
+   08D3 F1            [10] 1520 	pop	af
+   08D4 F1            [10] 1521 	pop	af
+   08D5 D1            [10] 1522 	pop	de
+   08D6 C1            [10] 1523 	pop	bc
+                           1524 ;src/Enemigo.c:219: move=1;
+   08D7 DD 36 F3 01   [19] 1525 	ld	-13 (ix),#0x01
+   08DB                    1526 00113$:
+                           1527 ;src/Enemigo.c:223: if(p3==1||p2==1){
+   08DB DD 7E F5      [19] 1528 	ld	a,-11 (ix)
+   08DE 3D            [ 4] 1529 	dec	a
+   08DF 20 04         [12] 1530 	jr	NZ,00175$
+   08E1 3E 01         [ 7] 1531 	ld	a,#0x01
+   08E3 18 01         [12] 1532 	jr	00176$
+   08E5                    1533 00175$:
+   08E5 AF            [ 4] 1534 	xor	a,a
+   08E6                    1535 00176$:
+   08E6 67            [ 4] 1536 	ld	h,a
+   08E7 B7            [ 4] 1537 	or	a, a
+   08E8 20 03         [12] 1538 	jr	NZ,00118$
+   08EA 0D            [ 4] 1539 	dec	c
+   08EB 20 23         [12] 1540 	jr	NZ,00122$
+   08ED                    1541 00118$:
+                           1542 ;src/Enemigo.c:224: if(p3==1){
+   08ED 7C            [ 4] 1543 	ld	a,h
+   08EE B7            [ 4] 1544 	or	a, a
+   08EF 28 05         [12] 1545 	jr	Z,00116$
+                           1546 ;src/Enemigo.c:225: e->direccion=1;
+   08F1 3E 01         [ 7] 1547 	ld	a,#0x01
+   08F3 12            [ 7] 1548 	ld	(de),a
+   08F4 18 03         [12] 1549 	jr	00117$
+   08F6                    1550 00116$:
+                           1551 ;src/Enemigo.c:227: e->direccion=3;
+   08F6 3E 03         [ 7] 1552 	ld	a,#0x03
+   08F8 12            [ 7] 1553 	ld	(de),a
+   08F9                    1554 00117$:
+                           1555 ;src/Enemigo.c:229: MoveE(e, p);
+   08F9 DD 6E F6      [19] 1556 	ld	l,-10 (ix)
+   08FC DD 66 F7      [19] 1557 	ld	h,-9 (ix)
+   08FF E5            [11] 1558 	push	hl
+   0900 DD 6E FE      [19] 1559 	ld	l,-2 (ix)
+   0903 DD 66 FF      [19] 1560 	ld	h,-1 (ix)
+   0906 E5            [11] 1561 	push	hl
+   0907 CDr30r01      [17] 1562 	call	_MoveE
+   090A F1            [10] 1563 	pop	af
+   090B F1            [10] 1564 	pop	af
+                           1565 ;src/Enemigo.c:230: move=1;
+   090C DD 36 F3 01   [19] 1566 	ld	-13 (ix),#0x01
+   0910                    1567 00122$:
+                           1568 ;src/Enemigo.c:233: if(move==0){
+   0910 DD 7E F3      [19] 1569 	ld	a,-13 (ix)
+   0913 B7            [ 4] 1570 	or	a, a
+   0914 20 13         [12] 1571 	jr	NZ,00125$
+                           1572 ;src/Enemigo.c:234: atacaE(e,p);
+   0916 DD 6E F6      [19] 1573 	ld	l,-10 (ix)
+   0919 DD 66 F7      [19] 1574 	ld	h,-9 (ix)
+   091C E5            [11] 1575 	push	hl
+   091D DD 6E FE      [19] 1576 	ld	l,-2 (ix)
+   0920 DD 66 FF      [19] 1577 	ld	h,-1 (ix)
+   0923 E5            [11] 1578 	push	hl
+   0924 CDr2Er09      [17] 1579 	call	_atacaE
+   0927 F1            [10] 1580 	pop	af
+   0928 F1            [10] 1581 	pop	af
+   0929                    1582 00125$:
+   0929 DD F9         [10] 1583 	ld	sp, ix
+   092B DD E1         [14] 1584 	pop	ix
+   092D C9            [10] 1585 	ret
+                           1586 ;src/Enemigo.c:241: void atacaE(enemigo *e, personaje *p){
+                           1587 ;	---------------------------------
+                           1588 ; Function atacaE
+                           1589 ; ---------------------------------
+   092E                    1590 _atacaE::
+   092E DD E5         [15] 1591 	push	ix
+   0930 DD 21 00 00   [14] 1592 	ld	ix,#0
+   0934 DD 39         [15] 1593 	add	ix,sp
+   0936 F5            [11] 1594 	push	af
+                           1595 ;src/Enemigo.c:242: if(e->ataquePreparado){
+   0937 DD 4E 04      [19] 1596 	ld	c,4 (ix)
+   093A DD 46 05      [19] 1597 	ld	b,5 (ix)
+   093D 21 0B 00      [10] 1598 	ld	hl,#0x000B
+   0940 09            [11] 1599 	add	hl,bc
+   0941 E3            [19] 1600 	ex	(sp), hl
+   0942 E1            [10] 1601 	pop	hl
+   0943 E5            [11] 1602 	push	hl
+   0944 7E            [ 7] 1603 	ld	a,(hl)
+   0945 B7            [ 4] 1604 	or	a, a
+   0946 28 31         [12] 1605 	jr	Z,00106$
+                           1606 ;src/Enemigo.c:244: e->atacando=1;
+   0948 21 09 00      [10] 1607 	ld	hl,#0x0009
+   094B 09            [11] 1608 	add	hl,bc
+   094C 36 01         [10] 1609 	ld	(hl),#0x01
+                           1610 ;src/Enemigo.c:245: e->cansancioAtaque++;
+   094E 21 0A 00      [10] 1611 	ld	hl,#0x000A
+   0951 09            [11] 1612 	add	hl,bc
+   0952 EB            [ 4] 1613 	ex	de,hl
+   0953 1A            [ 7] 1614 	ld	a,(de)
+   0954 3C            [ 4] 1615 	inc	a
+   0955 12            [ 7] 1616 	ld	(de),a
+                           1617 ;src/Enemigo.c:246: if(e->danyino==0){
+   0956 21 0C 00      [10] 1618 	ld	hl,#0x000C
+   0959 09            [11] 1619 	add	hl,bc
+   095A 7E            [ 7] 1620 	ld	a,(hl)
+   095B B7            [ 4] 1621 	or	a, a
+   095C 20 0F         [12] 1622 	jr	NZ,00102$
+                           1623 ;src/Enemigo.c:247: danyo(p);
+   095E E5            [11] 1624 	push	hl
+   095F D5            [11] 1625 	push	de
+   0960 DD 4E 06      [19] 1626 	ld	c,6 (ix)
+   0963 DD 46 07      [19] 1627 	ld	b,7 (ix)
+   0966 C5            [11] 1628 	push	bc
+   0967 CDr00r00      [17] 1629 	call	_danyo
+   096A F1            [10] 1630 	pop	af
+   096B D1            [10] 1631 	pop	de
+   096C E1            [10] 1632 	pop	hl
+   096D                    1633 00102$:
+                           1634 ;src/Enemigo.c:249: e->danyino++;
+   096D 34            [11] 1635 	inc	(hl)
+                           1636 ;src/Enemigo.c:250: if(e->cansancioAtaque==14){
+   096E 1A            [ 7] 1637 	ld	a,(de)
+   096F D6 0E         [ 7] 1638 	sub	a, #0x0E
+   0971 20 0B         [12] 1639 	jr	NZ,00108$
+                           1640 ;src/Enemigo.c:251: e->ataquePreparado=0;
+   0973 E1            [10] 1641 	pop	hl
+   0974 E5            [11] 1642 	push	hl
+   0975 36 00         [10] 1643 	ld	(hl),#0x00
+   0977 18 05         [12] 1644 	jr	00108$
+   0979                    1645 00106$:
+                           1646 ;src/Enemigo.c:255: noAtacaE(e);
+   0979 C5            [11] 1647 	push	bc
+   097A CDr83r09      [17] 1648 	call	_noAtacaE
+   097D F1            [10] 1649 	pop	af
+   097E                    1650 00108$:
+   097E DD F9         [10] 1651 	ld	sp, ix
+   0980 DD E1         [14] 1652 	pop	ix
+   0982 C9            [10] 1653 	ret
+                           1654 ;src/Enemigo.c:257: void noAtacaE(enemigo *e){
+                           1655 ;	---------------------------------
+                           1656 ; Function noAtacaE
+                           1657 ; ---------------------------------
+   0983                    1658 _noAtacaE::
+   0983 DD E5         [15] 1659 	push	ix
+   0985 DD 21 00 00   [14] 1660 	ld	ix,#0
+   0989 DD 39         [15] 1661 	add	ix,sp
+                           1662 ;src/Enemigo.c:258: e->atacando=0;
+   098B DD 5E 04      [19] 1663 	ld	e,4 (ix)
+   098E DD 56 05      [19] 1664 	ld	d,5 (ix)
+   0991 21 09 00      [10] 1665 	ld	hl,#0x0009
+   0994 19            [11] 1666 	add	hl,de
+   0995 36 00         [10] 1667 	ld	(hl),#0x00
+                           1668 ;src/Enemigo.c:259: e->cansancioAtaque--;
+   0997 21 0A 00      [10] 1669 	ld	hl,#0x000A
+   099A 19            [11] 1670 	add	hl,de
+   099B 7E            [ 7] 1671 	ld	a,(hl)
+   099C C6 FF         [ 7] 1672 	add	a,#0xFF
+   099E 77            [ 7] 1673 	ld	(hl),a
+                           1674 ;src/Enemigo.c:260: if(e->cansancioAtaque==0)
+   099F B7            [ 4] 1675 	or	a, a
+   09A0 20 06         [12] 1676 	jr	NZ,00102$
+                           1677 ;src/Enemigo.c:261: e->ataquePreparado=1;
+   09A2 21 0B 00      [10] 1678 	ld	hl,#0x000B
+   09A5 19            [11] 1679 	add	hl,de
+   09A6 36 01         [10] 1680 	ld	(hl),#0x01
+   09A8                    1681 00102$:
+                           1682 ;src/Enemigo.c:262: e->danyino=0;
+   09A8 21 0C 00      [10] 1683 	ld	hl,#0x000C
+   09AB 19            [11] 1684 	add	hl,de
+   09AC 36 00         [10] 1685 	ld	(hl),#0x00
+   09AE DD E1         [14] 1686 	pop	ix
+   09B0 C9            [10] 1687 	ret
+                           1688 ;src/Enemigo.c:267: void initEnemigo(enemigo *e, u8 x, u8 y){
+                           1689 ;	---------------------------------
+                           1690 ; Function initEnemigo
+                           1691 ; ---------------------------------
+   09B1                    1692 _initEnemigo::
+   09B1 DD E5         [15] 1693 	push	ix
+   09B3 DD 21 00 00   [14] 1694 	ld	ix,#0
+   09B7 DD 39         [15] 1695 	add	ix,sp
+   09B9 F5            [11] 1696 	push	af
+   09BA 3B            [ 6] 1697 	dec	sp
+                           1698 ;src/Enemigo.c:269: e->x=x*16;
+   09BB DD 5E 04      [19] 1699 	ld	e,4 (ix)
+   09BE DD 56 05      [19] 1700 	ld	d,5 (ix)
+   09C1 DD 6E 06      [19] 1701 	ld	l,6 (ix)
+   09C4 26 00         [ 7] 1702 	ld	h,#0x00
+   09C6 29            [11] 1703 	add	hl, hl
+   09C7 29            [11] 1704 	add	hl, hl
+   09C8 29            [11] 1705 	add	hl, hl
+   09C9 29            [11] 1706 	add	hl, hl
+   09CA 4D            [ 4] 1707 	ld	c, l
+   09CB 44            [ 4] 1708 	ld	b, h
+   09CC 6B            [ 4] 1709 	ld	l, e
+   09CD 62            [ 4] 1710 	ld	h, d
+   09CE 71            [ 7] 1711 	ld	(hl),c
+   09CF 23            [ 6] 1712 	inc	hl
+   09D0 70            [ 7] 1713 	ld	(hl),b
+                           1714 ;src/Enemigo.c:270: e->y=y*16;
+   09D1 6B            [ 4] 1715 	ld	l, e
+   09D2 62            [ 4] 1716 	ld	h, d
+   09D3 23            [ 6] 1717 	inc	hl
+   09D4 23            [ 6] 1718 	inc	hl
+   09D5 DD 7E 07      [19] 1719 	ld	a,7 (ix)
+   09D8 07            [ 4] 1720 	rlca
+   09D9 07            [ 4] 1721 	rlca
+   09DA 07            [ 4] 1722 	rlca
+   09DB 07            [ 4] 1723 	rlca
+   09DC E6 F0         [ 7] 1724 	and	a,#0xF0
+   09DE 77            [ 7] 1725 	ld	(hl),a
+                           1726 ;src/Enemigo.c:271: e->orientacion=0;
+   09DF D5            [11] 1727 	push	de
+   09E0 FD E1         [14] 1728 	pop	iy
+   09E2 FD 23         [10] 1729 	inc	iy
+   09E4 FD 23         [10] 1730 	inc	iy
+   09E6 FD 23         [10] 1731 	inc	iy
+   09E8 FD 36 00 00   [19] 1732 	ld	0 (iy), #0x00
+                           1733 ;src/Enemigo.c:272: e->estado=0;
+   09EC FD 21 04 00   [14] 1734 	ld	iy,#0x0004
+   09F0 FD 19         [15] 1735 	add	iy, de
+   09F2 FD 36 00 00   [19] 1736 	ld	0 (iy), #0x00
+                           1737 ;src/Enemigo.c:273: e->vida=1;
+   09F6 FD 21 05 00   [14] 1738 	ld	iy,#0x0005
+   09FA FD 19         [15] 1739 	add	iy, de
+   09FC FD 36 00 01   [19] 1740 	ld	0 (iy), #0x01
+                           1741 ;src/Enemigo.c:274: e->memPtr=cpct_getScreenPtr(video_memory_start,e->x/4,e->y);
+   0A00 7B            [ 4] 1742 	ld	a,e
+   0A01 C6 06         [ 7] 1743 	add	a, #0x06
+   0A03 DD 77 FE      [19] 1744 	ld	-2 (ix),a
+   0A06 7A            [ 4] 1745 	ld	a,d
+   0A07 CE 00         [ 7] 1746 	adc	a, #0x00
+   0A09 DD 77 FF      [19] 1747 	ld	-1 (ix),a
+   0A0C 7E            [ 7] 1748 	ld	a,(hl)
+   0A0D DD 77 FD      [19] 1749 	ld	-3 (ix),a
+   0A10 61            [ 4] 1750 	ld	h,c
+   0A11 68            [ 4] 1751 	ld	l,b
+   0A12 CB 78         [ 8] 1752 	bit	7, b
+   0A14 28 05         [12] 1753 	jr	Z,00103$
+   0A16 03            [ 6] 1754 	inc	bc
+   0A17 03            [ 6] 1755 	inc	bc
+   0A18 03            [ 6] 1756 	inc	bc
+   0A19 61            [ 4] 1757 	ld	h,c
+   0A1A 68            [ 4] 1758 	ld	l,b
+   0A1B                    1759 00103$:
+   0A1B 4C            [ 4] 1760 	ld	c, h
+   0A1C 45            [ 4] 1761 	ld	b, l
+   0A1D CB 28         [ 8] 1762 	sra	b
+   0A1F CB 19         [ 8] 1763 	rr	c
+   0A21 CB 28         [ 8] 1764 	sra	b
+   0A23 CB 19         [ 8] 1765 	rr	c
+   0A25 FD 2Ar00r00   [20] 1766 	ld	iy,(_video_memory_start)
+   0A29 D5            [11] 1767 	push	de
+   0A2A DD 7E FD      [19] 1768 	ld	a,-3 (ix)
+   0A2D F5            [11] 1769 	push	af
+   0A2E 33            [ 6] 1770 	inc	sp
+   0A2F 79            [ 4] 1771 	ld	a,c
+   0A30 F5            [11] 1772 	push	af
+   0A31 33            [ 6] 1773 	inc	sp
+   0A32 FD E5         [15] 1774 	push	iy
+   0A34 CDr00r00      [17] 1775 	call	_cpct_getScreenPtr
+   0A37 45            [ 4] 1776 	ld	b,l
+   0A38 4C            [ 4] 1777 	ld	c,h
+   0A39 D1            [10] 1778 	pop	de
+   0A3A DD 6E FE      [19] 1779 	ld	l,-2 (ix)
+   0A3D DD 66 FF      [19] 1780 	ld	h,-1 (ix)
+   0A40 70            [ 7] 1781 	ld	(hl),b
+   0A41 23            [ 6] 1782 	inc	hl
+   0A42 71            [ 7] 1783 	ld	(hl),c
+                           1784 ;src/Enemigo.c:276: e->direccion=0;
+   0A43 21 08 00      [10] 1785 	ld	hl,#0x0008
+   0A46 19            [11] 1786 	add	hl,de
+   0A47 36 00         [10] 1787 	ld	(hl),#0x00
+                           1788 ;src/Enemigo.c:277: e->atacando=0;
+   0A49 21 09 00      [10] 1789 	ld	hl,#0x0009
+   0A4C 19            [11] 1790 	add	hl,de
+   0A4D 36 00         [10] 1791 	ld	(hl),#0x00
+                           1792 ;src/Enemigo.c:278: e->cansancioAtaque=0;
+   0A4F 21 0A 00      [10] 1793 	ld	hl,#0x000A
+   0A52 19            [11] 1794 	add	hl,de
+   0A53 36 00         [10] 1795 	ld	(hl),#0x00
+                           1796 ;src/Enemigo.c:279: e->ataquePreparado=1;
+   0A55 21 0B 00      [10] 1797 	ld	hl,#0x000B
+   0A58 19            [11] 1798 	add	hl,de
+   0A59 36 01         [10] 1799 	ld	(hl),#0x01
+   0A5B DD F9         [10] 1800 	ld	sp, ix
+   0A5D DD E1         [14] 1801 	pop	ix
+   0A5F C9            [10] 1802 	ret
+                           1803 ;src/Enemigo.c:282: void pintaEnemigo(enemigo *e){
+                           1804 ;	---------------------------------
+                           1805 ; Function pintaEnemigo
+                           1806 ; ---------------------------------
+   0A60                    1807 _pintaEnemigo::
+   0A60 DD E5         [15] 1808 	push	ix
+   0A62 DD 21 00 00   [14] 1809 	ld	ix,#0
+   0A66 DD 39         [15] 1810 	add	ix,sp
+   0A68 F5            [11] 1811 	push	af
+   0A69 F5            [11] 1812 	push	af
+                           1813 ;src/Enemigo.c:283: u8 aux=3;
+   0A6A DD 36 FC 03   [19] 1814 	ld	-4 (ix),#0x03
+                           1815 ;src/Enemigo.c:285: cpct_drawSolidBox(e->memPtr, cpct_px2byteM1(2,2,2,2), 4, 16);
+   0A6E 21 02 02      [10] 1816 	ld	hl,#0x0202
+   0A71 E5            [11] 1817 	push	hl
+   0A72 2E 02         [ 7] 1818 	ld	l, #0x02
+   0A74 E5            [11] 1819 	push	hl
+   0A75 CDr00r00      [17] 1820 	call	_cpct_px2byteM1
+   0A78 F1            [10] 1821 	pop	af
+   0A79 F1            [10] 1822 	pop	af
+   0A7A 45            [ 4] 1823 	ld	b,l
+   0A7B DD 5E 04      [19] 1824 	ld	e,4 (ix)
+   0A7E DD 56 05      [19] 1825 	ld	d,5 (ix)
+   0A81 21 06 00      [10] 1826 	ld	hl,#0x0006
+   0A84 19            [11] 1827 	add	hl,de
+   0A85 DD 75 FE      [19] 1828 	ld	-2 (ix),l
+   0A88 DD 74 FF      [19] 1829 	ld	-1 (ix),h
+   0A8B DD 6E FE      [19] 1830 	ld	l,-2 (ix)
+   0A8E DD 66 FF      [19] 1831 	ld	h,-1 (ix)
+   0A91 7E            [ 7] 1832 	ld	a, (hl)
+   0A92 23            [ 6] 1833 	inc	hl
+   0A93 66            [ 7] 1834 	ld	h,(hl)
+   0A94 6F            [ 4] 1835 	ld	l,a
+   0A95 E5            [11] 1836 	push	hl
+   0A96 FD E1         [14] 1837 	pop	iy
+   0A98 D5            [11] 1838 	push	de
+   0A99 21 04 10      [10] 1839 	ld	hl,#0x1004
+   0A9C E5            [11] 1840 	push	hl
+   0A9D C5            [11] 1841 	push	bc
+   0A9E 33            [ 6] 1842 	inc	sp
+   0A9F FD E5         [15] 1843 	push	iy
+   0AA1 CDr00r00      [17] 1844 	call	_cpct_drawSolidBox
+   0AA4 F1            [10] 1845 	pop	af
+   0AA5 F1            [10] 1846 	pop	af
+   0AA6 33            [ 6] 1847 	inc	sp
+   0AA7 D1            [10] 1848 	pop	de
+                           1849 ;src/Enemigo.c:287: e->memPtr=cpct_getScreenPtr(video_memory_start,e->x/4,e->y);
+   0AA8 6B            [ 4] 1850 	ld	l, e
+   0AA9 62            [ 4] 1851 	ld	h, d
+   0AAA 23            [ 6] 1852 	inc	hl
+   0AAB 23            [ 6] 1853 	inc	hl
+   0AAC 7E            [ 7] 1854 	ld	a,(hl)
+   0AAD DD 77 FD      [19] 1855 	ld	-3 (ix),a
+   0AB0 6B            [ 4] 1856 	ld	l, e
+   0AB1 62            [ 4] 1857 	ld	h, d
+   0AB2 4E            [ 7] 1858 	ld	c,(hl)
+   0AB3 23            [ 6] 1859 	inc	hl
+   0AB4 46            [ 7] 1860 	ld	b,(hl)
+   0AB5 61            [ 4] 1861 	ld	h,c
+   0AB6 68            [ 4] 1862 	ld	l,b
+   0AB7 CB 78         [ 8] 1863 	bit	7, b
+   0AB9 28 05         [12] 1864 	jr	Z,00105$
+   0ABB 03            [ 6] 1865 	inc	bc
+   0ABC 03            [ 6] 1866 	inc	bc
+   0ABD 03            [ 6] 1867 	inc	bc
+   0ABE 61            [ 4] 1868 	ld	h,c
+   0ABF 68            [ 4] 1869 	ld	l,b
+   0AC0                    1870 00105$:
+   0AC0 4C            [ 4] 1871 	ld	c, h
+   0AC1 45            [ 4] 1872 	ld	b, l
+   0AC2 CB 28         [ 8] 1873 	sra	b
+   0AC4 CB 19         [ 8] 1874 	rr	c
+   0AC6 CB 28         [ 8] 1875 	sra	b
+   0AC8 CB 19         [ 8] 1876 	rr	c
+   0ACA FD 2Ar00r00   [20] 1877 	ld	iy,(_video_memory_start)
+   0ACE D5            [11] 1878 	push	de
+   0ACF DD 7E FD      [19] 1879 	ld	a,-3 (ix)
+   0AD2 F5            [11] 1880 	push	af
+   0AD3 33            [ 6] 1881 	inc	sp
+   0AD4 79            [ 4] 1882 	ld	a,c
+   0AD5 F5            [11] 1883 	push	af
+   0AD6 33            [ 6] 1884 	inc	sp
+   0AD7 FD E5         [15] 1885 	push	iy
+   0AD9 CDr00r00      [17] 1886 	call	_cpct_getScreenPtr
+   0ADC 45            [ 4] 1887 	ld	b,l
+   0ADD 4C            [ 4] 1888 	ld	c,h
+   0ADE D1            [10] 1889 	pop	de
+   0ADF DD 6E FE      [19] 1890 	ld	l,-2 (ix)
+   0AE2 DD 66 FF      [19] 1891 	ld	h,-1 (ix)
+   0AE5 70            [ 7] 1892 	ld	(hl),b
+   0AE6 23            [ 6] 1893 	inc	hl
+   0AE7 71            [ 7] 1894 	ld	(hl),c
+                           1895 ;src/Enemigo.c:289: if(e->estado)
+   0AE8 D5            [11] 1896 	push	de
+   0AE9 FD E1         [14] 1897 	pop	iy
+   0AEB FD 7E 04      [19] 1898 	ld	a,4 (iy)
+   0AEE B7            [ 4] 1899 	or	a, a
+   0AEF 28 04         [12] 1900 	jr	Z,00102$
+                           1901 ;src/Enemigo.c:290: aux=0;
+   0AF1 DD 36 FC 00   [19] 1902 	ld	-4 (ix),#0x00
+   0AF5                    1903 00102$:
+                           1904 ;src/Enemigo.c:291: cpct_drawSprite(tilesetEnemigoCAC[e->orientacion+aux],e->memPtr,4,16);
+   0AF5 DD 6E FE      [19] 1905 	ld	l,-2 (ix)
+   0AF8 DD 66 FF      [19] 1906 	ld	h,-1 (ix)
+   0AFB 4E            [ 7] 1907 	ld	c,(hl)
+   0AFC 23            [ 6] 1908 	inc	hl
+   0AFD 46            [ 7] 1909 	ld	b,(hl)
+   0AFE D5            [11] 1910 	push	de
+   0AFF FD E1         [14] 1911 	pop	iy
+   0B01 FD 7E 03      [19] 1912 	ld	a, 3 (iy)
+   0B04 DD 86 FC      [19] 1913 	add	a, -4 (ix)
+   0B07 6F            [ 4] 1914 	ld	l,a
+   0B08 26 00         [ 7] 1915 	ld	h,#0x00
+   0B0A 29            [11] 1916 	add	hl, hl
+   0B0B 11r00r00      [10] 1917 	ld	de,#_tilesetEnemigoCAC
+   0B0E 19            [11] 1918 	add	hl,de
+   0B0F 5E            [ 7] 1919 	ld	e,(hl)
+   0B10 23            [ 6] 1920 	inc	hl
+   0B11 56            [ 7] 1921 	ld	d,(hl)
+   0B12 21 04 10      [10] 1922 	ld	hl,#0x1004
+   0B15 E5            [11] 1923 	push	hl
+   0B16 C5            [11] 1924 	push	bc
+   0B17 D5            [11] 1925 	push	de
+   0B18 CDr00r00      [17] 1926 	call	_cpct_drawSprite
+   0B1B DD F9         [10] 1927 	ld	sp, ix
+   0B1D DD E1         [14] 1928 	pop	ix
+   0B1F C9            [10] 1929 	ret
+                           1930 ;src/Enemigo.c:293: void pintaEnemigos(enemigo* arr[]){
+                           1931 ;	---------------------------------
+                           1932 ; Function pintaEnemigos
+                           1933 ; ---------------------------------
+   0B20                    1934 _pintaEnemigos::
+   0B20 DD E5         [15] 1935 	push	ix
+   0B22 DD 21 00 00   [14] 1936 	ld	ix,#0
+   0B26 DD 39         [15] 1937 	add	ix,sp
+   0B28 3B            [ 6] 1938 	dec	sp
+                           1939 ;src/Enemigo.c:295: for(cont=0;cont<maxEnemigosSala;cont++){
+   0B29 DD 36 FF 00   [19] 1940 	ld	-1 (ix),#0x00
+   0B2D                    1941 00104$:
+                           1942 ;src/Enemigo.c:296: if(arr[cont]->vida>0)
+   0B2D DD 6E FF      [19] 1943 	ld	l,-1 (ix)
+   0B30 26 00         [ 7] 1944 	ld	h,#0x00
+   0B32 29            [11] 1945 	add	hl, hl
+   0B33 EB            [ 4] 1946 	ex	de,hl
+   0B34 DD 6E 04      [19] 1947 	ld	l,4 (ix)
+   0B37 DD 66 05      [19] 1948 	ld	h,5 (ix)
+   0B3A 19            [11] 1949 	add	hl,de
+   0B3B 4E            [ 7] 1950 	ld	c,(hl)
+   0B3C 23            [ 6] 1951 	inc	hl
+   0B3D 46            [ 7] 1952 	ld	b,(hl)
+   0B3E C5            [11] 1953 	push	bc
+   0B3F FD E1         [14] 1954 	pop	iy
+   0B41 FD 7E 05      [19] 1955 	ld	a,5 (iy)
+   0B44 B7            [ 4] 1956 	or	a, a
+   0B45 28 05         [12] 1957 	jr	Z,00105$
+                           1958 ;src/Enemigo.c:297: pintaEnemigo(arr[cont]);
+   0B47 C5            [11] 1959 	push	bc
+   0B48 CDr60r0A      [17] 1960 	call	_pintaEnemigo
+   0B4B F1            [10] 1961 	pop	af
+   0B4C                    1962 00105$:
+                           1963 ;src/Enemigo.c:295: for(cont=0;cont<maxEnemigosSala;cont++){
+   0B4C DD 34 FF      [23] 1964 	inc	-1 (ix)
+   0B4F DD 7E FF      [19] 1965 	ld	a,-1 (ix)
+   0B52 D6 03         [ 7] 1966 	sub	a, #0x03
+   0B54 38 D7         [12] 1967 	jr	C,00104$
+   0B56 33            [ 6] 1968 	inc	sp
+   0B57 DD E1         [14] 1969 	pop	ix
+   0B59 C9            [10] 1970 	ret
+                           1971 ;src/Enemigo.c:301: void quitarVida(enemigo *e){
+                           1972 ;	---------------------------------
+                           1973 ; Function quitarVida
+                           1974 ; ---------------------------------
+   0B5A                    1975 _quitarVida::
+                           1976 ;src/Enemigo.c:302: e->vida--;
+   0B5A C1            [10] 1977 	pop	bc
+   0B5B D1            [10] 1978 	pop	de
+   0B5C D5            [11] 1979 	push	de
+   0B5D C5            [11] 1980 	push	bc
+   0B5E 13            [ 6] 1981 	inc	de
+   0B5F 13            [ 6] 1982 	inc	de
+   0B60 13            [ 6] 1983 	inc	de
+   0B61 13            [ 6] 1984 	inc	de
+   0B62 13            [ 6] 1985 	inc	de
+   0B63 1A            [ 7] 1986 	ld	a,(de)
+   0B64 C6 FF         [ 7] 1987 	add	a,#0xFF
+   0B66 12            [ 7] 1988 	ld	(de),a
+   0B67 C9            [10] 1989 	ret
+                           1990 ;src/Enemigo.c:305: void recibirDanyo(enemigo* arr[], personaje *p){
+                           1991 ;	---------------------------------
+                           1992 ; Function recibirDanyo
+                           1993 ; ---------------------------------
+   0B68                    1994 _recibirDanyo::
+   0B68 DD E5         [15] 1995 	push	ix
+   0B6A DD 21 00 00   [14] 1996 	ld	ix,#0
+   0B6E DD 39         [15] 1997 	add	ix,sp
+   0B70 21 ED FF      [10] 1998 	ld	hl,#-19
+   0B73 39            [11] 1999 	add	hl,sp
+   0B74 F9            [ 6] 2000 	ld	sp,hl
+                           2001 ;src/Enemigo.c:308: p1=0;
+   0B75 DD 36 F0 00   [19] 2002 	ld	-16 (ix),#0x00
+                           2003 ;src/Enemigo.c:309: p2=0;
+   0B79 DD 36 EF 00   [19] 2004 	ld	-17 (ix),#0x00
+                           2005 ;src/Enemigo.c:310: p3=0;
+   0B7D DD 36 EE 00   [19] 2006 	ld	-18 (ix),#0x00
+                           2007 ;src/Enemigo.c:311: p4=0;
+   0B81 DD 36 ED 00   [19] 2008 	ld	-19 (ix),#0x00
+                           2009 ;src/Enemigo.c:313: if(p->atacando){
+   0B85 DD 7E 06      [19] 2010 	ld	a,6 (ix)
+   0B88 DD 77 F8      [19] 2011 	ld	-8 (ix),a
+   0B8B DD 7E 07      [19] 2012 	ld	a,7 (ix)
+   0B8E DD 77 F9      [19] 2013 	ld	-7 (ix),a
+   0B91 DD 6E F8      [19] 2014 	ld	l,-8 (ix)
+   0B94 DD 66 F9      [19] 2015 	ld	h,-7 (ix)
+   0B97 11 07 00      [10] 2016 	ld	de, #0x0007
+   0B9A 19            [11] 2017 	add	hl, de
+   0B9B 4E            [ 7] 2018 	ld	c,(hl)
+   0B9C 79            [ 4] 2019 	ld	a,c
+   0B9D B7            [ 4] 2020 	or	a, a
+   0B9E CAr23r0D      [10] 2021 	jp	Z,00121$
+                           2022 ;src/Enemigo.c:314: for(cont=0; cont<maxEnemigosSala;cont++){
+   0BA1 DD 7E F8      [19] 2023 	ld	a,-8 (ix)
+   0BA4 C6 02         [ 7] 2024 	add	a, #0x02
+   0BA6 DD 77 F4      [19] 2025 	ld	-12 (ix),a
+   0BA9 DD 7E F9      [19] 2026 	ld	a,-7 (ix)
+   0BAC CE 00         [ 7] 2027 	adc	a, #0x00
+   0BAE DD 77 F5      [19] 2028 	ld	-11 (ix),a
+   0BB1 DD 36 F1 00   [19] 2029 	ld	-15 (ix),#0x00
+   0BB5                    2030 00119$:
+                           2031 ;src/Enemigo.c:315: if(arr[cont]->vida>0){
+   0BB5 DD 7E F1      [19] 2032 	ld	a,-15 (ix)
+   0BB8 DD 77 FA      [19] 2033 	ld	-6 (ix),a
+   0BBB DD 36 FB 00   [19] 2034 	ld	-5 (ix),#0x00
+   0BBF DD CB FA 26   [23] 2035 	sla	-6 (ix)
+   0BC3 DD CB FB 16   [23] 2036 	rl	-5 (ix)
+   0BC7 DD 7E 04      [19] 2037 	ld	a,4 (ix)
+   0BCA DD 86 FA      [19] 2038 	add	a, -6 (ix)
+   0BCD DD 77 FA      [19] 2039 	ld	-6 (ix),a
+   0BD0 DD 7E 05      [19] 2040 	ld	a,5 (ix)
+   0BD3 DD 8E FB      [19] 2041 	adc	a, -5 (ix)
+   0BD6 DD 77 FB      [19] 2042 	ld	-5 (ix),a
+                           2043 ;src/Enemigo.c:318: if(arr[cont]->y> p->y-16)
+   0BD9 DD 6E FA      [19] 2044 	ld	l,-6 (ix)
+   0BDC DD 66 FB      [19] 2045 	ld	h,-5 (ix)
+   0BDF 7E            [ 7] 2046 	ld	a,(hl)
+   0BE0 DD 77 FE      [19] 2047 	ld	-2 (ix),a
+   0BE3 23            [ 6] 2048 	inc	hl
+   0BE4 7E            [ 7] 2049 	ld	a,(hl)
+   0BE5 DD 77 FF      [19] 2050 	ld	-1 (ix),a
+                           2051 ;src/Enemigo.c:315: if(arr[cont]->vida>0){
+   0BE8 DD 7E FE      [19] 2052 	ld	a,-2 (ix)
+   0BEB C6 05         [ 7] 2053 	add	a, #0x05
+   0BED DD 77 FC      [19] 2054 	ld	-4 (ix),a
+   0BF0 DD 7E FF      [19] 2055 	ld	a,-1 (ix)
+   0BF3 CE 00         [ 7] 2056 	adc	a, #0x00
+   0BF5 DD 77 FD      [19] 2057 	ld	-3 (ix),a
+   0BF8 DD 6E FC      [19] 2058 	ld	l,-4 (ix)
+   0BFB DD 66 FD      [19] 2059 	ld	h,-3 (ix)
+   0BFE 7E            [ 7] 2060 	ld	a,(hl)
+   0BFF B7            [ 4] 2061 	or	a, a
+   0C00 CAr18r0D      [10] 2062 	jp	Z,00120$
+                           2063 ;src/Enemigo.c:316: if(arr[cont]->x>p->x-16)
+   0C03 DD 6E FE      [19] 2064 	ld	l,-2 (ix)
+   0C06 DD 66 FF      [19] 2065 	ld	h,-1 (ix)
+   0C09 7E            [ 7] 2066 	ld	a,(hl)
+   0C0A DD 77 F6      [19] 2067 	ld	-10 (ix),a
+   0C0D 23            [ 6] 2068 	inc	hl
+   0C0E 7E            [ 7] 2069 	ld	a,(hl)
+   0C0F DD 77 F7      [19] 2070 	ld	-9 (ix),a
+   0C12 DD 6E F8      [19] 2071 	ld	l,-8 (ix)
+   0C15 DD 66 F9      [19] 2072 	ld	h,-7 (ix)
+   0C18 7E            [ 7] 2073 	ld	a,(hl)
+   0C19 DD 77 F2      [19] 2074 	ld	-14 (ix),a
+   0C1C 23            [ 6] 2075 	inc	hl
+   0C1D 7E            [ 7] 2076 	ld	a,(hl)
+   0C1E DD 77 F3      [19] 2077 	ld	-13 (ix),a
+   0C21 DD 7E F2      [19] 2078 	ld	a,-14 (ix)
+   0C24 C6 F0         [ 7] 2079 	add	a,#0xF0
+   0C26 67            [ 4] 2080 	ld	h,a
+   0C27 DD 7E F3      [19] 2081 	ld	a,-13 (ix)
+   0C2A CE FF         [ 7] 2082 	adc	a,#0xFF
+   0C2C 6F            [ 4] 2083 	ld	l,a
+   0C2D 7C            [ 4] 2084 	ld	a,h
+   0C2E DD 96 F6      [19] 2085 	sub	a, -10 (ix)
+   0C31 7D            [ 4] 2086 	ld	a,l
+   0C32 DD 9E F7      [19] 2087 	sbc	a, -9 (ix)
+   0C35 E2r3Ar0C      [10] 2088 	jp	PO, 00170$
+   0C38 EE 80         [ 7] 2089 	xor	a, #0x80
+   0C3A                    2090 00170$:
+   0C3A F2r41r0C      [10] 2091 	jp	P,00102$
+                           2092 ;src/Enemigo.c:317: p1=1;
+   0C3D DD 36 F0 01   [19] 2093 	ld	-16 (ix),#0x01
+   0C41                    2094 00102$:
+                           2095 ;src/Enemigo.c:318: if(arr[cont]->y> p->y-16)
+   0C41 DD 6E FE      [19] 2096 	ld	l,-2 (ix)
+   0C44 DD 66 FF      [19] 2097 	ld	h,-1 (ix)
+   0C47 23            [ 6] 2098 	inc	hl
+   0C48 23            [ 6] 2099 	inc	hl
+   0C49 5E            [ 7] 2100 	ld	e,(hl)
+   0C4A DD 6E F4      [19] 2101 	ld	l,-12 (ix)
+   0C4D DD 66 F5      [19] 2102 	ld	h,-11 (ix)
+   0C50 6E            [ 7] 2103 	ld	l,(hl)
+   0C51 26 00         [ 7] 2104 	ld	h,#0x00
+   0C53 7D            [ 4] 2105 	ld	a,l
+   0C54 C6 F0         [ 7] 2106 	add	a,#0xF0
+   0C56 4F            [ 4] 2107 	ld	c,a
+   0C57 7C            [ 4] 2108 	ld	a,h
+   0C58 CE FF         [ 7] 2109 	adc	a,#0xFF
+   0C5A 47            [ 4] 2110 	ld	b,a
+   0C5B 16 00         [ 7] 2111 	ld	d,#0x00
+   0C5D 79            [ 4] 2112 	ld	a,c
+   0C5E 93            [ 4] 2113 	sub	a, e
+   0C5F 78            [ 4] 2114 	ld	a,b
+   0C60 9A            [ 4] 2115 	sbc	a, d
+   0C61 E2r66r0C      [10] 2116 	jp	PO, 00171$
+   0C64 EE 80         [ 7] 2117 	xor	a, #0x80
+   0C66                    2118 00171$:
+   0C66 F2r6Dr0C      [10] 2119 	jp	P,00104$
+                           2120 ;src/Enemigo.c:319: p2=1;
+   0C69 DD 36 EF 01   [19] 2121 	ld	-17 (ix),#0x01
+   0C6D                    2122 00104$:
+                           2123 ;src/Enemigo.c:320: if(arr[cont]->x< p->x+16)
+   0C6D DD 7E F2      [19] 2124 	ld	a,-14 (ix)
+   0C70 C6 10         [ 7] 2125 	add	a, #0x10
+   0C72 4F            [ 4] 2126 	ld	c,a
+   0C73 DD 7E F3      [19] 2127 	ld	a,-13 (ix)
+   0C76 CE 00         [ 7] 2128 	adc	a, #0x00
+   0C78 47            [ 4] 2129 	ld	b,a
+   0C79 DD 7E F6      [19] 2130 	ld	a,-10 (ix)
+   0C7C 91            [ 4] 2131 	sub	a, c
+   0C7D DD 7E F7      [19] 2132 	ld	a,-9 (ix)
+   0C80 98            [ 4] 2133 	sbc	a, b
+   0C81 E2r86r0C      [10] 2134 	jp	PO, 00172$
+   0C84 EE 80         [ 7] 2135 	xor	a, #0x80
+   0C86                    2136 00172$:
+   0C86 F2r8Dr0C      [10] 2137 	jp	P,00106$
+                           2138 ;src/Enemigo.c:321: p3=1;
+   0C89 DD 36 EE 01   [19] 2139 	ld	-18 (ix),#0x01
+   0C8D                    2140 00106$:
+                           2141 ;src/Enemigo.c:322: if(arr[cont]->y<p->y+16)
+   0C8D 01 10 00      [10] 2142 	ld	bc,#0x0010
+   0C90 09            [11] 2143 	add	hl,bc
+   0C91 7B            [ 4] 2144 	ld	a,e
+   0C92 95            [ 4] 2145 	sub	a, l
+   0C93 7A            [ 4] 2146 	ld	a,d
+   0C94 9C            [ 4] 2147 	sbc	a, h
+   0C95 E2r9Ar0C      [10] 2148 	jp	PO, 00173$
+   0C98 EE 80         [ 7] 2149 	xor	a, #0x80
+   0C9A                    2150 00173$:
+   0C9A F2rA1r0C      [10] 2151 	jp	P,00108$
+                           2152 ;src/Enemigo.c:323: p4=1;
+   0C9D DD 36 ED 01   [19] 2153 	ld	-19 (ix),#0x01
+   0CA1                    2154 00108$:
+                           2155 ;src/Enemigo.c:324: if(p1 && p2 && p3 && p4 ){
+   0CA1 DD 7E F0      [19] 2156 	ld	a,-16 (ix)
+   0CA4 B7            [ 4] 2157 	or	a, a
+   0CA5 28 61         [12] 2158 	jr	Z,00110$
+   0CA7 DD 7E EF      [19] 2159 	ld	a,-17 (ix)
+   0CAA B7            [ 4] 2160 	or	a, a
+   0CAB 28 5B         [12] 2161 	jr	Z,00110$
+   0CAD DD 7E EE      [19] 2162 	ld	a,-18 (ix)
+   0CB0 B7            [ 4] 2163 	or	a, a
+   0CB1 28 55         [12] 2164 	jr	Z,00110$
+   0CB3 DD 7E ED      [19] 2165 	ld	a,-19 (ix)
+   0CB6 B7            [ 4] 2166 	or	a, a
+   0CB7 28 4F         [12] 2167 	jr	Z,00110$
+                           2168 ;src/Enemigo.c:325: arr[cont]->vida=0;
+   0CB9 DD 6E FC      [19] 2169 	ld	l,-4 (ix)
+   0CBC DD 66 FD      [19] 2170 	ld	h,-3 (ix)
+   0CBF 36 00         [10] 2171 	ld	(hl),#0x00
+                           2172 ;src/Enemigo.c:326: cpct_drawSolidBox(arr[cont]->memPtr, cpct_px2byteM1(2,2,2,2), 4, 16);
+   0CC1 21 02 02      [10] 2173 	ld	hl,#0x0202
+   0CC4 E5            [11] 2174 	push	hl
+   0CC5 2E 02         [ 7] 2175 	ld	l, #0x02
+   0CC7 E5            [11] 2176 	push	hl
+   0CC8 CDr00r00      [17] 2177 	call	_cpct_px2byteM1
+   0CCB F1            [10] 2178 	pop	af
+   0CCC F1            [10] 2179 	pop	af
+   0CCD DD 75 F2      [19] 2180 	ld	-14 (ix),l
+   0CD0 DD 6E FA      [19] 2181 	ld	l,-6 (ix)
+   0CD3 DD 66 FB      [19] 2182 	ld	h,-5 (ix)
+   0CD6 7E            [ 7] 2183 	ld	a,(hl)
+   0CD7 DD 77 F6      [19] 2184 	ld	-10 (ix),a
+   0CDA 23            [ 6] 2185 	inc	hl
+   0CDB 7E            [ 7] 2186 	ld	a,(hl)
+   0CDC DD 77 F7      [19] 2187 	ld	-9 (ix),a
+   0CDF DD 6E F6      [19] 2188 	ld	l,-10 (ix)
+   0CE2 DD 66 F7      [19] 2189 	ld	h,-9 (ix)
+   0CE5 11 06 00      [10] 2190 	ld	de, #0x0006
+   0CE8 19            [11] 2191 	add	hl, de
+   0CE9 7E            [ 7] 2192 	ld	a,(hl)
+   0CEA DD 77 F6      [19] 2193 	ld	-10 (ix),a
+   0CED 23            [ 6] 2194 	inc	hl
+   0CEE 7E            [ 7] 2195 	ld	a,(hl)
+   0CEF DD 77 F7      [19] 2196 	ld	-9 (ix),a
+   0CF2 21 04 10      [10] 2197 	ld	hl,#0x1004
+   0CF5 E5            [11] 2198 	push	hl
+   0CF6 DD 7E F2      [19] 2199 	ld	a,-14 (ix)
+   0CF9 F5            [11] 2200 	push	af
+   0CFA 33            [ 6] 2201 	inc	sp
+   0CFB DD 6E F6      [19] 2202 	ld	l,-10 (ix)
+   0CFE DD 66 F7      [19] 2203 	ld	h,-9 (ix)
+   0D01 E5            [11] 2204 	push	hl
+   0D02 CDr00r00      [17] 2205 	call	_cpct_drawSolidBox
+   0D05 F1            [10] 2206 	pop	af
+   0D06 F1            [10] 2207 	pop	af
+   0D07 33            [ 6] 2208 	inc	sp
+   0D08                    2209 00110$:
+                           2210 ;src/Enemigo.c:328: p1=0;
+   0D08 DD 36 F0 00   [19] 2211 	ld	-16 (ix),#0x00
+                           2212 ;src/Enemigo.c:329: p2=0;
+   0D0C DD 36 EF 00   [19] 2213 	ld	-17 (ix),#0x00
+                           2214 ;src/Enemigo.c:330: p3=0;
+   0D10 DD 36 EE 00   [19] 2215 	ld	-18 (ix),#0x00
+                           2216 ;src/Enemigo.c:331: p4=0;
+   0D14 DD 36 ED 00   [19] 2217 	ld	-19 (ix),#0x00
+   0D18                    2218 00120$:
+                           2219 ;src/Enemigo.c:314: for(cont=0; cont<maxEnemigosSala;cont++){
+   0D18 DD 34 F1      [23] 2220 	inc	-15 (ix)
+   0D1B DD 7E F1      [19] 2221 	ld	a,-15 (ix)
+   0D1E D6 03         [ 7] 2222 	sub	a, #0x03
+   0D20 DArB5r0B      [10] 2223 	jp	C,00119$
+   0D23                    2224 00121$:
+   0D23 DD F9         [10] 2225 	ld	sp, ix
+   0D25 DD E1         [14] 2226 	pop	ix
+   0D27 C9            [10] 2227 	ret
+                           2228 	.area _CODE
+                           2229 	.area _INITIALIZER
+                           2230 	.area _CABS (ABS)
